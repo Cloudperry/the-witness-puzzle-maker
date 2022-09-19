@@ -1,0 +1,5 @@
+# Ignore binaries (all files without extension or .exe extension)
+*
+*.exe
+!*.*
+!*/
