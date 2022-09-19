@@ -6,6 +6,7 @@ Algorithms and data structures student project
 ![Maze with tetris pieces](https://oyster.ignimgs.com/mediawiki/apis.ign.com/the-witness/0/02/Blueblocksunsolved.jpg)
 
 # Documentation
-- [Project definition](docs/project_definition.md)
+- [Project specification](docs/project_definition.md)
+- [User guide](docs/user_guide.md)
 - [First week report](docs/week1_report.md)
 - [Second week report](docs/week2_report.md)
