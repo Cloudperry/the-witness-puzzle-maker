@@ -14,8 +14,8 @@ I chose [Nim](nim-lang.org) for this project. Nim is much better suited for game
 The levels will be represented by objects (C-like structs) which contain at least the following things:  
  - Undirected graph with the line drawing, start and end points
  - A hash set of used symbols (could be useless depending on the way to store symbol locations)
- - Symbol locations (maybe as an undirected graph of the maze cells or a hash table with pairs of location and symbol)
-Note: The levels will need to be serialized on disk, so keep that in mind when changing the data structures.
+ - Symbol locations (maybe as an undirected graph of the maze cells or a hash table with pairs of location and symbol)  
+Note: The levels will need to be serialized on disk, so keep that in mind when changing the data structures.  
 The game state will be stored in an object that includes at least the following things:  
  - A hash table with a coordinate as a key and an order number as value. This will be used to store the line that the player is drawing.
  - An undirected graph with the maze cells and symbols contained in them 
