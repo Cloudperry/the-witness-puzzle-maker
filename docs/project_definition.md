@@ -4,7 +4,7 @@ The project consists of a Level editor and the game itself as interactive GUI ap
 
 # Short examples to show what the game is about
 In this game the starting points of the maze are big circles and the goals are rounded dead ends in the maze. The game has a few basic maze puzzles, but most of the puzzles in the game are more about the symbols that are in between the maze lines. In this project I will call the light-colored spots where symbols can be placed "cells". For example the following maze can be solved by segregating the squares of different color in different "rooms" with the line.  
-![Maze with squares](the-witness-maze.webp)
+![Maze with squares](the-witness-maze.webp)  
 This is the solution to that maze. The colors need to be separated only from other cells in the maze and not the outer edge of the maze.  
 ![Maze with squares solved](the-witness-maze-solved.png)
 # Programming language
@@ -38,7 +38,7 @@ The algorithm that separates maze cells into rooms should have linear time and s
 # Sources
 I will use the original game (linked at the top) for reference. There is also a [browser-based clone of the game's mazes](https://windmill.thefifthmatt.com/) that I might use for reference. Its source code can be found [here](https://github.com/thefifthmatt/windmill-client).
 
-# Opinto-ohjelma 
+# Degree/study programme
 I'm a computer science bachelor student.
 
 # Language used in the project
