@@ -6,8 +6,7 @@ The project consists of a Level editor and the game itself as interactive GUI ap
 In this game the starting points of the maze are big circles and the goals are rounded dead ends in the maze. The game has a few basic maze puzzles, but most of the puzzles in the game are more about the symbols that are in between the maze lines. In this project I will call the light-colored spots where symbols can be placed "cells". For example the following maze can be solved by segregating the squares of different color in different "rooms" with the line.  
 ![Maze with squares](the-witness-maze.webp)
 This is the solution to that maze. The colors need to be separated only from other cells in the maze and not the outer edge of the maze.  
-![Maze with squares solved](the-witness-maze-solution.png)
-
+![Maze with squares solved](the-witness-maze-solved.png)
 # Programming language
 I chose [Nim](nim-lang.org) for this project. Nim is much better suited for games than Python, because its much faster than Python and has good libraries for games. Nim is syntactically quite close to Python with type annotations, but there are big differences outside of syntax. Standard Nim code is mostly readable and understandable to Python programmers. Other than Nim, I understand Python, Lua or C# code (out of these my C# skills are the weakest).
 
