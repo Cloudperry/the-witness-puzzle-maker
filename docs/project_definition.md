@@ -16,11 +16,13 @@ The levels will be represented by objects (C-like structs) which contain at leas
  - A hash set of used symbols (could be useless depending on the way to store symbol locations)
  - Symbol locations (maybe as an undirected graph of the maze cells or a hash table with pairs of location and symbol)  
 Note: The levels will need to be serialized on disk, so keep that in mind when changing the data structures.  
+
 The game state will be stored in an object that includes at least the following things:  
  - A hash table with a coordinate as a key and an order number as value. This will be used to store the line that the player is drawing.
  - An undirected graph with the maze cells and symbols contained in them 
 
 In the game each of the symbols adds its own logic to the mazes. The most important algorithms in this project are the ones used to implement maze solution checking and the symbols. [Here](https://thewitness.fandom.com/wiki/Puzzle_elements) are the rules of the game. Most of them are extremely simple to implement as an algorithm and not really worth describing in detail here.  
+
 These are some of the most important algorithms used:
  - Separating the cells into "rooms" based on the player's line. Similar to [this](https://cses.fi/tira22k/task/2329) algorithms and data structures excercise, but in this case the walls aren't explicit graph nodes. Because of that the algorithm might end up being completely different.
  - An algorithm that solves the [exact cover problem](https://www.wikiwand.com/en/Exact_cover). It will be used for checking the solution for [blocks/tetris pieces](https://thewitness.fandom.com/wiki/Puzzle_elements#Blocks). This project can use a really naive algorithm because there are very few tetris pieces in a single maze and the area that needs to be covered is very small in most cases. (I can add an example maze like in the short examples section if this isn't clear)
