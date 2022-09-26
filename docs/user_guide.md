@@ -19,4 +19,4 @@ In the future I will have binaries in github realeases, but right now the projec
 ```
 nimble install https://github.com/Cloudperry/the-witness-puzzle-maker
 ```
-If you have added Nim to your path the editor and the game can be opened by running editor or game in a terminal. I will change the binary names later, because they are way too generic.
+If you have added Nim to your path the editor and the game can be opened by running witness-clone-editor or witness-clone in a terminal. I will change the binary names later, because they are way too generic.
