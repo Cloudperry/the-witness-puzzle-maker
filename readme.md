@@ -12,3 +12,4 @@ Algorithms and data structures student project
 - [First week report](docs/week1_report.md)
 - [Second week report](docs/week2_report.md)
 - [Third week report](docs/week3_report.md)
+- [Fourth week report](docs/week4_report.md)
