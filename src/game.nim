@@ -1,5 +1,5 @@
 import strformat
-import cligen, frosty, nimraylib_now
+import cligen, nimraylib_now
 
 proc game(level: seq[string]) =
   var screenWidth = 1200'i32
