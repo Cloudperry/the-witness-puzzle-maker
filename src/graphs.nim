@@ -1,11 +1,13 @@
 import tables, sets, strformat
 
 type
-  Point2D* = tuple[x, y: int]
-  Graph*[T] = object # An undirected graph with a generic node type
-    ##Store adjacency list as a hash table of hash sets, that way checking if a node is in a graph is fast
-    ##Neighbor nodes' order doesn't matter and removing/adding edges should be fast so neigbors are stored as a hash set
+  Graph*[T] = object 
+    ## An undirected graph with a generic node type. Adjacency lists are stored as a hash table of
+    ## hash sets, that way checking if a node is in a graph is fast. Neighbor nodes' order doesn't 
+    ## matter and removing/adding edges should be fast so neigbors are stored as a hash set.
     adjList*: Table[T, HashSet[T]]
+  Point2D* = tuple[x, y: float] 
+  Point2DInt* = tuple[x, y: int] 
   PointGraph* = Graph[Point2D]
 
 proc `$`*(p: Point2D): string = fmt"({p.x}, {p.y})"
@@ -21,31 +23,31 @@ proc addNode*[T](g: var Graph, node: T) = g.adjList[node] = initHashSet[T]()
 proc removeNode*[T](g: var Graph, node: T) = g.adjList.del node
 
 iterator gridPoints*(p1, p2: Point2D): Point2D =
-  ##Iterates over a rectangular region of coordinates
-  for x in p1.x .. p2.x:
-    for y in p1.y .. p2.y:
-      yield (x, y)
+  ## Iterates over a rectangular region of coordinates
+  for x in p1.x.int .. p2.x.int:
+    for y in p1.y.int .. p2.y.int:
+      yield (x.float, y.float)
 
-iterator adjacentPoints*(p: Point2D): Point2D =
-  const adjacents: array[4, Point2D] = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+iterator adjacentGridPoints*(p: Point2D): Point2D =
+  const adjacents: array[4, Point2D] = [(1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0)]
   for delta in adjacents:
     yield (p.x + delta.x, p.y + delta.y)
 
-proc addGridNodes*(g: var PointGraph, p1, p2: Point2D) =
-  ##Adds nodes in a rectangular region of coordinates to the graph
+proc addGridPoints*(g: var PointGraph, p1, p2: Point2D) =
+  ## Adds nodes in a rectangular region of coordinates to the graph
   for point in gridPoints(p1, p2):
     g.addNode point
 
-proc connectGridNodes*(g: var PointGraph, p1, p2: Point2D) =
-  ##Connects all nodes in a rectangular region of coordinates
+proc connectGridPoints*(g: var PointGraph, p1, p2: Point2D) =
+  ## Connects all nodes in a rectangular region of coordinates
   for currPoint in gridPoints(p1, p2):
-    for adjPoint in adjacentPoints(currPoint):
+    for adjPoint in adjacentGridPoints(currPoint):
       if adjPoint in g.adjList:
         g.addEdge(currPoint, adjPoint)
 
 func findReachableNodes*[T](g: Graph, node: T): HashSet[T] =
   var visited = initHashSet[T]()
-  #Inner function used so that the visited set can be initialized outside the dfs function
+  # Inner function used so that the visited set can be initialized outside the dfs function
   proc findReachableNodesInner[T](g: Graph, node: T) =
     visited.incl node
     for neighbor in g.adjList[node]:
