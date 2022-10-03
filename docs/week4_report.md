@@ -1,0 +1,2 @@
+# Keskeneräinen viikkoraportti (viimeistelen maanantaina mahdollisimman pian)
+Tein tällä viikolla tasoformaatin lähes valmiiksi. Lisäsin myös tasojen tallentamisen ja lataamisen levyltä. Tasoeditoriin on lisätty logiikkaa tason lataamiseen levyltä ja editoitavan tasotiedoston valinta. Tein tasoformaattia varten testin, joka rakentaa manuaalisesti yksinkertaisen tason ja tallentaa sen levylle. Sen jälkeen testi lataa tason muistiin levyltä ja varmistaa muistissa luotua tasoa. Seuraavaksi aion tehdä tason renderöintikoodia ja jonkunlaisen tasoeditorin.
