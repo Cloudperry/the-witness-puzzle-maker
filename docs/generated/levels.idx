@@ -1,0 +1,18 @@
+Color	levels.html#Color	levels: Color	
+Empty	levels.html#Empty	PointKind.Empty	
+Start	levels.html#Start	PointKind.Start	
+End	levels.html#End	PointKind.End	
+Hex	levels.html#Hex	PointKind.Hex	
+PointKind	levels.html#PointKind	levels: PointKind	
+Empty	levels.html#Empty_2	CellKind.Empty	
+Square	levels.html#Square	CellKind.Square	
+Triangle	levels.html#Triangle	CellKind.Triangle	
+Star	levels.html#Star	CellKind.Star	
+Block	levels.html#Block	CellKind.Block	
+AntiBlock	levels.html#AntiBlock	CellKind.AntiBlock	
+Jack	levels.html#Jack	CellKind.Jack	
+CellKind	levels.html#CellKind	levels: CellKind	
+MazeCell	levels.html#MazeCell	levels: MazeCell	
+Level	levels.html#Level	levels: Level	
+saveLevelToFile	levels.html#saveLevelToFile,Level,string	levels: saveLevelToFile(l: Level; filename: string)	
+loadLevelFromFile	levels.html#loadLevelFromFile,string	levels: loadLevelFromFile(filename: string): Level	
