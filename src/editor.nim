@@ -1,19 +1,42 @@
 import strformat
-import cligen, frosty, nimraylib_now
+import cligen, nimraylib_now
+import levels
 
 proc editor(levels: seq[string]) =
-  var screenWidth = 1200'i32
-  var screenHeight = 750'i32
+  # Init
+  var
+    screenWidth = 1200'i32
+    screenHeight = 750'i32
+    levelName: string
+    level: Level
+    editingLevel: bool
+  if levels.len > 0:
+    levelName = levels[0]
+    editingLevel = true
+    level = loadLevelFromFile(levelName)
   initWindow(screenWidth, screenHeight, "The Witness puzzle editor")
   setTargetFPS(144)
 
-  while not windowShouldClose():
+  while not windowShouldClose(): # Main loop
+    # Update
+    if not editingLevel:
+      var key = getCharPressed()
+      while key in 32 .. 125:
+        levelName &= key.char
+        key = getCharPressed()
+      if isKeyPressed(BACKSPACE) and levelName.len >= 1:
+        levelName.setLen(levelName.len - 1)
+      elif isKeyPressed(ENTER):
+        editingLevel = true
+        level = loadLevelFromFile(levelName)
+
+    # Draw
     beginDrawing()
     clearBackground(Darkgray)
-    if levels.len == 0:
-      drawText("Here the editor will ask for a level filename to edit", 300, 350, 20, Raywhite)
+    if editingLevel:
+      drawText(fmt"Loaded level {levelName}", 200, 350, 20, Raywhite)
     else:
-      drawText(fmt"""Here the editor will open the following levels in different tabs: {levels.join(", ")}""", 200, 350, 20, Raywhite)
+      drawText(fmt"Type level name to edit and press ENTER: " & levelName, 300, 350, 20, Raywhite)
     endDrawing()
 
   closeWindow()
