@@ -42,7 +42,7 @@ proc editor(levels: seq[string]) =
     beginDrawing()
     clearBackground(Darkgray)
     if editingLevel:
-      drawText(fmt"Loaded level {levelName}", 200, 350, 20, Raywhite)
+      drawText(fmt"Loaded level {levelName}", 300, 100, 20, Raywhite)
       level.draw(levelScreenVertices)
     else:
       drawText(fmt"Type level name to edit and press ENTER: " & levelName, 300, 350, 20, Raywhite)
