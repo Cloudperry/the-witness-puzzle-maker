@@ -13,3 +13,13 @@ requires "nim >= 1.7.1"
 requires "cligen == 1.5.28"
 requires "nimraylib_now == 0.15.0"
 requires "https://github.com/disruptek/frosty == 3.0.0"
+
+task gendocs, "Generate source code documentation using the Nim compiler":
+  exec "nim doc --project --index:on --outdir:docs/generated src/editor.nim"
+
+task gencoverage, "Generate coverage using coco":
+  exec "coco -t='tests/*.nim' --cov='!tests' --compiler='--hints:off'"
+  exec "rm -rf docs/coverage/"
+  exec "mv coverage docs/"
+  exec "mv lcov.info docs/coverage/"
+  exec "rm -rf nimcache"
