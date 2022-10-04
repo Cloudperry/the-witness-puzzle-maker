@@ -1,15 +1,27 @@
 Graph	graphs.html#Graph	graphs: Graph	
+Edge	graphs.html#Edge	graphs: Edge	
+Vec2	graphs.html#Vec2	graphs: Vec2	
 Point2D	graphs.html#Point2D	graphs: Point2D	
 Point2DInt	graphs.html#Point2DInt	graphs: Point2DInt	
 PointGraph	graphs.html#PointGraph	graphs: PointGraph	
-`$`	graphs.html#$,Point2D	graphs: `$`(p: Point2D): string	
+`+`	graphs.html#+,Vec2[T],Vec2[T]	graphs: `+`[T](p1, p2: Vec2[T]): Vec2[T]	
+`-`	graphs.html#-,Vec2[T],Vec2[T]	graphs: `-`[T](p1, p2: Vec2[T]): Vec2[T]	
+`*`	graphs.html#*,Vec2[T],Vec2[T]	graphs: `*`[T](p1, p2: Vec2[T]): Vec2[T]	
+`*`	graphs.html#*,Vec2[T],T	graphs: `*`[T](p: Vec2[T]; n: T): Vec2[T]	
+`/`	graphs.html#/,Vec2[T],Vec2[T]	graphs: `/`[T](p1, p2: Vec2[T]): Vec2[T]	
+`/`	graphs.html#/,Vec2[T],T	graphs: `/`[T](p: Vec2[T]; n: T): Vec2[T]	
+`$`	graphs.html#$,Vec2[T]	graphs: `$`[T](p: Vec2[T]): string	
+`$`	graphs.html#$,Edge	graphs: `$`(e: Edge): string	
+midpoint	graphs.html#midpoint,Vec2[T],Vec2[T]	graphs: midpoint[T](p1, p2: Vec2[T]): Vec2[T]	
 addEdge	graphs.html#addEdge,Graph,T,T	graphs: addEdge[T](g: var Graph; node1: T; node2: T)	
 removeEdge	graphs.html#removeEdge,Graph,T,T	graphs: removeEdge[T](g: var Graph; node1: T; node2: T)	
 addNode	graphs.html#addNode,Graph,T	graphs: addNode[T](g: var Graph; node: T)	
 removeNode	graphs.html#removeNode,Graph,T	graphs: removeNode[T](g: var Graph; node: T)	
-gridPoints	graphs.html#gridPoints.i,Point2D,Point2D	graphs: gridPoints(p1, p2: Point2D): Point2D	
-adjacentGridPoints	graphs.html#adjacentGridPoints.i,Point2D	graphs: adjacentGridPoints(p: Point2D): Point2D	
-addGridPoints	graphs.html#addGridPoints,PointGraph,Point2D,Point2D	graphs: addGridPoints(g: var PointGraph; p1, p2: Point2D)	
-connectGridPoints	graphs.html#connectGridPoints,PointGraph,Point2D,Point2D	graphs: connectGridPoints(g: var PointGraph; p1, p2: Point2D)	
+nodes	graphs.html#nodes.i,Graph[T]	graphs: nodes[T](g: Graph[T]): T	
+getEdges	graphs.html#getEdges,Graph[T]	graphs: getEdges[T](g: Graph[T]): HashSet[Edge[T]]	
+gridPoints	graphs.html#gridPoints.i,Vec2[float],Vec2[float]	graphs: gridPoints(p1, p2: Vec2[float]): Vec2[float]	
+adjacentGridPoints	graphs.html#adjacentGridPoints.i,Vec2[float]	graphs: adjacentGridPoints(p: Vec2[float]): Vec2[float]	
+addGridPoints	graphs.html#addGridPoints,PointGraph,Vec2[float],Vec2[float]	graphs: addGridPoints(g: var PointGraph; p1, p2: Vec2[float])	
+connectGridPoints	graphs.html#connectGridPoints,PointGraph,Vec2[float],Vec2[float]	graphs: connectGridPoints(g: var PointGraph; p1, p2: Vec2[float])	
 findReachableNodes	graphs.html#findReachableNodes,Graph,T	graphs: findReachableNodes[T](g: Graph; node: T): HashSet[T]	
 hasRoute	graphs.html#hasRoute,Graph,T,T	graphs: hasRoute[T](g: Graph; currNode, goalNode: T): bool	

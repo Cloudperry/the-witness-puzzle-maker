@@ -25,10 +25,32 @@
   <div class="document" id="documentId">
     <div class="container">
       <h1 class="title">Index</h1>
-      Modules: <a href="graphs.html">graphs</a>, <a href="levels.html">levels</a>.<br/><p /><h2>API symbols</h2>
+      Modules: <a href="graphs.html">graphs</a>, <a href="levelGfx.html">levelGfx</a>, <a href="levels.html">levels</a>.<br/><p /><h2>API symbols</h2>
 <dl><dt><a name="%60%24%60" href="#%60%24%60"><span>`$`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graphs: `$`(p: Point2D): string" href="graphs.html#%24%2CPoint2D">graphs: `$`(p: Point2D): string</a></li>
+          data-doc-search-tag="graphs: `$`(e: Edge): string" href="graphs.html#%24%2CEdge">graphs: `$`(e: Edge): string</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="graphs: `$`[T](p: Vec2[T]): string" href="graphs.html#%24%2CVec2%5BT%5D">graphs: `$`[T](p: Vec2[T]): string</a></li>
+          </ul></dd>
+<dt><a name="%60%2A%60" href="#%60%2A%60"><span>`*`:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graphs: `*`[T](p: Vec2[T]; n: T): Vec2[T]" href="graphs.html#%2A%2CVec2%5BT%5D%2CT">graphs: `*`[T](p: Vec2[T]; n: T): Vec2[T]</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="graphs: `*`[T](p1, p2: Vec2[T]): Vec2[T]" href="graphs.html#%2A%2CVec2%5BT%5D%2CVec2%5BT%5D">graphs: `*`[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
+          </ul></dd>
+<dt><a name="%60%2B%60" href="#%60%2B%60"><span>`+`:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graphs: `+`[T](p1, p2: Vec2[T]): Vec2[T]" href="graphs.html#%2B%2CVec2%5BT%5D%2CVec2%5BT%5D">graphs: `+`[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
+          </ul></dd>
+<dt><a name="%60-%60" href="#%60-%60"><span>`-`:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graphs: `-`[T](p1, p2: Vec2[T]): Vec2[T]" href="graphs.html#-%2CVec2%5BT%5D%2CVec2%5BT%5D">graphs: `-`[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
+          </ul></dd>
+<dt><a name="%60/%60" href="#%60/%60"><span>`/`:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graphs: `/`[T](p: Vec2[T]; n: T): Vec2[T]" href="graphs.html#/%2CVec2%5BT%5D%2CT">graphs: `/`[T](p: Vec2[T]; n: T): Vec2[T]</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="graphs: `/`[T](p1, p2: Vec2[T]): Vec2[T]" href="graphs.html#/%2CVec2%5BT%5D%2CVec2%5BT%5D">graphs: `/`[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
           </ul></dd>
 <dt><a name="addEdge" href="#addEdge"><span>addEdge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -36,7 +58,7 @@
           </ul></dd>
 <dt><a name="addGridPoints" href="#addGridPoints"><span>addGridPoints:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graphs: addGridPoints(g: var PointGraph; p1, p2: Point2D)" href="graphs.html#addGridPoints%2CPointGraph%2CPoint2D%2CPoint2D">graphs: addGridPoints(g: var PointGraph; p1, p2: Point2D)</a></li>
+          data-doc-search-tag="graphs: addGridPoints(g: var PointGraph; p1, p2: Vec2[float])" href="graphs.html#addGridPoints%2CPointGraph%2CVec2%5Bfloat%5D%2CVec2%5Bfloat%5D">graphs: addGridPoints(g: var PointGraph; p1, p2: Vec2[float])</a></li>
           </ul></dd>
 <dt><a name="addNode" href="#addNode"><span>addNode:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -44,7 +66,7 @@
           </ul></dd>
 <dt><a name="adjacentGridPoints" href="#adjacentGridPoints"><span>adjacentGridPoints:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graphs: adjacentGridPoints(p: Point2D): Point2D" href="graphs.html#adjacentGridPoints.i%2CPoint2D">graphs: adjacentGridPoints(p: Point2D): Point2D</a></li>
+          data-doc-search-tag="graphs: adjacentGridPoints(p: Vec2[float]): Vec2[float]" href="graphs.html#adjacentGridPoints.i%2CVec2%5Bfloat%5D">graphs: adjacentGridPoints(p: Vec2[float]): Vec2[float]</a></li>
           </ul></dd>
 <dt><a name="AntiBlock" href="#AntiBlock"><span>AntiBlock:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -64,7 +86,23 @@
           </ul></dd>
 <dt><a name="connectGridPoints" href="#connectGridPoints"><span>connectGridPoints:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graphs: connectGridPoints(g: var PointGraph; p1, p2: Point2D)" href="graphs.html#connectGridPoints%2CPointGraph%2CPoint2D%2CPoint2D">graphs: connectGridPoints(g: var PointGraph; p1, p2: Point2D)</a></li>
+          data-doc-search-tag="graphs: connectGridPoints(g: var PointGraph; p1, p2: Vec2[float])" href="graphs.html#connectGridPoints%2CPointGraph%2CVec2%5Bfloat%5D%2CVec2%5Bfloat%5D">graphs: connectGridPoints(g: var PointGraph; p1, p2: Vec2[float])</a></li>
+          </ul></dd>
+<dt><a name="draw" href="#draw"><span>draw:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levelGfx: draw(l: Level; v: LevelScreenVertices)" href="levelGfx.html#draw%2CLevel%2CLevelScreenVertices">levelGfx: draw(l: Level; v: LevelScreenVertices)</a></li>
+          </ul></dd>
+<dt><a name="DrawOptions" href="#DrawOptions"><span>DrawOptions:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levelGfx: DrawOptions" href="levelGfx.html#DrawOptions">levelGfx: DrawOptions</a></li>
+          </ul></dd>
+<dt><a name="drawOptions" href="#drawOptions"><span>drawOptions:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levelGfx: drawOptions(winSize: tuple[w, h: int]): DrawOptions" href="levelGfx.html#drawOptions%2Ctuple%5Bint%2Cint%5D">levelGfx: drawOptions(winSize: tuple[w, h: int]): DrawOptions</a></li>
+          </ul></dd>
+<dt><a name="Edge" href="#Edge"><span>Edge:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graphs: Edge" href="graphs.html#Edge">graphs: Edge</a></li>
           </ul></dd>
 <dt><a name="Empty" href="#Empty"><span>Empty:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -80,13 +118,21 @@
 <li><a class="reference external"
           data-doc-search-tag="graphs: findReachableNodes[T](g: Graph; node: T): HashSet[T]" href="graphs.html#findReachableNodes%2CGraph%2CT">graphs: findReachableNodes[T](g: Graph; node: T): HashSet[T]</a></li>
           </ul></dd>
+<dt><a name="getEdges" href="#getEdges"><span>getEdges:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graphs: getEdges[T](g: Graph[T]): HashSet[Edge[T]]" href="graphs.html#getEdges%2CGraph%5BT%5D">graphs: getEdges[T](g: Graph[T]): HashSet[Edge[T]]</a></li>
+          </ul></dd>
+<dt><a name="getScreenVertices" href="#getScreenVertices"><span>getScreenVertices:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levelGfx: getScreenVertices(l: Level; o: DrawOptions): LevelScreenVertices" href="levelGfx.html#getScreenVertices%2CLevel%2CDrawOptions">levelGfx: getScreenVertices(l: Level; o: DrawOptions): LevelScreenVertices</a></li>
+          </ul></dd>
 <dt><a name="Graph" href="#Graph"><span>Graph:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="graphs: Graph" href="graphs.html#Graph">graphs: Graph</a></li>
           </ul></dd>
 <dt><a name="gridPoints" href="#gridPoints"><span>gridPoints:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graphs: gridPoints(p1, p2: Point2D): Point2D" href="graphs.html#gridPoints.i%2CPoint2D%2CPoint2D">graphs: gridPoints(p1, p2: Point2D): Point2D</a></li>
+          data-doc-search-tag="graphs: gridPoints(p1, p2: Vec2[float]): Vec2[float]" href="graphs.html#gridPoints.i%2CVec2%5Bfloat%5D%2CVec2%5Bfloat%5D">graphs: gridPoints(p1, p2: Vec2[float]): Vec2[float]</a></li>
           </ul></dd>
 <dt><a name="hasRoute" href="#hasRoute"><span>hasRoute:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -104,6 +150,14 @@
 <li><a class="reference external"
           data-doc-search-tag="levels: Level" href="levels.html#Level">levels: Level</a></li>
           </ul></dd>
+<dt><a name="LevelScreenVertices" href="#LevelScreenVertices"><span>LevelScreenVertices:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levelGfx: LevelScreenVertices" href="levelGfx.html#LevelScreenVertices">levelGfx: LevelScreenVertices</a></li>
+          </ul></dd>
+<dt><a name="LineSeq" href="#LineSeq"><span>LineSeq:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levelGfx: LineSeq" href="levelGfx.html#LineSeq">levelGfx: LineSeq</a></li>
+          </ul></dd>
 <dt><a name="loadLevelFromFile" href="#loadLevelFromFile"><span>loadLevelFromFile:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="levels: loadLevelFromFile(filename: string): Level" href="levels.html#loadLevelFromFile%2Cstring">levels: loadLevelFromFile(filename: string): Level</a></li>
@@ -111,6 +165,14 @@
 <dt><a name="MazeCell" href="#MazeCell"><span>MazeCell:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="levels: MazeCell" href="levels.html#MazeCell">levels: MazeCell</a></li>
+          </ul></dd>
+<dt><a name="midpoint" href="#midpoint"><span>midpoint:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graphs: midpoint[T](p1, p2: Vec2[T]): Vec2[T]" href="graphs.html#midpoint%2CVec2%5BT%5D%2CVec2%5BT%5D">graphs: midpoint[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
+          </ul></dd>
+<dt><a name="nodes" href="#nodes"><span>nodes:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graphs: nodes[T](g: Graph[T]): T" href="graphs.html#nodes.i%2CGraph%5BT%5D">graphs: nodes[T](g: Graph[T]): T</a></li>
           </ul></dd>
 <dt><a name="Point2D" href="#Point2D"><span>Point2D:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -156,11 +218,15 @@
 <li><a class="reference external"
           data-doc-search-tag="CellKind.Triangle" href="levels.html#Triangle">CellKind.Triangle</a></li>
           </ul></dd>
+<dt><a name="Vec2" href="#Vec2"><span>Vec2:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graphs: Vec2" href="graphs.html#Vec2">graphs: Vec2</a></li>
+          </ul></dd>
 </dl>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-03 01:31:26 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-04 01:23:38 UTC</small>
       </div>
     </div>
   </div>
