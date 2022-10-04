@@ -9,14 +9,17 @@ type
   CellKind* = enum ## All the puzzle symbols that can be attached to a cell
     Empty, Square, Triangle, Star, Block, AntiBlock, Jack
   MazeCell* = object
-    case kind*: CellKind
+    # NIMNOTE: Here kind is one field in the object, but the other fields the
+    # object has depends on the value of kind. For example squares have a color
+    # field, but no shape field and Blocks have the opposite. 
+    case kind*: CellKind 
     of Square, Triangle, Star: ## Only these puzzle symbols can have a color
       color*: Color            ## The color will affect the puzzle solution
     of Block, AntiBlock:
       shape*: seq[Point2DInt] ## Polyomino shape as a collection of points.
-                              ## (0, 0) is the top left corner of the shape.
-    else:
+    else:                     ## (0, 0) is the top left corner of the shape.
       discard
+    
   Level* = object
     # A bit later I will add support for arbitrary maze shapes
     # For that the field below will be used to determine the coordinate space of the level
