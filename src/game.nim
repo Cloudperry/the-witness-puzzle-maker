@@ -2,6 +2,9 @@ import strformat
 import cligen, nimraylib_now
 import levels, levelGfx
 
+when defined(windows):
+  {.passL: "-static".} # Use static linking on Windows
+
 proc editor(levels: seq[string]) =
   # Init
   var
