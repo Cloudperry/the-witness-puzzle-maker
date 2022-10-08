@@ -24,7 +24,7 @@
   curl https://nim-lang.org/choosenim/init.sh -sSf | sh; echo 'export PATH=~/.nimble/bin:$PATH' > .profile 
   ```
 
-  # Downloading and compiling the project
+  # Downloading the project
   Restart the terminal to make sure PATH has been updated. Then run this command to prepare the Nim environment and download the project:
   ```
   choosenim devel; nimble refresh; git clone https://github.com/Cloudperry/the-witness-puzzle-maker; cd the-witness-puzzle-maker
@@ -46,7 +46,7 @@
   curl https://nim-lang.org/choosenim/init.sh -sSf | sh; echo 'export PATH=~/.nimble/bin:$PATH' > .profile 
   ```
 
-  # Downloading and compiling the project
+  # Downloading the project
   Restart the terminal to make sure PATH has been updated. Then run this command to prepare the Nim environment and download the project:
   ```
   choosenim devel; nimble refresh; git clone https://github.com/Cloudperry/the-witness-puzzle-maker; cd the-witness-puzzle-maker
@@ -66,7 +66,7 @@
   # Installing Git for Windows
   If you don't have a git environment installed, download and install [Git for Windows](https://gitforwindows.org/).
 
-  # Downloading and compiling the project
+  # Downloading the project
   Run this command to prepare the Nim environment and download the project:
   ```
   choosenim devel && nimble refresh && git clone https://github.com/Cloudperry/the-witness-puzzle-maker && cd /d the-witness-puzzle-maker
