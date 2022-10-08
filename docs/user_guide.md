@@ -1,5 +1,5 @@
 <details>
-  <summary>Linux install instructions</summary>
+  <summary>Linux install instructions (click to expand)</summary>
 
   # Installing dependencies
   This project uses a C game development library and that means quite a bit of libraries are needed on Linux. Below I have the commands to install dependencies for a few common Linux
@@ -32,7 +32,7 @@
 </details>
 
 <details>
-  <summary>Mac OS install instructions</summary>
+  <summary>Mac OS install instructions (click to expand)</summary>
 
   # Installing dependencies (Mac OS)
   Nim uses a C compiler. If you don't have one installed run the following command in a terminal to install Clang on Mac OS.
@@ -59,7 +59,7 @@
 </details>
 
 <details>
-  <summary>Windows install instructions</summary>
+  <summary>Windows install instructions (click to expand)</summary>
   # Installing Nim and its package manager (Windows)
   Download choosenim zip file [here](https://github.com/dom96/choosenim/releases), extract it and open runme.bat to install Nim.
 
