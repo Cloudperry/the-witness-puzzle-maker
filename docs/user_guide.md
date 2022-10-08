@@ -1,5 +1,19 @@
 # Installing dependencies (Linux only)
-This project uses a C game development library and unfortunately that means u need quite a bit of other libraries if u are running Linux. 
+This project uses a C game development library and unfortunately that means u need quite a bit of other libraries if u are running Linux. Below I have the commands to install dependencies for a few common Linux
+distributions.
+
+Ubuntu:
+```
+sudo apt install libasound2-dev mesa-common-dev libx11-dev libxrandr-dev libxi-dev xorg-dev libgl1-mesa-dev libglu1-mesa-dev
+```
+Fedora:
+```
+sudo dnf install alsa-lib-devel mesa-libGL-devel libX11-devel libXrandr-devel libXi-devel libXcursor-devel libXinerama-devel libatomic
+```
+Arch Linux:
+```
+sudo pacman -S alsa-lib mesa libx11 libxrandr libxi libxcursor libxinerama
+```
 
 # Installing Nim and its package manager (Linux)
 Run the following command in a terminal. It will download Nim to ~/.nimble/ and export the path where Nim binaries are. (Edit the command if u want to add Nim to the PATH variable yourself.)
