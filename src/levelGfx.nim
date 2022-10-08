@@ -1,5 +1,5 @@
-from math import round
-import lenientops, tables, sets
+from std/math import round
+import std/[lenientops, tables, sets]
 import nimraylib_now
 import levels, graphs
 

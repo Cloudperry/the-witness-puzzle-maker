@@ -1,4 +1,4 @@
-import tables, sets
+import std/[tables, sets]
 import frosty/streams
 import graphs
 

@@ -1,4 +1,4 @@
-import strformat
+import std/strformat
 import cligen, nimraylib_now
 import levels, levelGfx
 

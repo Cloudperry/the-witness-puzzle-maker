@@ -1,4 +1,4 @@
-import math, lenientops, tables, sets, strformat
+import std/[math, lenientops, tables, sets, strformat]
 
 type
   Graph*[N] = object 
