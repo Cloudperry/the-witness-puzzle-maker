@@ -21,8 +21,8 @@ type
     ## This object will be used to store graphics parameters that shouldn't be part of the level
     winSize*: tuple[w, h: int]
     centerPoint*: Point2DInt ## Point on the screen where the center of the maze should be
-    borderColor*: levels.Color
-    bgColor*: levels.Color
+    borderColor* = defaultBorderColor
+    bgColor* = defaultBgColor
   LevelScreenVertices* = object 
     ## This object is used to store pixel coordinates for the level.
     ## It is used when drawing the level
@@ -30,13 +30,13 @@ type
     startingPoints: seq[Point2DInt]
     bgRect: tuple[topLeftCorner, size: Point2DInt]
 
-#TODO: Name the following initializer function properly
-proc drawOptions*(winSize: tuple[w, h: int]): DrawOptions =
-  result = DrawOptions(
+func initDrawOptions*(winSize: tuple[w, h: int], centerPoint: Point2DInt,
+  borderColor = defaultBorderColor, bgColor = defaultBgColor): DrawOptions = 
+  DrawOptions(
     winSize: winSize,
     centerPoint: (winSize.w div 2, winSize.h div 2),
-    borderColor: defaultBorderColor,
-    bgColor: defaultBgColor
+    borderColor: borderColor,
+    bgColor: bgColor
   )
 
 func getPanelCoordSpace(l: Level): 

@@ -18,7 +18,7 @@ proc editor(levels: seq[string]) =
   
   proc loadLevel() =
     level = loadLevelFromFile(levelName)
-    drawOptions = drawOptions((screenWidth.int, screenHeight.int))
+    drawOptions = initDrawOptions((screenWidth.int, screenHeight.int))
     levelScreenVertices = level.getScreenVertices(drawOptions)
     editingLevel = true
 
