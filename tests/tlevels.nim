@@ -1,4 +1,4 @@
-import tables, sets, lenientops
+import std/[tables, sets, lenientops, os]
 import ../src/levels, ../src/graphs
 
 # The following is a messy piece of code that creates a simple level by poking around
@@ -60,5 +60,6 @@ let sampleLevelFromDisk = loadLevelFromFile("testLevel.bin")
 # of the objects, because Nim doesn't support comparing objects that use some features.
 # See https://forum.nim-lang.org/t/6781 for details.
 assert $sampleLevel == $sampleLevelFromDisk
+removeFile("testLevel.bin")
 
 echo "level format and editing library (levels.nim) test ran successfully."

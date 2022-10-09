@@ -1,4 +1,4 @@
-import tables, sets
+import std/[tables, sets]
 import ../src/graphs
 
 var testGraph: PointGraph
