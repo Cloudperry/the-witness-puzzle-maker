@@ -4,7 +4,7 @@ import ../src/levels, ../src/graphs
 # The following is a messy piece of code that creates a simple level by poking around
 # in the data structures. The level format is not designed for manually constructing levels.
 # The level constructed here corresponds to the rightmost level in the project definition 
-# document (but this version has no square symbols).
+# document (but this version has just one square for testing rendering).
 var samplePointGraph: Graph[Point2D]
 for p1 in gridPoints((0.0, 0.0), (4.0, 4.0)):
   samplePointGraph.addNode(p1)
@@ -41,6 +41,8 @@ samplePointData[(3.0, 4.25)] = End
 var sampleCellData: Table[seq[Point2D], MazeCell]
 for cell in cells.values:
   sampleCellData[cell] = MazeCell(kind: Empty)
+
+sampleCellData[@[(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)]] = MazeCell(kind: Square, color: (255, 255, 255))
 
 let sampleLevel = Level(
   topLeftCorner: (0.0, 0.0),
