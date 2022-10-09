@@ -1,4 +1,4 @@
-import std/[math, lenientops, tables, sets, strformat]
+import std/[math, lenientops, strformat, tables, sets]
 
 type
   Graph*[N] = object 
@@ -32,7 +32,8 @@ proc `*`*[V: SomeNumber, S: SomeNumber](p: Vec2[V], n: S): Vec2[V] =
 proc `/`*[V: SomeNumber, S: SomeNumber](p: Vec2[V], n: S): Vec2[V] =
   (p.x / n, p.y / n)
 proc `$`*[N: SomeNumber](p: Vec2[N]): string = fmt"({p.x}, {p.y})"
-proc midpoint*[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N] = 
+proc midpoint*[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N] =
+  ## Generalization of the normal (A + B) / 2 midpoint formula for 2 points to n points
   sum(vectors) / vectors.len
 
 proc addEdge*[T](g: var Graph, node1: T, node2: T) =
@@ -46,7 +47,7 @@ proc removeEdge*[T](g: var Graph, node1: T, node2: T) =
   g.adjList[node2].excl node1
 proc `$`*(e: Edge): string = fmt"({e.node1} <-> {e.node2})"
 
-proc addNode*[T](g: var Graph, node: T) = g.adjList[node] = initHashSet[T]()
+proc addNode*[T](g: var Graph, node: T) = g.adjList[node] = initHashSet[T](4)
 proc removeNode*[T](g: var Graph, node: T) = g.adjList.del node
 
 iterator nodes*[T](g: Graph[T]): T = # NIMNOTE: Iterators work just like python generator functions
@@ -70,7 +71,9 @@ iterator gridPoints*(p1, p2: Vec2[float]): Vec2[float] =
       yield (x.float, y.float)
 
 iterator adjacentGridPoints*(p: Vec2[float]): Vec2[float] =
-  const adjacents: array[4, Vec2[float]] = [(1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0)]
+  const adjacents: array[4, Vec2[float]] = [
+    (1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0)
+  ]
   for delta in adjacents:
     yield (p.x + delta.x, p.y + delta.y)
 
@@ -102,11 +105,12 @@ func findReachableNodes*[T](g: Graph, node: T): HashSet[T] =
 
 func hasRoute*[T](g: Graph, currNode, goalNode: T): bool =
   var visited = initHashSet[T]()
-  proc hasRouteInner[T](g: Graph, currNode, goalNode: T): bool =
-    if currNode == goalNode:
-      return true
+  # Same as the previous function, but the dfs terminates when goal node is found
+  proc hasRouteInner[T](g: Graph, currNode, goalNode: T) =
     visited.incl currNode
+    if currNode == goalNode: return
     for neighbor in g.adjList[currNode]:
       if neighbor notin visited:
-        return g.hasRouteInner(neighbor, goalNode)
-  return hasRouteInner[T](g, currNode, goalNode)
+        g.hasRouteInner(neighbor, goalNode)
+  hasRouteInner(g, currNode, goalNode)
+  return goalNode in visited
