@@ -13,13 +13,15 @@ proc editor(levels: seq[string]) =
     levelName: string
     level: Level
     drawOptions: DrawOptions 
-    levelScreenVertices: LevelScreenVertices
+    levelGfxData: LevelGfxData
+    drawCoordSpace: DrawCoordSpace
     editingLevel: bool
   
   proc loadLevel() =
     level = loadLevelFromFile(levelName)
     drawOptions = initDrawOptions((screenWidth.int, screenHeight.int))
-    levelScreenVertices = level.getScreenVertices(drawOptions)
+    drawCoordSpace = level.getDrawCoordSpace()
+    levelGfxData = level.calcGfxData(drawCoordSpace, drawOptions)
     editingLevel = true
 
   if levels.len > 0:
@@ -46,7 +48,7 @@ proc editor(levels: seq[string]) =
     clearBackground(Darkgray)
     if editingLevel:
       drawText(fmt"Loaded level {levelName}", 300, 100, 20, Raywhite)
-      level.draw(levelScreenVertices)
+      level.draw(levelGfxData)
     else:
       drawText(fmt"Type level name to play and press ENTER: " & levelName, 300, 350, 20, Raywhite)
     endDrawing()
