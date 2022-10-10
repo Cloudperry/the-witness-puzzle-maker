@@ -55,13 +55,13 @@
   <details open>
     <summary><a class="reference reference-toplevel" href="#7" id="57">Types</a></summary>
     <ul class="simple simple-toc-section">
-      <li><a class="reference" href="#Edge" title="Edge[T] = tuple[node1, node2: T]">Edge</a></li>
-<li><a class="reference" href="#Graph" title="Graph[T] = object
-  adjList*: Table[T, HashSet[T]]">Graph</a></li>
+      <li><a class="reference" href="#Edge" title="Edge[N] = tuple[node1, node2: N]">Edge</a></li>
+<li><a class="reference" href="#Graph" title="Graph[N] = object
+  adjList*: Table[N, HashSet[N]]">Graph</a></li>
 <li><a class="reference" href="#Point2D" title="Point2D = Vec2[float]">Point2D</a></li>
 <li><a class="reference" href="#Point2DInt" title="Point2DInt = Vec2[int]">Point2DInt</a></li>
 <li><a class="reference" href="#PointGraph" title="PointGraph = Graph[Vec2[float]]">PointGraph</a></li>
-<li><a class="reference" href="#Vec2" title="Vec2[T] = tuple[x, y: T]">Vec2</a></li>
+<li><a class="reference" href="#Vec2" title="Vec2[N] = tuple[x, y: N]">Vec2</a></li>
 
     </ul>
   </details>
@@ -72,25 +72,26 @@
     <ul class="simple simple-toc-section">
       <ul class="simple nested-toc-section">$
   <li><a class="reference" href="#%24%2CEdge" title="`$`(e: Edge): string">`$`(e: Edge): string</a></li>
-<li><a class="reference" href="#%24%2CVec2%5BT%5D" title="`$`[T](p: Vec2[T]): string">`$`[T](p: Vec2[T]): string</a></li>
+<li><a class="reference" href="#%24%2CVec2%5BN%3A%20SomeNumber%5D" title="`$`[N: SomeNumber](p: Vec2[N]): string">`$`[N: SomeNumber](p: Vec2[N]): string</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">*
-  <li><a class="reference" href="#%2A%2CVec2%5BT%5D%2CVec2%5BT%5D" title="`*`[T](p1, p2: Vec2[T]): Vec2[T]">`*`[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
-<li><a class="reference" href="#%2A%2CVec2%5BT%5D%2CT" title="`*`[T](p: Vec2[T]; n: T): Vec2[T]">`*`[T](p: Vec2[T]; n: T): Vec2[T]</a></li>
+  <li><a class="reference" href="#%2A%2CVec2%5BN%3A%20SomeNumber%5D%2CVec2%5BN%3A%20SomeNumber%5D" title="`*`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]">`*`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]</a></li>
+<li><a class="reference" href="#%2A%2CVec2%5BV%3A%20SomeNumber%5D%2CS" title="`*`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]">`*`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">+
-  <li><a class="reference" href="#%2B%2CVec2%5BT%5D%2CVec2%5BT%5D" title="`+`[T](p1, p2: Vec2[T]): Vec2[T]">`+`[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
+  <li><a class="reference" href="#%2B%2CVec2%5BN%3A%20SomeNumber%5D%2CVec2%5BN%3A%20SomeNumber%5D" title="`+`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]">`+`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">-
-  <li><a class="reference" href="#-%2CVec2%5BT%5D%2CVec2%5BT%5D" title="`-`[T](p1, p2: Vec2[T]): Vec2[T]">`-`[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
+  <li><a class="reference" href="#-%2CVec2%5BN%3A%20SomeNumber%5D%2CVec2%5BN%3A%20SomeNumber%5D" title="`-`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]">`-`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]</a></li>
+<li><a class="reference" href="#-%2CVec2%5BN%3A%20SomeNumber%5D" title="`-`[N: SomeNumber](p: Vec2[N]): Vec2[N]">`-`[N: SomeNumber](p: Vec2[N]): Vec2[N]</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">/
-  <li><a class="reference" href="#%2F%2CVec2%5BT%5D%2CVec2%5BT%5D" title="`/`[T](p1, p2: Vec2[T]): Vec2[T]">`/`[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
-<li><a class="reference" href="#%2F%2CVec2%5BT%5D%2CT" title="`/`[T](p: Vec2[T]; n: T): Vec2[T]">`/`[T](p: Vec2[T]; n: T): Vec2[T]</a></li>
+  <li><a class="reference" href="#%2F%2CVec2%5BN%3A%20SomeNumber%5D%2CVec2%5BN%3A%20SomeNumber%5D" title="`/`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]">`/`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]</a></li>
+<li><a class="reference" href="#%2F%2CVec2%5BV%3A%20SomeNumber%5D%2CS" title="`/`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]">`/`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">addEdge
@@ -122,7 +123,7 @@
 
 </ul>
 <ul class="simple nested-toc-section">midpoint
-  <li><a class="reference" href="#midpoint%2CVec2%5BT%5D%2CVec2%5BT%5D" title="midpoint[T](p1, p2: Vec2[T]): Vec2[T]">midpoint[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
+  <li><a class="reference" href="#midpoint%2Cvarargs%5BVec2%5BN%3A%20SomeNumber%5D%5D" title="midpoint[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N]">midpoint[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N]</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">removeEdge
@@ -170,7 +171,7 @@
   <h1><a class="toc-backref" href="#7">Types</a></h1>
   <dl class="item">
     <div id="Edge">
-  <dt><pre><a href="graphs.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span> <span class="Other">=</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">node1</span><span class="Other">,</span> <span class="Identifier">node2</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">]</span></pre></dt>
+  <dt><pre><a href="graphs.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span> <span class="Other">=</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">node1</span><span class="Other">,</span> <span class="Identifier">node2</span><span class="Other">:</span> <span class="Identifier">N</span><span class="Other">]</span></pre></dt>
   <dd>
     
     An edge of a graph in the form (node1, node2)
@@ -178,8 +179,8 @@
   </dd>
 </div>
 <div id="Graph">
-  <dt><pre><a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span> <span class="Other">=</span> <span class="Keyword">object</span>
-  <span class="Identifier">adjList</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">HashSet</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">]</span>
+  <dt><pre><a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span> <span class="Other">=</span> <span class="Keyword">object</span>
+  <span class="Identifier">adjList</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">N</span><span class="Other">,</span> <span class="Identifier">HashSet</span><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span><span class="Other">]</span>
 </pre></dt>
   <dd>
     
@@ -212,7 +213,7 @@
   </dd>
 </div>
 <div id="Vec2">
-  <dt><pre><a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span> <span class="Other">=</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">x</span><span class="Other">,</span> <span class="Identifier">y</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">]</span></pre></dt>
+  <dt><pre><a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span> <span class="Other">=</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">x</span><span class="Other">,</span> <span class="Identifier">y</span><span class="Other">:</span> <span class="Identifier">N</span><span class="Other">]</span></pre></dt>
   <dd>
     
     
@@ -234,8 +235,8 @@
     
   </dd>
 </div>
-<div id="$,Vec2[T]">
-  <dt><pre><span class="Keyword">proc</span> <a href="#%24%2CVec2%5BT%5D"><span class="Identifier">`$`</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<div id="$,Vec2[N: SomeNumber]">
+  <dt><pre><span class="Keyword">proc</span> <a href="#%24%2CVec2%5BN%3A%20SomeNumber%5D"><span class="Identifier">`$`</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
   <dd>
     
     
@@ -245,16 +246,16 @@
 
 </div>
 <div id="*-procs-all">
-  <div id="*,Vec2[T],Vec2[T]">
-  <dt><pre><span class="Keyword">proc</span> <a href="#%2A%2CVec2%5BT%5D%2CVec2%5BT%5D"><span class="Identifier">`*`</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p1</span><span class="Other">,</span> <span class="Identifier">p2</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
+  <div id="*,Vec2[N: SomeNumber],Vec2[N: SomeNumber]">
+  <dt><pre><span class="Keyword">proc</span> <a href="#%2A%2CVec2%5BN%3A%20SomeNumber%5D%2CVec2%5BN%3A%20SomeNumber%5D"><span class="Identifier">`*`</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p1</span><span class="Other">,</span> <span class="Identifier">p2</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span></pre></dt>
   <dd>
     
     
     
   </dd>
 </div>
-<div id="*,Vec2[T],T">
-  <dt><pre><span class="Keyword">proc</span> <a href="#%2A%2CVec2%5BT%5D%2CT"><span class="Identifier">`*`</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
+<div id="*,Vec2[V: SomeNumber],S">
+  <dt><pre><span class="Keyword">proc</span> <a href="#%2A%2CVec2%5BV%3A%20SomeNumber%5D%2CS"><span class="Identifier">`*`</span></a><span class="Other">[</span><span class="Identifier">V</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">;</span> <span class="Identifier">S</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">V</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">S</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">V</span><span class="Other">]</span></pre></dt>
   <dd>
     
     
@@ -264,8 +265,8 @@
 
 </div>
 <div id="+-procs-all">
-  <div id="+,Vec2[T],Vec2[T]">
-  <dt><pre><span class="Keyword">proc</span> <a href="#%2B%2CVec2%5BT%5D%2CVec2%5BT%5D"><span class="Identifier">`+`</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p1</span><span class="Other">,</span> <span class="Identifier">p2</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
+  <div id="+,Vec2[N: SomeNumber],Vec2[N: SomeNumber]">
+  <dt><pre><span class="Keyword">proc</span> <a href="#%2B%2CVec2%5BN%3A%20SomeNumber%5D%2CVec2%5BN%3A%20SomeNumber%5D"><span class="Identifier">`+`</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p1</span><span class="Other">,</span> <span class="Identifier">p2</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span></pre></dt>
   <dd>
     
     
@@ -275,8 +276,16 @@
 
 </div>
 <div id="--procs-all">
-  <div id="-,Vec2[T],Vec2[T]">
-  <dt><pre><span class="Keyword">proc</span> <a href="#-%2CVec2%5BT%5D%2CVec2%5BT%5D"><span class="Identifier">`-`</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p1</span><span class="Other">,</span> <span class="Identifier">p2</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
+  <div id="-,Vec2[N: SomeNumber],Vec2[N: SomeNumber]">
+  <dt><pre><span class="Keyword">proc</span> <a href="#-%2CVec2%5BN%3A%20SomeNumber%5D%2CVec2%5BN%3A%20SomeNumber%5D"><span class="Identifier">`-`</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p1</span><span class="Other">,</span> <span class="Identifier">p2</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span></pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+<div id="-,Vec2[N: SomeNumber]">
+  <dt><pre><span class="Keyword">proc</span> <a href="#-%2CVec2%5BN%3A%20SomeNumber%5D"><span class="Identifier">`-`</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span></pre></dt>
   <dd>
     
     
@@ -286,16 +295,16 @@
 
 </div>
 <div id="/-procs-all">
-  <div id="/,Vec2[T],Vec2[T]">
-  <dt><pre><span class="Keyword">proc</span> <a href="#%2F%2CVec2%5BT%5D%2CVec2%5BT%5D"><span class="Identifier">`/`</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p1</span><span class="Other">,</span> <span class="Identifier">p2</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
+  <div id="/,Vec2[N: SomeNumber],Vec2[N: SomeNumber]">
+  <dt><pre><span class="Keyword">proc</span> <a href="#%2F%2CVec2%5BN%3A%20SomeNumber%5D%2CVec2%5BN%3A%20SomeNumber%5D"><span class="Identifier">`/`</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p1</span><span class="Other">,</span> <span class="Identifier">p2</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span></pre></dt>
   <dd>
     
     
     
   </dd>
 </div>
-<div id="/,Vec2[T],T">
-  <dt><pre><span class="Keyword">proc</span> <a href="#%2F%2CVec2%5BT%5D%2CT"><span class="Identifier">`/`</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
+<div id="/,Vec2[V: SomeNumber],S">
+  <dt><pre><span class="Keyword">proc</span> <a href="#%2F%2CVec2%5BV%3A%20SomeNumber%5D%2CS"><span class="Identifier">`/`</span></a><span class="Other">[</span><span class="Identifier">V</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">;</span> <span class="Identifier">S</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">V</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">S</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">V</span><span class="Other">]</span></pre></dt>
   <dd>
     
     
@@ -384,11 +393,11 @@
 
 </div>
 <div id="midpoint-procs-all">
-  <div id="midpoint,Vec2[T],Vec2[T]">
-  <dt><pre><span class="Keyword">proc</span> <a href="#midpoint%2CVec2%5BT%5D%2CVec2%5BT%5D"><span class="Identifier">midpoint</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p1</span><span class="Other">,</span> <span class="Identifier">p2</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
+  <div id="midpoint,varargs[Vec2[N: SomeNumber]]">
+  <dt><pre><span class="Keyword">proc</span> <a href="#midpoint%2Cvarargs%5BVec2%5BN%3A%20SomeNumber%5D%5D"><span class="Identifier">midpoint</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">vectors</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span></pre></dt>
   <dd>
     
-    
+    Generalization of the normal (A + B) / 2 midpoint formula for 2 points to n points
     
   </dd>
 </div>
@@ -467,7 +476,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-04 01:23:38 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-10 15:13:40 UTC</small>
       </div>
     </div>
   </div>

@@ -4,17 +4,18 @@ Vec2	graphs.html#Vec2	graphs: Vec2
 Point2D	graphs.html#Point2D	graphs: Point2D	
 Point2DInt	graphs.html#Point2DInt	graphs: Point2DInt	
 PointGraph	graphs.html#PointGraph	graphs: PointGraph	
-`+`	graphs.html#+,Vec2[T],Vec2[T]	graphs: `+`[T](p1, p2: Vec2[T]): Vec2[T]	
-`-`	graphs.html#-,Vec2[T],Vec2[T]	graphs: `-`[T](p1, p2: Vec2[T]): Vec2[T]	
-`*`	graphs.html#*,Vec2[T],Vec2[T]	graphs: `*`[T](p1, p2: Vec2[T]): Vec2[T]	
-`*`	graphs.html#*,Vec2[T],T	graphs: `*`[T](p: Vec2[T]; n: T): Vec2[T]	
-`/`	graphs.html#/,Vec2[T],Vec2[T]	graphs: `/`[T](p1, p2: Vec2[T]): Vec2[T]	
-`/`	graphs.html#/,Vec2[T],T	graphs: `/`[T](p: Vec2[T]; n: T): Vec2[T]	
-`$`	graphs.html#$,Vec2[T]	graphs: `$`[T](p: Vec2[T]): string	
-`$`	graphs.html#$,Edge	graphs: `$`(e: Edge): string	
-midpoint	graphs.html#midpoint,Vec2[T],Vec2[T]	graphs: midpoint[T](p1, p2: Vec2[T]): Vec2[T]	
+`+`	graphs.html#+,Vec2[N: SomeNumber],Vec2[N: SomeNumber]	graphs: `+`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]	
+`-`	graphs.html#-,Vec2[N: SomeNumber],Vec2[N: SomeNumber]	graphs: `-`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]	
+`-`	graphs.html#-,Vec2[N: SomeNumber]	graphs: `-`[N: SomeNumber](p: Vec2[N]): Vec2[N]	
+`*`	graphs.html#*,Vec2[N: SomeNumber],Vec2[N: SomeNumber]	graphs: `*`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]	
+`/`	graphs.html#/,Vec2[N: SomeNumber],Vec2[N: SomeNumber]	graphs: `/`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]	
+`*`	graphs.html#*,Vec2[V: SomeNumber],S	graphs: `*`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]	
+`/`	graphs.html#/,Vec2[V: SomeNumber],S	graphs: `/`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]	
+`$`	graphs.html#$,Vec2[N: SomeNumber]	graphs: `$`[N: SomeNumber](p: Vec2[N]): string	
+midpoint	graphs.html#midpoint,varargs[Vec2[N: SomeNumber]]	graphs: midpoint[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N]	
 addEdge	graphs.html#addEdge,Graph,T,T	graphs: addEdge[T](g: var Graph; node1: T; node2: T)	
 removeEdge	graphs.html#removeEdge,Graph,T,T	graphs: removeEdge[T](g: var Graph; node1: T; node2: T)	
+`$`	graphs.html#$,Edge	graphs: `$`(e: Edge): string	
 addNode	graphs.html#addNode,Graph,T	graphs: addNode[T](g: var Graph; node: T)	
 removeNode	graphs.html#removeNode,Graph,T	graphs: removeNode[T](g: var Graph; node: T)	
 nodes	graphs.html#nodes.i,Graph[T]	graphs: nodes[T](g: Graph[T]): T	

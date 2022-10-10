@@ -6,7 +6,7 @@ Hex	levels.html#Hex	PointKind.Hex
 PointKind	levels.html#PointKind	levels: PointKind	
 Empty	levels.html#Empty_2	CellKind.Empty	
 Square	levels.html#Square	CellKind.Square	
-Triangle	levels.html#Triangle	CellKind.Triangle	
+Triangles	levels.html#Triangles	CellKind.Triangles	
 Star	levels.html#Star	CellKind.Star	
 Block	levels.html#Block	CellKind.Block	
 AntiBlock	levels.html#AntiBlock	CellKind.AntiBlock	

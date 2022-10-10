@@ -30,27 +30,29 @@
 <li><a class="reference external"
           data-doc-search-tag="graphs: `$`(e: Edge): string" href="graphs.html#%24%2CEdge">graphs: `$`(e: Edge): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graphs: `$`[T](p: Vec2[T]): string" href="graphs.html#%24%2CVec2%5BT%5D">graphs: `$`[T](p: Vec2[T]): string</a></li>
+          data-doc-search-tag="graphs: `$`[N: SomeNumber](p: Vec2[N]): string" href="graphs.html#%24%2CVec2%5BN%3A%20SomeNumber%5D">graphs: `$`[N: SomeNumber](p: Vec2[N]): string</a></li>
           </ul></dd>
 <dt><a name="%60%2A%60" href="#%60%2A%60"><span>`*`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graphs: `*`[T](p: Vec2[T]; n: T): Vec2[T]" href="graphs.html#%2A%2CVec2%5BT%5D%2CT">graphs: `*`[T](p: Vec2[T]; n: T): Vec2[T]</a></li>
+          data-doc-search-tag="graphs: `*`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]" href="graphs.html#%2A%2CVec2%5BN%3A%20SomeNumber%5D%2CVec2%5BN%3A%20SomeNumber%5D">graphs: `*`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graphs: `*`[T](p1, p2: Vec2[T]): Vec2[T]" href="graphs.html#%2A%2CVec2%5BT%5D%2CVec2%5BT%5D">graphs: `*`[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
+          data-doc-search-tag="graphs: `*`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]" href="graphs.html#%2A%2CVec2%5BV%3A%20SomeNumber%5D%2CS">graphs: `*`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]</a></li>
           </ul></dd>
 <dt><a name="%60%2B%60" href="#%60%2B%60"><span>`+`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graphs: `+`[T](p1, p2: Vec2[T]): Vec2[T]" href="graphs.html#%2B%2CVec2%5BT%5D%2CVec2%5BT%5D">graphs: `+`[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
+          data-doc-search-tag="graphs: `+`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]" href="graphs.html#%2B%2CVec2%5BN%3A%20SomeNumber%5D%2CVec2%5BN%3A%20SomeNumber%5D">graphs: `+`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]</a></li>
           </ul></dd>
 <dt><a name="%60-%60" href="#%60-%60"><span>`-`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graphs: `-`[T](p1, p2: Vec2[T]): Vec2[T]" href="graphs.html#-%2CVec2%5BT%5D%2CVec2%5BT%5D">graphs: `-`[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
+          data-doc-search-tag="graphs: `-`[N: SomeNumber](p: Vec2[N]): Vec2[N]" href="graphs.html#-%2CVec2%5BN%3A%20SomeNumber%5D">graphs: `-`[N: SomeNumber](p: Vec2[N]): Vec2[N]</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="graphs: `-`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]" href="graphs.html#-%2CVec2%5BN%3A%20SomeNumber%5D%2CVec2%5BN%3A%20SomeNumber%5D">graphs: `-`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]</a></li>
           </ul></dd>
 <dt><a name="%60/%60" href="#%60/%60"><span>`/`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graphs: `/`[T](p: Vec2[T]; n: T): Vec2[T]" href="graphs.html#/%2CVec2%5BT%5D%2CT">graphs: `/`[T](p: Vec2[T]; n: T): Vec2[T]</a></li>
+          data-doc-search-tag="graphs: `/`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]" href="graphs.html#/%2CVec2%5BN%3A%20SomeNumber%5D%2CVec2%5BN%3A%20SomeNumber%5D">graphs: `/`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graphs: `/`[T](p1, p2: Vec2[T]): Vec2[T]" href="graphs.html#/%2CVec2%5BT%5D%2CVec2%5BT%5D">graphs: `/`[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
+          data-doc-search-tag="graphs: `/`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]" href="graphs.html#/%2CVec2%5BV%3A%20SomeNumber%5D%2CS">graphs: `/`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]</a></li>
           </ul></dd>
 <dt><a name="addEdge" href="#addEdge"><span>addEdge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -76,6 +78,10 @@
 <li><a class="reference external"
           data-doc-search-tag="CellKind.Block" href="levels.html#Block">CellKind.Block</a></li>
           </ul></dd>
+<dt><a name="calcGfxData" href="#calcGfxData"><span>calcGfxData:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levelGfx: calcGfxData(l: Level; s: DrawCoordSpace; o: DrawOptions): LevelGfxData" href="levelGfx.html#calcGfxData%2CLevel%2CDrawCoordSpace%2CDrawOptions">levelGfx: calcGfxData(l: Level; s: DrawCoordSpace; o: DrawOptions): LevelGfxData</a></li>
+          </ul></dd>
 <dt><a name="CellKind" href="#CellKind"><span>CellKind:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="levels: CellKind" href="levels.html#CellKind">levels: CellKind</a></li>
@@ -90,15 +96,15 @@
           </ul></dd>
 <dt><a name="draw" href="#draw"><span>draw:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="levelGfx: draw(l: Level; v: LevelScreenVertices)" href="levelGfx.html#draw%2CLevel%2CLevelScreenVertices">levelGfx: draw(l: Level; v: LevelScreenVertices)</a></li>
+          data-doc-search-tag="levelGfx: draw(l: Level; v: LevelGfxData)" href="levelGfx.html#draw%2CLevel%2CLevelGfxData">levelGfx: draw(l: Level; v: LevelGfxData)</a></li>
+          </ul></dd>
+<dt><a name="DrawCoordSpace" href="#DrawCoordSpace"><span>DrawCoordSpace:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levelGfx: DrawCoordSpace" href="levelGfx.html#DrawCoordSpace">levelGfx: DrawCoordSpace</a></li>
           </ul></dd>
 <dt><a name="DrawOptions" href="#DrawOptions"><span>DrawOptions:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="levelGfx: DrawOptions" href="levelGfx.html#DrawOptions">levelGfx: DrawOptions</a></li>
-          </ul></dd>
-<dt><a name="drawOptions" href="#drawOptions"><span>drawOptions:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="levelGfx: drawOptions(winSize: tuple[w, h: int]): DrawOptions" href="levelGfx.html#drawOptions%2Ctuple%5Bint%2Cint%5D">levelGfx: drawOptions(winSize: tuple[w, h: int]): DrawOptions</a></li>
           </ul></dd>
 <dt><a name="Edge" href="#Edge"><span>Edge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -118,13 +124,13 @@
 <li><a class="reference external"
           data-doc-search-tag="graphs: findReachableNodes[T](g: Graph; node: T): HashSet[T]" href="graphs.html#findReachableNodes%2CGraph%2CT">graphs: findReachableNodes[T](g: Graph; node: T): HashSet[T]</a></li>
           </ul></dd>
+<dt><a name="getDrawCoordSpace" href="#getDrawCoordSpace"><span>getDrawCoordSpace:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levelGfx: getDrawCoordSpace(l: Level): DrawCoordSpace" href="levelGfx.html#getDrawCoordSpace%2CLevel">levelGfx: getDrawCoordSpace(l: Level): DrawCoordSpace</a></li>
+          </ul></dd>
 <dt><a name="getEdges" href="#getEdges"><span>getEdges:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="graphs: getEdges[T](g: Graph[T]): HashSet[Edge[T]]" href="graphs.html#getEdges%2CGraph%5BT%5D">graphs: getEdges[T](g: Graph[T]): HashSet[Edge[T]]</a></li>
-          </ul></dd>
-<dt><a name="getScreenVertices" href="#getScreenVertices"><span>getScreenVertices:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="levelGfx: getScreenVertices(l: Level; o: DrawOptions): LevelScreenVertices" href="levelGfx.html#getScreenVertices%2CLevel%2CDrawOptions">levelGfx: getScreenVertices(l: Level; o: DrawOptions): LevelScreenVertices</a></li>
           </ul></dd>
 <dt><a name="Graph" href="#Graph"><span>Graph:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -142,6 +148,14 @@
 <li><a class="reference external"
           data-doc-search-tag="PointKind.Hex" href="levels.html#Hex">PointKind.Hex</a></li>
           </ul></dd>
+<dt><a name="initDrawOptions" href="#initDrawOptions"><span>initDrawOptions:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levelGfx: initDrawOptions(winSize: tuple[w, h: int];
+                centerPoint = (winSize.w div 2, winSize.h div 2);
+                borderColor = defaultBorderColor; bgColor = defaultBgColor): DrawOptions" href="levelGfx.html#initDrawOptions%2Ctuple%5Bint%2Cint%5D%2C%28int%2C%20int%29">levelGfx: initDrawOptions(winSize: tuple[w, h: int];
+                centerPoint = (winSize.w div 2, winSize.h div 2);
+                borderColor = defaultBorderColor; bgColor = defaultBgColor): DrawOptions</a></li>
+          </ul></dd>
 <dt><a name="Jack" href="#Jack"><span>Jack:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="CellKind.Jack" href="levels.html#Jack">CellKind.Jack</a></li>
@@ -150,9 +164,9 @@
 <li><a class="reference external"
           data-doc-search-tag="levels: Level" href="levels.html#Level">levels: Level</a></li>
           </ul></dd>
-<dt><a name="LevelScreenVertices" href="#LevelScreenVertices"><span>LevelScreenVertices:</span></a></dt><dd><ul class="simple">
+<dt><a name="LevelGfxData" href="#LevelGfxData"><span>LevelGfxData:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="levelGfx: LevelScreenVertices" href="levelGfx.html#LevelScreenVertices">levelGfx: LevelScreenVertices</a></li>
+          data-doc-search-tag="levelGfx: LevelGfxData" href="levelGfx.html#LevelGfxData">levelGfx: LevelGfxData</a></li>
           </ul></dd>
 <dt><a name="LineSeq" href="#LineSeq"><span>LineSeq:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -168,7 +182,7 @@
           </ul></dd>
 <dt><a name="midpoint" href="#midpoint"><span>midpoint:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graphs: midpoint[T](p1, p2: Vec2[T]): Vec2[T]" href="graphs.html#midpoint%2CVec2%5BT%5D%2CVec2%5BT%5D">graphs: midpoint[T](p1, p2: Vec2[T]): Vec2[T]</a></li>
+          data-doc-search-tag="graphs: midpoint[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N]" href="graphs.html#midpoint%2Cvarargs%5BVec2%5BN%3A%20SomeNumber%5D%5D">graphs: midpoint[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N]</a></li>
           </ul></dd>
 <dt><a name="nodes" href="#nodes"><span>nodes:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -214,9 +228,9 @@
 <li><a class="reference external"
           data-doc-search-tag="PointKind.Start" href="levels.html#Start">PointKind.Start</a></li>
           </ul></dd>
-<dt><a name="Triangle" href="#Triangle"><span>Triangle:</span></a></dt><dd><ul class="simple">
+<dt><a name="Triangles" href="#Triangles"><span>Triangles:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="CellKind.Triangle" href="levels.html#Triangle">CellKind.Triangle</a></li>
+          data-doc-search-tag="CellKind.Triangles" href="levels.html#Triangles">CellKind.Triangles</a></li>
           </ul></dd>
 <dt><a name="Vec2" href="#Vec2"><span>Vec2:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -226,7 +240,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-04 01:23:38 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-10 15:13:40 UTC</small>
       </div>
     </div>
   </div>

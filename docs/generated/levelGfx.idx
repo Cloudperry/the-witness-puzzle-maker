@@ -1,6 +1,8 @@
 LineSeq	levelGfx.html#LineSeq	levelGfx: LineSeq	
 DrawOptions	levelGfx.html#DrawOptions	levelGfx: DrawOptions	
-LevelScreenVertices	levelGfx.html#LevelScreenVertices	levelGfx: LevelScreenVertices	
-drawOptions	levelGfx.html#drawOptions,tuple[int,int]	levelGfx: drawOptions(winSize: tuple[w, h: int]): DrawOptions	
-getScreenVertices	levelGfx.html#getScreenVertices,Level,DrawOptions	levelGfx: getScreenVertices(l: Level; o: DrawOptions): LevelScreenVertices	
-draw	levelGfx.html#draw,Level,LevelScreenVertices	levelGfx: draw(l: Level; v: LevelScreenVertices)	
+DrawCoordSpace	levelGfx.html#DrawCoordSpace	levelGfx: DrawCoordSpace	
+LevelGfxData	levelGfx.html#LevelGfxData	levelGfx: LevelGfxData	
+initDrawOptions	levelGfx.html#initDrawOptions,tuple[int,int],(int, int)	levelGfx: initDrawOptions(winSize: tuple[w, h: int];\n                centerPoint = (winSize.w div 2, winSize.h div 2);\n                borderColor = defaultBorderColor; bgColor = defaultBgColor): DrawOptions	
+getDrawCoordSpace	levelGfx.html#getDrawCoordSpace,Level	levelGfx: getDrawCoordSpace(l: Level): DrawCoordSpace	
+calcGfxData	levelGfx.html#calcGfxData,Level,DrawCoordSpace,DrawOptions	levelGfx: calcGfxData(l: Level; s: DrawCoordSpace; o: DrawOptions): LevelGfxData	
+draw	levelGfx.html#draw,Level,LevelGfxData	levelGfx: draw(l: Level; v: LevelGfxData)	
