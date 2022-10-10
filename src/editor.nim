@@ -8,20 +8,19 @@ when defined(windows):
 proc editor(levels: seq[string]) =
   # Init
   var
-    screenWidth = 1200'i32
-    screenHeight = 750'i32
+    screenWidth = 1280
+    screenHeight = 720
     levelName: string
     level: Level
     drawOptions: DrawOptions 
-    levelGfxData: LevelGfxData
-    drawCoordSpace: DrawCoordSpace
+    drawableLevel: DrawableLevel
     editingLevel: bool
   
   proc loadLevel() =
     level = loadLevelFromFile(levelName)
-    drawOptions = initDrawOptions((screenWidth.int, screenHeight.int))
-    drawCoordSpace = level.getDrawCoordSpace()
-    levelGfxData = level.calcGfxData(drawCoordSpace, drawOptions)
+    drawOptions = DrawOptions()
+    drawOptions.setPositionDefaults((screenWidth, screenHeight))
+    drawableLevel = level.getDrawableLevel(drawOptions)
     editingLevel = true
 
   setConfigFlags(MSAA_4X_HINT)
@@ -53,7 +52,7 @@ proc editor(levels: seq[string]) =
     clearBackground(Darkgray)
     if editingLevel:
       drawText(fmt"Loaded level {levelName}", 300, 100, 20, Raywhite)
-      level.draw(levelGfxData)
+      level.draw(drawableLevel.gfxData)
     else:
       drawText(fmt"Type level name to edit and press ENTER: " & levelName, 300, 350, 20, Raywhite)
     endDrawing()

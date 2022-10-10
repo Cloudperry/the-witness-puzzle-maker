@@ -8,20 +8,19 @@ when defined(windows):
 proc game(levels: seq[string]) =
   # Init
   var
-    screenWidth = 1200'i32
-    screenHeight = 750'i32
+    screenWidth = 1280
+    screenHeight = 720
     levelName: string
     level: Level
     drawOptions: DrawOptions 
-    levelGfxData: LevelGfxData
-    drawCoordSpace: DrawCoordSpace
+    drawableLevel: DrawableLevel
     playingLevel: bool
   
   proc loadLevel() =
     level = loadLevelFromFile(levelName)
-    drawOptions = initDrawOptions((screenWidth.int, screenHeight.int))
-    drawCoordSpace = level.getDrawCoordSpace()
-    levelGfxData = level.calcGfxData(drawCoordSpace, drawOptions)
+    drawOptions = DrawOptions()
+    drawOptions.setPositionDefaults((screenWidth, screenHeight))
+    drawableLevel = level.getDrawableLevel(drawOptions)
     playingLevel = true
 
   setConfigFlags(MSAA_4X_HINT)
@@ -53,11 +52,11 @@ proc game(levels: seq[string]) =
     clearBackground(Darkgray)
     if playingLevel:
       drawText(fmt"Loaded level {levelName}", 300, 100, 20, Raywhite)
-      level.draw(levelGfxData)
+      level.draw(drawableLevel.gfxData)
     else:
       drawText(fmt"Type level name to play and press ENTER: " & levelName, 300, 350, 20, Raywhite)
     endDrawing()
 
   closeWindow()
 
-dispatch game # Automatically generate a CLI that can be used to open one or more levels for editing
+dispatch game # Automatically generate a CLI that can be used to open a level to play
