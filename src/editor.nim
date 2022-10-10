@@ -24,12 +24,17 @@ proc editor(levels: seq[string]) =
     levelGfxData = level.calcGfxData(drawCoordSpace, drawOptions)
     editingLevel = true
 
+  setConfigFlags(MSAA_4X_HINT)
+  setConfigFlags(FULLSCREEN_MODE)
+  initWindow(screenWidth, screenHeight, "The Witness puzzle editor")
+  let monitor = getCurrentMonitor()
+  screenWidth = getMonitorWidth(monitor)
+  screenHeight = getMonitorHeight(monitor)
+  setTargetFPS(144)
+
   if levels.len > 0:
     levelName = levels[0]
     loadLevel()
-  setConfigFlags(MSAA_4X_HINT)
-  initWindow(screenWidth, screenHeight, "The Witness puzzle editor")
-  setTargetFPS(144)
 
   while not windowShouldClose(): # Main loop
     # Update

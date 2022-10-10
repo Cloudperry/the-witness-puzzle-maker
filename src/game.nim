@@ -5,7 +5,7 @@ import levels, levelGfx
 when defined(windows):
   {.passL: "-static".} # Use static linking on Windows
 
-proc editor(levels: seq[string]) =
+proc game(levels: seq[string]) =
   # Init
   var
     screenWidth = 1200'i32
@@ -15,25 +15,30 @@ proc editor(levels: seq[string]) =
     drawOptions: DrawOptions 
     levelGfxData: LevelGfxData
     drawCoordSpace: DrawCoordSpace
-    editingLevel: bool
+    playingLevel: bool
   
   proc loadLevel() =
     level = loadLevelFromFile(levelName)
     drawOptions = initDrawOptions((screenWidth.int, screenHeight.int))
     drawCoordSpace = level.getDrawCoordSpace()
     levelGfxData = level.calcGfxData(drawCoordSpace, drawOptions)
-    editingLevel = true
+    playingLevel = true
+
+  setConfigFlags(MSAA_4X_HINT)
+  setConfigFlags(FULLSCREEN_MODE)
+  initWindow(screenWidth, screenHeight, "The Witness")
+  let monitor = getCurrentMonitor()
+  screenWidth = getMonitorWidth(monitor)
+  screenHeight = getMonitorHeight(monitor)
+  setTargetFPS(144)
 
   if levels.len > 0:
     levelName = levels[0]
     loadLevel()
-  setConfigFlags(MSAA_4X_HINT)
-  initWindow(screenWidth, screenHeight, "The Witness")
-  setTargetFPS(144)
 
   while not windowShouldClose(): # Main loop
     # Update
-    if not editingLevel:
+    if not playingLevel:
       var key = getCharPressed()
       while key in 32 .. 125:
         levelName &= key.char
@@ -46,7 +51,7 @@ proc editor(levels: seq[string]) =
     # Draw
     beginDrawing()
     clearBackground(Darkgray)
-    if editingLevel:
+    if playingLevel:
       drawText(fmt"Loaded level {levelName}", 300, 100, 20, Raywhite)
       level.draw(levelGfxData)
     else:
@@ -55,4 +60,4 @@ proc editor(levels: seq[string]) =
 
   closeWindow()
 
-dispatch editor # Automatically generate a CLI that can be used to open one or more levels for editing
+dispatch game # Automatically generate a CLI that can be used to open one or more levels for editing
