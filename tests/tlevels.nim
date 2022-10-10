@@ -35,6 +35,7 @@ for p1 in cells.keys:
 var samplePointData: Table[Point2D, PointKind]
 for p in gridPoints((0.0, 0.0), (4.0, 4.0)):
   samplePointData[p] = Empty
+samplePointData[(1.0, 1.0)] = Hex
 samplePointData[(0.0, 4.0)] = Start
 samplePointData[(3.0, 4.25)] = End
 
@@ -43,6 +44,9 @@ for cell in cells.values:
   sampleCellData[cell] = MazeCell(kind: Empty)
 
 sampleCellData[@[(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)]] = MazeCell(kind: Square, color: (255, 255, 255))
+sampleCellData[@[(1.0, 0.0), (2.0, 0.0), (2.0, 1.0), (1.0, 1.0)]] = MazeCell(kind: Star, color: (255, 140, 0))
+sampleCellData[@[(1.0, 1.0), (2.0, 1.0), (2.0, 2.0), (1.0, 2.0)]] = MazeCell(kind: Triangles, count: 2)
+sampleCellData[@[(1.0, 2.0), (2.0, 2.0), (2.0, 3.0), (1.0, 3.0)]] = MazeCell(kind: Triangles, count: 3)
 
 let sampleLevel = Level(
   topLeftCorner: (0.0, 0.0),
@@ -62,6 +66,7 @@ let sampleLevelFromDisk = loadLevelFromFile("testLevel.bin")
 # of the objects, because Nim doesn't support comparing objects that use some features.
 # See https://forum.nim-lang.org/t/6781 for details.
 assert $sampleLevel == $sampleLevelFromDisk
-removeFile("testLevel.bin")
+when not defined(saveLevel):
+  removeFile("testLevel.bin")
 
 echo "level format and editing library (levels.nim) test ran successfully."
