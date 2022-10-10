@@ -7,14 +7,16 @@ type
   PointKind* = enum ## All the puzzle symbols that can be attached to a point
     Empty, Start, End, Hex
   CellKind* = enum ## All the puzzle symbols that can be attached to a cell
-    Empty, Square, Triangle, Star, Block, AntiBlock, Jack
+    Empty, Square, Triangles, Star, Block, AntiBlock, Jack
   MazeCell* = object
     # NIMNOTE: Here kind is one field in the object, but the other fields the
     # object has depends on the value of kind. For example squares have a color
     # field, but no shape field and Blocks have the opposite. 
     case kind*: CellKind 
-    of Square, Triangle, Star: ## Only these puzzle symbols can have a color
-      color*: Color            ## The color will affect the puzzle solution
+    of Square, Star: ## Only these puzzle symbols have a customizable color
+      color*: Color  ## The color will affect the puzzle solution
+    of Triangles:
+      count*: int
     of Block, AntiBlock:
       shape*: seq[Point2DInt] ## Polyomino shape as a collection of points.
     else:                     ## (0, 0) is the top left corner of the shape.
