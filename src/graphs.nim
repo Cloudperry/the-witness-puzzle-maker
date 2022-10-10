@@ -24,7 +24,9 @@ type
 proc `+`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x + p2.x, p1.y + p2.y) 
   # NIMNOTE: The first expression in a function that produces a value will be 
   # the return value. Operators can be overridden by having the operator in backticks.
+proc `+`*[N: SomeNumber](p: Vec2, n: N): Vec2[N] = (p.x + n, p.y + n)
 proc `-`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x - p2.x, p1.y - p2.y)
+proc `-`*[N: SomeNumber](p: Vec2, n: N): Vec2[N] = (p.x - n, p.y - n)
 proc `-`*[N: SomeNumber](p: Vec2[N]): Vec2[N] = (-p.x, -p.y)
 proc `*`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x * p2.x, p1.y * p2.y)
 proc `/`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x / p2.x, p1.y / p2.y)
@@ -36,6 +38,8 @@ proc `$`*[N: SomeNumber](p: Vec2[N]): string = fmt"({p.x}, {p.y})"
 proc midpoint*[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N] =
   ## Generalization of the normal (A + B) / 2 midpoint formula for 2 points to n points
   sum(vectors) / vectors.len
+proc toInt*(p: Point2D): Point2DInt = (p.x.round.int, p.y.round.int)
+proc toFloat*(p: Point2DInt): Point2D = (p.x.float, p.y.float)
 
 proc addEdge*[T](g: var Graph, node1: T, node2: T) =
   g.adjList[node1].incl node2
