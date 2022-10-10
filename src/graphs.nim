@@ -25,6 +25,7 @@ proc `+`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x + p2.x, p1.y + p2.y)
   # NIMNOTE: The first expression in a function that produces a value will be 
   # the return value. Operators can be overridden by having the operator in backticks.
 proc `-`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x - p2.x, p1.y - p2.y)
+proc `-`*[N: SomeNumber](p: Vec2[N]): Vec2[N] = (-p.x, -p.y)
 proc `*`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x * p2.x, p1.y * p2.y)
 proc `/`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x / p2.x, p1.y / p2.y)
 proc `*`*[V: SomeNumber, S: SomeNumber](p: Vec2[V], n: S): Vec2[V] = 
