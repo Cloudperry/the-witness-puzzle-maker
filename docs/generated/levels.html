@@ -98,8 +98,20 @@
   <li><a class="reference" href="#loadLevelFromFile%2Cstring" title="loadLevelFromFile(filename: string): Level">loadLevelFromFile(filename: string): Level</a></li>
 
 </ul>
+<ul class="simple nested-toc-section">makeEmptyGrid
+  <li><a class="reference" href="#makeEmptyGrid%2CLevel%2CPoint2D%2CPoint2D" title="makeEmptyGrid(l: var Level; topLeftCorner, botRightCorner: Point2D)">makeEmptyGrid(l: var Level; topLeftCorner, botRightCorner: Point2D)</a></li>
+
+</ul>
 <ul class="simple nested-toc-section">saveLevelToFile
   <li><a class="reference" href="#saveLevelToFile%2CLevel%2Cstring" title="saveLevelToFile(l: Level; filename: string)">saveLevelToFile(l: Level; filename: string)</a></li>
+
+</ul>
+<ul class="simple nested-toc-section">setCellData
+  <li><a class="reference" href="#setCellData%2CLevel%2CTable%5Bseq%5BPoint2D%5D%2CMazeCell%5D" title="setCellData(l: var Level; cellData: Table[seq[Point2D], MazeCell])">setCellData(l: var Level; cellData: Table[seq[Point2D], MazeCell])</a></li>
+
+</ul>
+<ul class="simple nested-toc-section">setPointData
+  <li><a class="reference" href="#setPointData%2CLevel%2CTable%5BPoint2D%2CPointKind%5D" title="setPointData(l: var Level; pointData: Table[Point2D, PointKind])">setPointData(l: var Level; pointData: Table[Point2D, PointKind])</a></li>
 
 </ul>
 
@@ -114,11 +126,11 @@
     
     <div id="tocRoot"></div>
     
-    <p class="module-desc"></p>
+    <p class="module-desc">Level editing primitives that are used by the level editorSaving and loading levels is implemented below</p>
     <div class="section" id="6">
   <h1><a class="toc-backref" href="#6">Imports</a></h1>
   <dl class="item">
-    <a class="reference external" href="graphs.html">graphs</a>
+    <a class="reference external" href="graphs.html">graphs</a>, <a class="reference external" href="geometry.html">geometry</a>
   </dl>
 </div>
 <div class="section" id="7">
@@ -143,12 +155,12 @@
 </div>
 <div id="Level">
   <dt><pre><a href="levels.html#Level"><span class="Identifier">Level</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
-  <span class="Identifier">topLeftCorner</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Point2D"><span class="Identifier">Point2D</span></a>
-  <span class="Identifier">botRightCorner</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Point2D"><span class="Identifier">Point2D</span></a>
-  <span class="Identifier">pointGraph</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><a href="graphs.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span>
-  <span class="Identifier">cellGraph</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><a href="graphs.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">]</span>
-  <span class="Identifier">pointData</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="graphs.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">,</span> <a href="levels.html#PointKind"><span class="Identifier">PointKind</span></a><span class="Other">]</span>
-  <span class="Identifier">cellData</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><a href="graphs.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">,</span> <a href="levels.html#MazeCell"><span class="Identifier">MazeCell</span></a><span class="Other">]</span>
+  <span class="Identifier">topLeftCorner</span><span class="Operator">*</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a>
+  <span class="Identifier">botRightCorner</span><span class="Operator">*</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a>
+  <span class="Identifier">pointGraph</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span>
+  <span class="Identifier">cellGraph</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">]</span>
+  <span class="Identifier">pointData</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">,</span> <a href="levels.html#PointKind"><span class="Identifier">PointKind</span></a><span class="Other">]</span>
+  <span class="Identifier">cellData</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">,</span> <a href="levels.html#MazeCell"><span class="Identifier">MazeCell</span></a><span class="Other">]</span>
   <span class="Identifier">fgColor</span><span class="Operator">*</span><span class="Other">:</span> <a href="levels.html#Color"><span class="Identifier">Color</span></a>
   <span class="Identifier">bgColor</span><span class="Operator">*</span><span class="Other">:</span> <a href="levels.html#Color"><span class="Identifier">Color</span></a>
   <span class="Identifier">lineColor</span><span class="Operator">*</span><span class="Other">:</span> <a href="levels.html#Color"><span class="Identifier">Color</span></a>
@@ -169,7 +181,7 @@
       <span class="Identifier">count</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">int</span>
 
   <span class="Keyword">of</span> <span class="Identifier">Block</span><span class="Other">,</span> <span class="Identifier">AntiBlock</span><span class="Other">:</span>
-      <span class="Identifier">shape</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="graphs.html#Point2DInt"><span class="Identifier">Point2DInt</span></a><span class="Other">]</span> <span class="Comment">## Polyomino shape as a collection of points.</span>
+      <span class="Identifier">shape</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2DInt"><span class="Identifier">Point2DInt</span></a><span class="Other">]</span> <span class="Comment">## Polyomino shape as a collection of points.</span>
     
   <span class="Keyword">else</span><span class="Other">:</span>                     <span class="Comment">## (0, 0) is the top left corner of the shape.</span>
       <span class="Keyword">nil</span>
@@ -209,11 +221,47 @@
 </div>
 
 </div>
+<div id="makeEmptyGrid-procs-all">
+  <div id="makeEmptyGrid,Level,Point2D,Point2D">
+  <dt><pre><span class="Keyword">proc</span> <a href="#makeEmptyGrid%2CLevel%2CPoint2D%2CPoint2D"><span class="Identifier">makeEmptyGrid</span></a><span class="Other">(</span><span class="Identifier">l</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">;</span> <span class="Identifier">topLeftCorner</span><span class="Other">,</span> <span class="Identifier">botRightCorner</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">)</span> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> </span><span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span>.}</pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
 <div id="saveLevelToFile-procs-all">
   <div id="saveLevelToFile,Level,string">
   <dt><pre><span class="Keyword">proc</span> <a href="#saveLevelToFile%2CLevel%2Cstring"><span class="Identifier">saveLevelToFile</span></a><span class="Other">(</span><span class="Identifier">l</span><span class="Other">:</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">;</span> <span class="Identifier">filename</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">FreezeError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteIOEffect</span><span class="Other">]</span><span class="Other">,</span>
     </span><span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span>.}</pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
+<div id="setCellData-procs-all">
+  <div id="setCellData,Level,Table[seq[Point2D],MazeCell]">
+  <dt><pre><span class="Keyword">proc</span> <a href="#setCellData%2CLevel%2CTable%5Bseq%5BPoint2D%5D%2CMazeCell%5D"><span class="Identifier">setCellData</span></a><span class="Other">(</span><span class="Identifier">l</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">;</span> <span class="Identifier">cellData</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">,</span> <a href="levels.html#MazeCell"><span class="Identifier">MazeCell</span></a><span class="Other">]</span><span class="Other">)</span> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> </span><span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span>.}</pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
+<div id="setPointData-procs-all">
+  <div id="setPointData,Level,Table[Point2D,PointKind]">
+  <dt><pre><span class="Keyword">proc</span> <a href="#setPointData%2CLevel%2CTable%5BPoint2D%2CPointKind%5D"><span class="Identifier">setPointData</span></a><span class="Other">(</span><span class="Identifier">l</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">;</span> <span class="Identifier">pointData</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">,</span> <a href="levels.html#PointKind"><span class="Identifier">PointKind</span></a><span class="Other">]</span><span class="Other">)</span> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> </span><span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span>.}</pre></dt>
   <dd>
     
     
@@ -232,7 +280,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-10 15:13:40 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-11 15:19:23 UTC</small>
       </div>
     </div>
   </div>

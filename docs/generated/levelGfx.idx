@@ -1,8 +1,5 @@
-LineSeq	levelGfx.html#LineSeq	levelGfx: LineSeq	
 DrawOptions	levelGfx.html#DrawOptions	levelGfx: DrawOptions	
-DrawCoordSpace	levelGfx.html#DrawCoordSpace	levelGfx: DrawCoordSpace	
-LevelGfxData	levelGfx.html#LevelGfxData	levelGfx: LevelGfxData	
-initDrawOptions	levelGfx.html#initDrawOptions,tuple[int,int],(int, int)	levelGfx: initDrawOptions(winSize: tuple[w, h: int];\n                centerPoint = (winSize.w div 2, winSize.h div 2);\n                borderColor = defaultBorderColor; bgColor = defaultBgColor): DrawOptions	
-getDrawCoordSpace	levelGfx.html#getDrawCoordSpace,Level	levelGfx: getDrawCoordSpace(l: Level): DrawCoordSpace	
-calcGfxData	levelGfx.html#calcGfxData,Level,DrawCoordSpace,DrawOptions	levelGfx: calcGfxData(l: Level; s: DrawCoordSpace; o: DrawOptions): LevelGfxData	
+DrawableLevel	levelGfx.html#DrawableLevel	levelGfx: DrawableLevel	
+setPositionDefaults	levelGfx.html#setPositionDefaults,DrawOptions,tuple[int,int]	levelGfx: setPositionDefaults(opts: var DrawOptions; winSize: tuple[w, h: int])	
+getDrawableLevel	levelGfx.html#getDrawableLevel,Level,DrawOptions	levelGfx: getDrawableLevel(l: Level; o: DrawOptions): DrawableLevel	
 draw	levelGfx.html#draw,Level,LevelGfxData	levelGfx: draw(l: Level; v: LevelGfxData)	

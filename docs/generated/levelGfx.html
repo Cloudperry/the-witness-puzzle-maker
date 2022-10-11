@@ -58,25 +58,24 @@
   <details open>
     <summary><a class="reference reference-toplevel" href="#7" id="57">Types</a></summary>
     <ul class="simple simple-toc-section">
-      <li><a class="reference" href="#DrawCoordSpace" title="DrawCoordSpace = object
-  topLeft, botRight: Point2D
-  w, h: float">DrawCoordSpace</a></li>
+      <li><a class="reference" href="#DrawableLevel" title="DrawableLevel = object
+  topLeft, botRight, size: Point2D
+  gfxData*: LevelGfxData">DrawableLevel</a></li>
 <li><a class="reference" href="#DrawOptions" title="DrawOptions = object
   winSize*: tuple[w, h: int]
   shorterWinDimension: int
   centerPoint*: Point2DInt   ## Point on the screen where the center of the maze should be
+  insidePanelMargin* = 0.5
+  outsidePanelMargin* = 1.0
+  borderWidth* = 0.25
+  lineWidth* = 0.125
+  hexRadius* = 0.06
+  startRadius* = 0.2
+  triangleRadius* = 0.1
+  squareLength* = 0.25
+  starLength* = 0.2
   borderColor* = (140, 140, 155)
   bgColor* = (80, 80, 80)">DrawOptions</a></li>
-<li><a class="reference" href="#LevelGfxData" title="LevelGfxData = object
-  lineSegments: LineSeq
-  startingPoints: seq[Point2DInt]
-  bgRect: tuple[topLeftCorner, size: Point2DInt]
-  startRadius, lineWidth, hexRadius, triangleRadius: float
-  hexes: seq[Point2D]
-  squares: seq[tuple[rect: Rectangle, color: levels.Color]]
-  stars: seq[tuple[rect: Rectangle, color: levels.Color]]
-  triangles: seq[Point2D]">LevelGfxData</a></li>
-<li><a class="reference" href="#LineSeq" title="LineSeq = seq[tuple[p1, p2: Point2DInt]]">LineSeq</a></li>
 
     </ul>
   </details>
@@ -85,24 +84,16 @@
   <details open>
     <summary><a class="reference reference-toplevel" href="#12" id="62">Procs</a></summary>
     <ul class="simple simple-toc-section">
-      <ul class="simple nested-toc-section">calcGfxData
-  <li><a class="reference" href="#calcGfxData%2CLevel%2CDrawCoordSpace%2CDrawOptions" title="calcGfxData(l: Level; s: DrawCoordSpace; o: DrawOptions): LevelGfxData">calcGfxData(l: Level; s: DrawCoordSpace; o: DrawOptions): LevelGfxData</a></li>
-
-</ul>
-<ul class="simple nested-toc-section">draw
+      <ul class="simple nested-toc-section">draw
   <li><a class="reference" href="#draw%2CLevel%2CLevelGfxData" title="draw(l: Level; v: LevelGfxData)">draw(l: Level; v: LevelGfxData)</a></li>
 
 </ul>
-<ul class="simple nested-toc-section">getDrawCoordSpace
-  <li><a class="reference" href="#getDrawCoordSpace%2CLevel" title="getDrawCoordSpace(l: Level): DrawCoordSpace">getDrawCoordSpace(l: Level): DrawCoordSpace</a></li>
+<ul class="simple nested-toc-section">getDrawableLevel
+  <li><a class="reference" href="#getDrawableLevel%2CLevel%2CDrawOptions" title="getDrawableLevel(l: Level; o: DrawOptions): DrawableLevel">getDrawableLevel(l: Level; o: DrawOptions): DrawableLevel</a></li>
 
 </ul>
-<ul class="simple nested-toc-section">initDrawOptions
-  <li><a class="reference" href="#initDrawOptions%2Ctuple%5Bint%2Cint%5D%2C%28int%2C%20int%29" title="initDrawOptions(winSize: tuple[w, h: int];
-                centerPoint = (winSize.w div 2, winSize.h div 2);
-                borderColor = defaultBorderColor; bgColor = defaultBgColor): DrawOptions">initDrawOptions(winSize: tuple[w, h: int];
-                centerPoint = (winSize.w div 2, winSize.h div 2);
-                borderColor = defaultBorderColor; bgColor = defaultBgColor): DrawOptions</a></li>
+<ul class="simple nested-toc-section">setPositionDefaults
+  <li><a class="reference" href="#setPositionDefaults%2CDrawOptions%2Ctuple%5Bint%2Cint%5D" title="setPositionDefaults(opts: var DrawOptions; winSize: tuple[w, h: int])">setPositionDefaults(opts: var DrawOptions; winSize: tuple[w, h: int])</a></li>
 
 </ul>
 
@@ -121,16 +112,16 @@
     <div class="section" id="6">
   <h1><a class="toc-backref" href="#6">Imports</a></h1>
   <dl class="item">
-    <a class="reference external" href="levels.html">levels</a>, <a class="reference external" href="graphs.html">graphs</a>
+    <a class="reference external" href="levels.html">levels</a>, <a class="reference external" href="graphs.html">graphs</a>, <a class="reference external" href="geometry.html">geometry</a>
   </dl>
 </div>
 <div class="section" id="7">
   <h1><a class="toc-backref" href="#7">Types</a></h1>
   <dl class="item">
-    <div id="DrawCoordSpace">
-  <dt><pre><a href="levelGfx.html#DrawCoordSpace"><span class="Identifier">DrawCoordSpace</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
-  <span class="Identifier">topLeft</span><span class="Other">,</span> <span class="Identifier">botRight</span><span class="Other">:</span> <a href="graphs.html#Point2D"><span class="Identifier">Point2D</span></a>
-  <span class="Identifier">w</span><span class="Other">,</span> <span class="Identifier">h</span><span class="Other">:</span> <span class="Identifier">float</span>
+    <div id="DrawableLevel">
+  <dt><pre><a href="levelGfx.html#DrawableLevel"><span class="Identifier">DrawableLevel</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
+  <span class="Identifier">topLeft</span><span class="Other">,</span> <span class="Identifier">botRight</span><span class="Other">,</span> <span class="Identifier">size</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a>
+  <span class="Identifier">gfxData</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">LevelGfxData</span>
 </pre></dt>
   <dd>
     
@@ -142,7 +133,16 @@
   <dt><pre><a href="levelGfx.html#DrawOptions"><span class="Identifier">DrawOptions</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">winSize</span><span class="Operator">*</span><span class="Other">:</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">w</span><span class="Other">,</span> <span class="Identifier">h</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">]</span>
   <span class="Identifier">shorterWinDimension</span><span class="Other">:</span> <span class="Identifier">int</span>
-  <span class="Identifier">centerPoint</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Point2DInt"><span class="Identifier">Point2DInt</span></a>   <span class="Comment">## Point on the screen where the center of the maze should be</span>
+  <span class="Identifier">centerPoint</span><span class="Operator">*</span><span class="Other">:</span> <a href="geometry.html#Point2DInt"><span class="Identifier">Point2DInt</span></a>   <span class="Comment">## Point on the screen where the center of the maze should be</span>
+  <span class="Identifier">insidePanelMargin</span><span class="Operator">*</span> <span class="Other">=</span> <span class="FloatNumber">0.5</span>
+  <span class="Identifier">outsidePanelMargin</span><span class="Operator">*</span> <span class="Other">=</span> <span class="FloatNumber">1.0</span>
+  <span class="Identifier">borderWidth</span><span class="Operator">*</span> <span class="Other">=</span> <span class="FloatNumber">0.25</span>
+  <span class="Identifier">lineWidth</span><span class="Operator">*</span> <span class="Other">=</span> <span class="FloatNumber">0.125</span>
+  <span class="Identifier">hexRadius</span><span class="Operator">*</span> <span class="Other">=</span> <span class="FloatNumber">0.06</span>
+  <span class="Identifier">startRadius</span><span class="Operator">*</span> <span class="Other">=</span> <span class="FloatNumber">0.2</span>
+  <span class="Identifier">triangleRadius</span><span class="Operator">*</span> <span class="Other">=</span> <span class="FloatNumber">0.1</span>
+  <span class="Identifier">squareLength</span><span class="Operator">*</span> <span class="Other">=</span> <span class="FloatNumber">0.25</span>
+  <span class="Identifier">starLength</span><span class="Operator">*</span> <span class="Other">=</span> <span class="FloatNumber">0.2</span>
   <span class="Identifier">borderColor</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Other">(</span><span class="DecNumber">140</span><span class="Other">,</span> <span class="DecNumber">140</span><span class="Other">,</span> <span class="DecNumber">155</span><span class="Other">)</span>
   <span class="Identifier">bgColor</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Other">(</span><span class="DecNumber">80</span><span class="Other">,</span> <span class="DecNumber">80</span><span class="Other">,</span> <span class="DecNumber">80</span><span class="Other">)</span>
 </pre></dt>
@@ -152,25 +152,15 @@
     
   </dd>
 </div>
-<div id="LevelGfxData">
-  <dt><pre><a href="levelGfx.html#LevelGfxData"><span class="Identifier">LevelGfxData</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
-  <span class="Identifier">lineSegments</span><span class="Other">:</span> <a href="levelGfx.html#LineSeq"><span class="Identifier">LineSeq</span></a>
-  <span class="Identifier">startingPoints</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="graphs.html#Point2DInt"><span class="Identifier">Point2DInt</span></a><span class="Other">]</span>
-  <span class="Identifier">bgRect</span><span class="Other">:</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">topLeftCorner</span><span class="Other">,</span> <span class="Identifier">size</span><span class="Other">:</span> <a href="graphs.html#Point2DInt"><span class="Identifier">Point2DInt</span></a><span class="Other">]</span>
-  <span class="Identifier">startRadius</span><span class="Other">,</span> <span class="Identifier">lineWidth</span><span class="Other">,</span> <span class="Identifier">hexRadius</span><span class="Other">,</span> <span class="Identifier">triangleRadius</span><span class="Other">:</span> <span class="Identifier">float</span>
-  <span class="Identifier">hexes</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="graphs.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span>
-  <span class="Identifier">squares</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">rect</span><span class="Other">:</span> <span class="Identifier">Rectangle</span><span class="Other">,</span> <span class="Identifier">color</span><span class="Other">:</span> <span class="Identifier">levels</span><span class="Other">.</span><span class="Identifier">Color</span><span class="Other">]</span><span class="Other">]</span>
-  <span class="Identifier">stars</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">rect</span><span class="Other">:</span> <span class="Identifier">Rectangle</span><span class="Other">,</span> <span class="Identifier">color</span><span class="Other">:</span> <span class="Identifier">levels</span><span class="Other">.</span><span class="Identifier">Color</span><span class="Other">]</span><span class="Other">]</span>
-  <span class="Identifier">triangles</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="graphs.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span>
-</pre></dt>
-  <dd>
-    
-    This object is used to store pixel coordinates for the level. It is used when drawing the level
-    
-  </dd>
+
+  </dl>
 </div>
-<div id="LineSeq">
-  <dt><pre><a href="levelGfx.html#LineSeq"><span class="Identifier">LineSeq</span></a> <span class="Other">=</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">p1</span><span class="Other">,</span> <span class="Identifier">p2</span><span class="Other">:</span> <a href="graphs.html#Point2DInt"><span class="Identifier">Point2DInt</span></a><span class="Other">]</span><span class="Other">]</span></pre></dt>
+<div class="section" id="12">
+  <h1><a class="toc-backref" href="#12">Procs</a></h1>
+  <dl class="item">
+    <div id="draw-procs-all">
+  <div id="draw,Level,LevelGfxData">
+  <dt><pre><span class="Keyword">proc</span> <a href="#draw%2CLevel%2CLevelGfxData"><span class="Identifier">draw</span></a><span class="Other">(</span><span class="Identifier">l</span><span class="Other">:</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">;</span> <span class="Identifier">v</span><span class="Other">:</span> <span class="Identifier">LevelGfxData</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> </span><span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span>.}</pre></dt>
   <dd>
     
     
@@ -178,14 +168,10 @@
   </dd>
 </div>
 
-  </dl>
 </div>
-<div class="section" id="12">
-  <h1><a class="toc-backref" href="#12">Procs</a></h1>
-  <dl class="item">
-    <div id="calcGfxData-procs-all">
-  <div id="calcGfxData,Level,DrawCoordSpace,DrawOptions">
-  <dt><pre><span class="Keyword">proc</span> <a href="#calcGfxData%2CLevel%2CDrawCoordSpace%2CDrawOptions"><span class="Identifier">calcGfxData</span></a><span class="Other">(</span><span class="Identifier">l</span><span class="Other">:</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">;</span> <span class="Identifier">s</span><span class="Other">:</span> <a href="levelGfx.html#DrawCoordSpace"><span class="Identifier">DrawCoordSpace</span></a><span class="Other">;</span> <span class="Identifier">o</span><span class="Other">:</span> <a href="levelGfx.html#DrawOptions"><span class="Identifier">DrawOptions</span></a><span class="Other">)</span><span class="Other">:</span> <a href="levelGfx.html#LevelGfxData"><span class="Identifier">LevelGfxData</span></a> {.
+<div id="getDrawableLevel-procs-all">
+  <div id="getDrawableLevel,Level,DrawOptions">
+  <dt><pre><span class="Keyword">proc</span> <a href="#getDrawableLevel%2CLevel%2CDrawOptions"><span class="Identifier">getDrawableLevel</span></a><span class="Other">(</span><span class="Identifier">l</span><span class="Other">:</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">;</span> <span class="Identifier">o</span><span class="Other">:</span> <a href="levelGfx.html#DrawOptions"><span class="Identifier">DrawOptions</span></a><span class="Other">)</span><span class="Other">:</span> <a href="levelGfx.html#DrawableLevel"><span class="Identifier">DrawableLevel</span></a> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> </span><span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span>.}</pre></dt>
   <dd>
     
@@ -195,34 +181,9 @@
 </div>
 
 </div>
-<div id="draw-procs-all">
-  <div id="draw,Level,LevelGfxData">
-  <dt><pre><span class="Keyword">proc</span> <a href="#draw%2CLevel%2CLevelGfxData"><span class="Identifier">draw</span></a><span class="Other">(</span><span class="Identifier">l</span><span class="Other">:</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">;</span> <span class="Identifier">v</span><span class="Other">:</span> <a href="levelGfx.html#LevelGfxData"><span class="Identifier">LevelGfxData</span></a><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> </span><span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span>.}</pre></dt>
-  <dd>
-    
-    
-    
-  </dd>
-</div>
-
-</div>
-<div id="getDrawCoordSpace-procs-all">
-  <div id="getDrawCoordSpace,Level">
-  <dt><pre><span class="Keyword">func</span> <a href="#getDrawCoordSpace%2CLevel"><span class="Identifier">getDrawCoordSpace</span></a><span class="Other">(</span><span class="Identifier">l</span><span class="Other">:</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">)</span><span class="Other">:</span> <a href="levelGfx.html#DrawCoordSpace"><span class="Identifier">DrawCoordSpace</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
-    </span><span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span>.}</pre></dt>
-  <dd>
-    
-    
-    
-  </dd>
-</div>
-
-</div>
-<div id="initDrawOptions-procs-all">
-  <div id="initDrawOptions,tuple[int,int],(int, int)">
-  <dt><pre><span class="Keyword">func</span> <a href="#initDrawOptions%2Ctuple%5Bint%2Cint%5D%2C%28int%2C%20int%29"><span class="Identifier">initDrawOptions</span></a><span class="Other">(</span><span class="Identifier">winSize</span><span class="Other">:</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">w</span><span class="Other">,</span> <span class="Identifier">h</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">]</span><span class="Other">;</span>
-                     <span class="Identifier">centerPoint</span> <span class="Other">=</span> <span class="Other">(</span><span class="Identifier">winSize</span><span class="Other">.</span><span class="Identifier">w</span> <span class="Identifier">div</span> <span class="DecNumber">2</span><span class="Other">,</span> <span class="Identifier">winSize</span><span class="Other">.</span><span class="Identifier">h</span> <span class="Identifier">div</span> <span class="DecNumber">2</span><span class="Other">)</span><span class="Other">;</span>
-                     <span class="Identifier">borderColor</span> <span class="Other">=</span> <span class="Identifier">defaultBorderColor</span><span class="Other">;</span> <span class="Identifier">bgColor</span> <span class="Other">=</span> <span class="Identifier">defaultBgColor</span><span class="Other">)</span><span class="Other">:</span> <a href="levelGfx.html#DrawOptions"><span class="Identifier">DrawOptions</span></a> {.
+<div id="setPositionDefaults-procs-all">
+  <div id="setPositionDefaults,DrawOptions,tuple[int,int]">
+  <dt><pre><span class="Keyword">func</span> <a href="#setPositionDefaults%2CDrawOptions%2Ctuple%5Bint%2Cint%5D"><span class="Identifier">setPositionDefaults</span></a><span class="Other">(</span><span class="Identifier">opts</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="levelGfx.html#DrawOptions"><span class="Identifier">DrawOptions</span></a><span class="Other">;</span> <span class="Identifier">winSize</span><span class="Other">:</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">w</span><span class="Other">,</span> <span class="Identifier">h</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">]</span><span class="Other">)</span> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> </span><span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span>.}</pre></dt>
   <dd>
     
@@ -242,7 +203,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-10 15:13:40 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-11 15:19:23 UTC</small>
       </div>
     </div>
   </div>

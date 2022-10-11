@@ -31,17 +31,17 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">28</td>
-            <td class="headerCovTableEntry">31</td>
-            <td class="headerCovTableEntryHi">90.3 %</td>
+            <td class="headerCovTableEntry">59</td>
+            <td class="headerCovTableEntry">62</td>
+            <td class="headerCovTableEntryHi">95.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-10-10 18:12:57</td>
+            <td class="headerValue">2022-10-11 18:19:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">9</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
@@ -68,9 +68,9 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : import std/[tables, sets]</a>
+<a name="1"><span class="lineNum">       1 </span>            : import std/[tables, sets, sequtils]</a>
 <a name="2"><span class="lineNum">       2 </span>            : import frosty/streams</a>
-<a name="3"><span class="lineNum">       3 </span>            : import graphs</a>
+<a name="3"><span class="lineNum">       3 </span>            : import graphs, geometry</a>
 <a name="4"><span class="lineNum">       4 </span>            : </a>
 <a name="5"><span class="lineNum">       5 </span>            : type</a>
 <a name="6"><span class="lineNum">       6 </span><span class="lineCov">         20 :   Color* = tuple[r, g, b: int]</span></a>
@@ -109,23 +109,54 @@
 <a name="39"><span class="lineNum">      39 </span><span class="lineCov">          4 :     bgColor*: Color</span></a>
 <a name="40"><span class="lineNum">      40 </span><span class="lineCov">          4 :     lineColor*: Color</span></a>
 <a name="41"><span class="lineNum">      41 </span><span class="lineCov">          2 : </span></a>
-<a name="42"><span class="lineNum">      42 </span>            : # Soon I will create some level editing primitives in this module that make it easy to</a>
-<a name="43"><span class="lineNum">      43 </span>            : # create a gui level editor. And then I will use them to make an editor in editor.nim.</a>
-<a name="44"><span class="lineNum">      44 </span>            : # There is an example level in tests/tlevels.nim. That level should be rewritten as a </a>
-<a name="45"><span class="lineNum">      45 </span>            : # test for the new level editing primitives once they are done.</a>
-<a name="46"><span class="lineNum">      46 </span>            : </a>
-<a name="47"><span class="lineNum">      47 </span>            : # Weird workaround used because of openFileStream errors. According to frosty sample code</a>
-<a name="48"><span class="lineNum">      48 </span>            : # I shouldn't need to import std/streams at all.</a>
-<a name="49"><span class="lineNum">      49 </span>            : import std/streams as s</a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          1 : proc saveLevelToFile*(l: Level, filename: string) =</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          1 :   var handle = openFileStream(filename, fmWrite)</span></a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          1 :   freeze(handle, l)</span></a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          1 :   close handle</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          1 : </span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          1 : proc loadLevelFromFile*(filename: string): Level =</span></a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          1 :   var handle = openFileStream(filename, fmRead)</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          1 :   thaw(handle, result)</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          1 :   close handle</span></a>
+<a name="42"><span class="lineNum">      42 </span>            : ## Level editing primitives that are used by the level editor</a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          1 : proc makeEmptyGrid*(l: var Level; topLeftCorner, botRightCorner: Point2D) =</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">         25 :   for p1 in gridPoints(topLeftCorner, botRightCorner):</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">         25 :     # Create lines around a maze cell</span></a>
+<a name="46"><span class="lineNum">      46 </span>            :     l.pointData[p1] = Empty</a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         25 :     for p2 in [p1 + (1.0, 0.0), p1 + (0.0, 1.0)]:</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">         50 :       if p2.x &lt;= 4.0 and p2.y &lt;= 4.0:</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">         50 :         l.pointGraph.addEdgeAndMissingNodes(p1, p2)</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">         40 :     # Create empty maze cell</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         50 :     if p1.x in 0.0 .. 3.0 and p1.y in 0.0 .. 3.0:</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">         41 :       let cell = @[p1, p1 + (1.0, 0.0), p1 + (1.0, 1.0), p1 + (0.0, 1.0)]</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">         32 :       l.cellGraph.addNode(cell)</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         16 :       l.cellData[cell] = MazeCell(kind: Empty)</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">         16 :   # Connect all the adjacent cells together in the graph</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         32 :   for cell in l.cellGraph.nodes:</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         64 :     let cellToRight = cell.mapIt(it + (1.0, 0.0))</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">         64 :     let cellBelow = cell.mapIt(it + (0.0, 1.0))</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         16 :     if cellToRight in l.cellGraph:</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">         12 :       l.cellGraph.addEdge(cell, cellToRight)</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">         28 :     if cellBelow in l.cellGraph:</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">         28 :       l.cellGraph.addEdge(cell, cellBelow)</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         12 : </span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         17 : proc setPointData*(l: var Level, pointData: Table[Point2D, PointKind]) = </span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          5 :   for point, kind in pointData:</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          4 :     if point in l.pointGraph:</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          4 :       l.pointData[point] = kind</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          3 : </span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          4 : proc setCellData*(l: var Level, cellData: Table[seq[Point2D], MazeCell]) = </span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          6 :   for cell, data in cellData:</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          5 :     if cell in l.cellGraph:</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          4 :       l.cellData[cell] = data</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          4 : </span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          4 : ## Saving and loading levels is implemented below</span></a>
+<a name="75"><span class="lineNum">      75 </span>            : # Weird workaround used because of openFileStream errors. According to frosty sample code</a>
+<a name="76"><span class="lineNum">      76 </span>            : # I shouldn't need to import std/streams at all.</a>
+<a name="77"><span class="lineNum">      77 </span>            : #TODO: Maybe all the hash tables and sets in the level should be shrinked down to exactly the length</a>
+<a name="78"><span class="lineNum">      78 </span>            : # of their elements before saving it to a file. That way the level file will be much smaller and it</a>
+<a name="79"><span class="lineNum">      79 </span>            : # helps with iteration performance as well.</a>
+<a name="80"><span class="lineNum">      80 </span>            : import std/streams as s</a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">          1 : proc saveLevelToFile*(l: Level, filename: string) =</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">          1 :   var handle = openFileStream(filename, fmWrite)</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">          1 :   freeze(handle, l)</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">          1 :   close handle</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">          1 : </span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">          1 : proc loadLevelFromFile*(filename: string): Level =</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">          1 :   var handle = openFileStream(filename, fmRead)</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">          1 :   thaw(handle, result)</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">          1 :   close handle</span></a>
 </pre>
       </td>
     </tr>

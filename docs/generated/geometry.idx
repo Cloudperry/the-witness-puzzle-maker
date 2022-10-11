@@ -1,0 +1,21 @@
+Vec2	geometry.html#Vec2	geometry: Vec2	
+Point2D	geometry.html#Point2D	geometry: Point2D	
+Point2DInt	geometry.html#Point2DInt	geometry: Point2DInt	
+PointGraph	geometry.html#PointGraph	geometry: PointGraph	
+`+`	geometry.html#+,Vec2[N: SomeNumber],Vec2[N: SomeNumber]	geometry: `+`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]	
+`+`	geometry.html#+,Vec2,N	geometry: `+`[N: SomeNumber](p: Vec2; n: N): Vec2[N]	
+`-`	geometry.html#-,Vec2[N: SomeNumber],Vec2[N: SomeNumber]	geometry: `-`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]	
+`-`	geometry.html#-,Vec2,N	geometry: `-`[N: SomeNumber](p: Vec2; n: N): Vec2[N]	
+`-`	geometry.html#-,Vec2[N: SomeNumber]	geometry: `-`[N: SomeNumber](p: Vec2[N]): Vec2[N]	
+`*`	geometry.html#*,Vec2[N: SomeNumber],Vec2[N: SomeNumber]	geometry: `*`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]	
+`/`	geometry.html#/,Vec2[N: SomeNumber],Vec2[N: SomeNumber]	geometry: `/`[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N]	
+`*`	geometry.html#*,Vec2[V: SomeNumber],S	geometry: `*`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]	
+`/`	geometry.html#/,Vec2[V: SomeNumber],S	geometry: `/`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]	
+`$`	geometry.html#$,Vec2[N: SomeNumber]	geometry: `$`[N: SomeNumber](p: Vec2[N]): string	
+midpoint	geometry.html#midpoint,varargs[Vec2[N: SomeNumber]]	geometry: midpoint[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N]	
+toInt	geometry.html#toInt,Point2D	geometry: toInt(p: Point2D): Point2DInt	
+toFloat	geometry.html#toFloat,Point2DInt	geometry: toFloat(p: Point2DInt): Point2D	
+gridPoints	geometry.html#gridPoints.i,Vec2[float],Vec2[float]	geometry: gridPoints(p1, p2: Vec2[float]): Vec2[float]	
+adjacentGridPoints	geometry.html#adjacentGridPoints.i,Vec2[float]	geometry: adjacentGridPoints(p: Vec2[float]): Vec2[float]	
+addGridPoints	geometry.html#addGridPoints,PointGraph,Vec2[float],Vec2[float]	geometry: addGridPoints(g: var PointGraph; p1, p2: Vec2[float])	
+connectGridPoints	geometry.html#connectGridPoints,PointGraph,Vec2[float],Vec2[float]	geometry: connectGridPoints(g: var PointGraph; p1, p2: Vec2[float])	
