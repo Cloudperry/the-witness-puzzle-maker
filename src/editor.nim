@@ -29,7 +29,7 @@ proc editor(levels: seq[string]) =
   let monitor = getCurrentMonitor()
   screenWidth = getMonitorWidth(monitor)
   screenHeight = getMonitorHeight(monitor)
-  setTargetFPS(144)
+  setTargetFPS(getMonitorRefreshRate(monitor))
 
   if levels.len > 0:
     levelName = levels[0]
