@@ -1,6 +1,6 @@
 import std/[math, lenientops, tables, sets]
 import nimraylib_now
-import levels, graphs
+import levels, graphs, geometry
 
 converter vec2ToRaylibVec(v: Vec2): Vector2 = Vector2(x: v.x.cfloat, y: v.y.cfloat)
 
@@ -17,7 +17,7 @@ type
     hexRadius* = 0.06
     startRadius* = 0.2
     triangleRadius* = 0.1
-    squareLength* = 0.3
+    squareLength* = 0.25
     starLength* = 0.2
     borderColor* = (140, 140, 155)
     bgColor* = (80, 80, 80)
@@ -29,6 +29,7 @@ type
     ## It is used when drawing the level
     lineSegments: seq[tuple[p1, p2: Point2DInt]]
     startingPoints: seq[Point2DInt]
+    endindgPoints: seq[Point2DInt]
     bgRect: tuple[topLeftCorner, size: Point2DInt]
     squareLength, starLength, lineWidth, startRadius, hexRadius, triangleRadius: float
     hexes: seq[Point2D]
