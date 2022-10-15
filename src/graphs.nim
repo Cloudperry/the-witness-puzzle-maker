@@ -13,7 +13,11 @@ type
   Edge*[N] = tuple[node1, node2: N] ## An edge of a graph in the form (node1, node2)
 
 proc addNode*[T](g: var Graph, node: T) = g.adjList[node] = initHashSet[T](4)
-proc removeNode*[T](g: var Graph, node: T) = g.adjList.del node
+proc removeNode*[T](g: var Graph, node: T) =
+  var removedNodeNeighbors: HashSet[T]
+  if g.adjList.pop(node, removedNodeNeighbors):
+    for neighbor in removedNodeNeighbors: 
+      g.adjList[neighbor].excl node
 proc contains*[T](g: Graph, node: T): bool = node in g.adjList
 
 proc addEdge*[T](g: var Graph; node1, node2: T) =
