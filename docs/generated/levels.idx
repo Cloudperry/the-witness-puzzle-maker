@@ -17,5 +17,8 @@ Level	levels.html#Level	levels: Level
 makeEmptyGrid	levels.html#makeEmptyGrid,Level,Point2D,Point2D	levels: makeEmptyGrid(l: var Level; topLeftCorner, botRightCorner: Point2D)	
 setPointData	levels.html#setPointData,Level,Table[Point2D,PointKind]	levels: setPointData(l: var Level; pointData: Table[Point2D, PointKind])	
 setCellData	levels.html#setCellData,Level,Table[seq[Point2D],MazeCell]	levels: setCellData(l: var Level; cellData: Table[seq[Point2D], MazeCell])	
+removePoint	levels.html#removePoint,Level,Point2D	levels: removePoint(l: var Level; p: Point2D)	
+addConnectedPoint	levels.html#addConnectedPoint,Level,Point2D,Point2D,PointKind	levels: addConnectedPoint(l: var Level; p, connectedTo: Point2D; kind: PointKind)	
+checkSolution	levels.html#checkSolution,Level,LineSegments	levels: checkSolution(l: Level; line: LineSegments): bool	
 saveLevelToFile	levels.html#saveLevelToFile,Level,string	levels: saveLevelToFile(l: Level; filename: string)	
 loadLevelFromFile	levels.html#loadLevelFromFile,string	levels: loadLevelFromFile(filename: string): Level	
