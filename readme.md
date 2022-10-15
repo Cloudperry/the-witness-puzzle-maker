@@ -7,7 +7,7 @@ Algorithms and data structures student project
 
 # Documentation
 - [Project specification](docs/project_definition.md)
-- [User guide](docs/user_guide.md)
+- [User guide and project actions (running tests, generating coverage etc.)](docs/user_guide.md)
 - [Testing document](docs/testing.md)
 - [Implementation document](docs/implementation.md)
 - [First week report](docs/week1_report.md)
