@@ -15,6 +15,7 @@ Algorithms and data structures student project
 - [Third week report](docs/week3_report.md)
 - [Fourth week report](docs/week4_report.md)
 - [Fifth week report](docs/week5_report.md)
+- [Sixth week report](docs/week6_report.md)
 
 # Notes for code reviewers
 Nim is quite similar to Python in many ways, but some parts are very different. For example Nim functions can use generic types, function calls can use weird syntax sometimes and everything is statically typed. If you don't
