@@ -23,3 +23,6 @@ task gencoverage, "Generate coverage using coco":
   exec "mv coverage docs/"
   exec "mv lcov.info docs/coverage/"
   exec "rm -rf nimcache"
+
+task genlevel, "Generate level file from program":
+  exec "cd levels; nim r " & commandLineParams[^1]
