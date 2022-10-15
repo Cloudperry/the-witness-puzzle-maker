@@ -4,4 +4,4 @@ the nodes not connected to anything at first. Then I connected all the nodes and
 route existence checking and finding connected nodes works. The test coverage report can be found on [Github pages](https://cloudperry.github.io/the-witness-puzzle-maker/coverage/index.html).
 
 # Running the tests
-First follow the steps in [User guide](docs/user_guide.md) to install Nim and to switch to devel version of Nim. Then the tests can be run by cloning this repository, opening it in a terminal and running "nimble test".
+Follow the steps in [User guide](docs/user_guide.md) to install Nim and to switch to devel version of Nim. Running tests and other project actions are also described in that document.
