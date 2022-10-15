@@ -1,4 +1,4 @@
-import std/[math, lenientops, tables, strformat]
+import std/[math, lenientops, tables, strformat, options]
 import graphs
 
 type
@@ -10,6 +10,8 @@ type
     # only symbols with asterisk can be used outside the module they are declared in.
   Point2DInt* = Vec2[int]
   PointGraph* = Graph[Vec2[float]]
+  Line* = seq[Point2D]
+  LineSegments* = seq[tuple[p1, p2: Point2D]]
 
 proc `+`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x + p2.x, p1.y + p2.y) 
   # NIMNOTE: The first expression in a function that produces a value will be 
@@ -56,3 +58,13 @@ proc connectGridPoints*(g: var PointGraph, p1, p2: Vec2[float]) =
       if adjPoint in g.adjList:
         g.addEdge(currPoint, adjPoint)
 
+# Convenience operators for building a line from points
+proc `->`*(a, b: Point2D): seq[Point2D] = @[a, b]
+proc `->`*(a: Line, b: Point2D): seq[Point2D] = a & b
+
+proc lineToSegments*(line: seq[Point2D]): seq[tuple[p1, p2: Point2D]] =
+  var prevPoint: Option[Point2D]
+  for point in line:
+    if prevPoint.isSome:
+      result.add (prevPoint.get, point)
+    prevPoint = some(point)
