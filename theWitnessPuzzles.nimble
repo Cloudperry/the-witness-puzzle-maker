@@ -14,7 +14,7 @@ requires "cligen == 1.5.28"
 requires "nimraylib_now == 0.15.0"
 requires "https://github.com/disruptek/frosty == 3.0.0"
 
-task gendocs, "Generate source code documentation using the Nim compiler":
+task gendocs, "Generate source code documentation using the Nim documentation generator":
   exec "nim doc --project --index:on --outdir:docs/generated src/editor.nim"
 
 task gencoverage, "Generate coverage using coco":
