@@ -1,4 +1,4 @@
-import std/[tables, sets, sequtils]
+import std/[tables, sets, sequtils, options, math, sugar, strformat]
 import frosty/streams
 import graphs, geometry
 
@@ -45,7 +45,7 @@ proc makeEmptyGrid*(l: var Level; topLeftCorner, botRightCorner: Point2D) =
     # Create lines around a maze cell
     l.pointData[p1] = Empty
     for p2 in [p1 + (1.0, 0.0), p1 + (0.0, 1.0)]:
-      if p2.x <= 4.0 and p2.y <= 4.0:
+      if p2.x <= botRightCorner.x and p2.y <= botRightCorner.y:
         l.pointGraph.addEdgeAndMissingNodes(p1, p2)
     # Create empty maze cell
     if p1.x in 0.0 .. 3.0 and p1.y in 0.0 .. 3.0:
@@ -64,12 +64,43 @@ proc makeEmptyGrid*(l: var Level; topLeftCorner, botRightCorner: Point2D) =
 proc setPointData*(l: var Level, pointData: Table[Point2D, PointKind]) = 
   for point, kind in pointData:
     if point in l.pointGraph:
+      if point.x < l.topLeftCorner.x: l.topLeftCorner.x = point.x
+      if point.y < l.topLeftCorner.y: l.topLeftCorner.y = point.y
+      if point.x > l.botRightCorner.x: l.botRightCorner.x = point.x
+      if point.y > l.botRightCorner.y: l.botRightCorner.y = point.y
       l.pointData[point] = kind
 
 proc setCellData*(l: var Level, cellData: Table[seq[Point2D], MazeCell]) = 
   for cell, data in cellData:
     if cell in l.cellGraph:
       l.cellData[cell] = data
+
+proc removePoint*(l: var Level, p: Point2D) =
+  l.pointGraph.removeNode(p)
+  l.pointData.del p
+
+proc addConnectedPoint*(l: var Level, p, connectedTo: Point2D, kind: PointKind) =
+  l.pointGraph.addEdgeAndMissingNodes(p, connectedTo)
+  l.setPointData({p: kind}.toTable)
+
+proc lineGoesFromStartToEnd(l: Level, line: LineSegments): bool = 
+  var lineHasRoute = true
+  for segment in line:
+    if not l.pointGraph.hasRoute(segment.p1, segment.p2):
+      lineHasRoute = false
+  return l.pointData[line[0].p1] == Start and 
+  l.pointData[line[^1].p2] == End and lineHasRoute
+
+proc checkSolution*(l: Level, line: LineSegments): bool =
+  let hexes = collect:
+    for point, kind in l.pointData.pairs:
+      if kind == Hex: {point}
+  var touchedHexes: HashSet[Point2D] # Hexes that the line doesn't pass through (set is needed for jacks to work later)
+  for segment in line:
+    if l.pointData[segment.p1] == Hex: touchedHexes.incl segment.p1
+  # For now, the level is solved if the line passes through each hex and stays on the level lines, because other symbols are not implemented yet
+  return (hexes - touchedHexes).len == 0 and l.lineGoesFromStartToEnd(line)
+  #TODO: implement symbols other than hexes
 
 ## Saving and loading levels is implemented below
 # Weird workaround used because of openFileStream errors. According to frosty sample code
