@@ -82,3 +82,19 @@ nimble build
 
 # Running the program
 The game executable is witness-clone and the editor is witness-clone-editor. You can pass the level file as the first argument to open a level. Sample levels can be found in the levels directory.
+
+# Generating test coverage and other project actions (defined in theWitnessPuzzles.nimble)
+Run tests:
+```
+nimble test
+```
+
+Generate test coverage:
+```
+nimble gencoverage
+```
+
+Generate source code documentation:
+```
+nimble gendocs
+```
