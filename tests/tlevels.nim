@@ -12,13 +12,13 @@ var sampleLevel = Level(
 sampleLevel.makeEmptyGrid((0.0, 0.0), (4.0, 4.0))
 sampleLevel.pointGraph.addEdgeAndMissingNodes((3.0, 4.0), (3.0, 4.25))
 sampleLevel.setPointData({
-  (1.0, 1.0): Hex, (0.0, 4.0): Start, (3.0, 4.25): End
+  Hex: @[(1.0, 1.0)], Start: @[(0.0, 4.0)], End: @[(3.0, 4.25)]
 }.toTable)
 sampleLevel.setCellData({
-  @[(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)]: MazeCell(kind: Square, color: (255, 255, 255)),
-  @[(1.0, 0.0), (2.0, 0.0), (2.0, 1.0), (1.0, 1.0)]: MazeCell(kind: Star, color: (255, 140, 0)),
-  @[(1.0, 1.0), (2.0, 1.0), (2.0, 2.0), (1.0, 2.0)]: MazeCell(kind: Triangles, count: 2),
-  @[(1.0, 2.0), (2.0, 2.0), (2.0, 3.0), (1.0, 3.0)]: MazeCell(kind: Triangles, count: 3)
+  MazeCell(kind: Square, color: (255, 255, 255)): @[@[(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)]],
+  MazeCell(kind: Star, color: (255, 140, 0)): @[@[(1.0, 0.0), (2.0, 0.0), (2.0, 1.0), (1.0, 1.0)]],
+  MazeCell(kind: Triangles, count: 2): @[@[(1.0, 1.0), (2.0, 1.0), (2.0, 2.0), (1.0, 2.0)]],
+  MazeCell(kind: Triangles, count: 3): @[@[(1.0, 2.0), (2.0, 2.0), (2.0, 3.0), (1.0, 3.0)]]
 }.toTable)
 
 sampleLevel.saveLevelToFile("testLevel.bin")
