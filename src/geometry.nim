@@ -35,7 +35,7 @@ proc toFloat*(p: Point2DInt): Point2D = (p.x.float, p.y.float)
 proc len*[N: SomeNumber](p: Vec2[N]): float = 
   let squared = p * p
   sqrt(squared.x + squared.y)
-proc toUnitVec*[N: SomeNumber](p: Vec2[N]): Vec2[N] = p * p.len
+proc toUnitVec*[N: SomeNumber](p: Vec2[N]): Vec2[N] = p / p.len
 
 iterator gridPoints*(p1, p2: Vec2[float]): Vec2[float] =
   ## Iterates over a rectangular region of coordinates
