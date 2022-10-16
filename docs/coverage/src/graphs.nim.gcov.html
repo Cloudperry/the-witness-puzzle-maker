@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-10-16 02:14:07</td>
+            <td class="headerValue">2022-10-16 21:33:02</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">33</td>
@@ -82,19 +82,19 @@
 <a name="12"><span class="lineNum">      12 </span>            :     adjList*: Table[N, HashSet[N]]</a>
 <a name="13"><span class="lineNum">      13 </span>            :   Edge*[N] = tuple[node1, node2: N] ## An edge of a graph in the form (node1, node2)</a>
 <a name="14"><span class="lineNum">      14 </span>            : </a>
-<a name="15"><span class="lineNum">      15 </span><span class="lineCov">         67 : proc addNode*[T](g: var Graph, node: T) = g.adjList[node] = initHashSet[T](4)</span></a>
-<a name="16"><span class="lineNum">      16 </span><span class="lineCov">         67 : proc removeNode*[T](g: var Graph, node: T) =</span></a>
-<a name="17"><span class="lineNum">      17 </span><span class="lineCov">         67 :   var removedNodeNeighbors: HashSet[T]</span></a>
+<a name="15"><span class="lineNum">      15 </span><span class="lineCov">         76 : proc addNode*[T](g: var Graph, node: T) = g.adjList[node] = initHashSet[T](4)</span></a>
+<a name="16"><span class="lineNum">      16 </span><span class="lineCov">         76 : proc removeNode*[T](g: var Graph, node: T) =</span></a>
+<a name="17"><span class="lineNum">      17 </span><span class="lineCov">         76 :   var removedNodeNeighbors: HashSet[T]</span></a>
 <a name="18"><span class="lineNum">      18 </span>            :   if g.adjList.pop(node, removedNodeNeighbors):</a>
 <a name="19"><span class="lineNum">      19 </span>            :     for neighbor in removedNodeNeighbors: </a>
 <a name="20"><span class="lineNum">      20 </span>            :       g.adjList[neighbor].excl node</a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineCov">        164 : proc contains*[T](g: Graph, node: T): bool = node in g.adjList</span></a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineCov">        164 : </span></a>
-<a name="23"><span class="lineNum">      23 </span><span class="lineCov">        145 : proc addEdge*[T](g: var Graph; node1, node2: T) =</span></a>
-<a name="24"><span class="lineNum">      24 </span><span class="lineCov">        145 :   g.adjList[node1].incl node2</span></a>
-<a name="25"><span class="lineNum">      25 </span><span class="lineCov">        145 :   g.adjList[node2].incl node1</span></a>
-<a name="26"><span class="lineNum">      26 </span><span class="lineCov">        145 :   # NIMNOTE: Here .incl uses a function call syntax that actually means </span></a>
-<a name="27"><span class="lineNum">      27 </span><span class="lineCov">        145 :   # incl(g.adjList[node1], node2). Also parentheses can be replaced with</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">        182 : proc contains*[T](g: Graph, node: T): bool = node in g.adjList</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineCov">        182 : </span></a>
+<a name="23"><span class="lineNum">      23 </span><span class="lineCov">        161 : proc addEdge*[T](g: var Graph; node1, node2: T) =</span></a>
+<a name="24"><span class="lineNum">      24 </span><span class="lineCov">        161 :   g.adjList[node1].incl node2</span></a>
+<a name="25"><span class="lineNum">      25 </span><span class="lineCov">        161 :   g.adjList[node2].incl node1</span></a>
+<a name="26"><span class="lineNum">      26 </span><span class="lineCov">        161 :   # NIMNOTE: Here .incl uses a function call syntax that actually means </span></a>
+<a name="27"><span class="lineNum">      27 </span><span class="lineCov">        161 :   # incl(g.adjList[node1], node2). Also parentheses can be replaced with</span></a>
 <a name="28"><span class="lineNum">      28 </span>            :   # a space and an argument (mostly done when only 1 argument comes after the space).</a>
 <a name="29"><span class="lineNum">      29 </span><span class="lineCov">         41 : proc addEdgeAndMissingNodes*[T](g: var Graph, node1, node2: T) =</span></a>
 <a name="30"><span class="lineNum">      30 </span><span class="lineCov">         41 :   if node1 notin g.adjList:</span></a>
@@ -108,7 +108,7 @@
 <a name="38"><span class="lineNum">      38 </span><span class="lineCov">          8 : proc `$`*(e: Edge): string = fmt&quot;({e.node1} &lt;-&gt; {e.node2})&quot;</span></a>
 <a name="39"><span class="lineNum">      39 </span><span class="lineCov">          8 : </span></a>
 <a name="40"><span class="lineNum">      40 </span>            : iterator nodes*[T](g: Graph[T]): T = # NIMNOTE: Iterators work just like python generator functions</a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">         16 :   for node in g.adjList.keys:</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">         25 :   for node in g.adjList.keys:</span></a>
 <a name="42"><span class="lineNum">      42 </span>            :     yield node</a>
 <a name="43"><span class="lineNum">      43 </span>            : </a>
 <a name="44"><span class="lineNum">      44 </span>            : proc getEdges*[T](g: Graph[T]): HashSet[Edge[T]] =</a>

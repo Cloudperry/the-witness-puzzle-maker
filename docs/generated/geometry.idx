@@ -17,6 +17,8 @@ LineSegments	geometry.html#LineSegments	geometry: LineSegments
 midpoint	geometry.html#midpoint,varargs[Vec2[N: SomeNumber]]	geometry: midpoint[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N]	
 toInt	geometry.html#toInt,Point2D	geometry: toInt(p: Point2D): Point2DInt	
 toFloat	geometry.html#toFloat,Point2DInt	geometry: toFloat(p: Point2DInt): Point2D	
+len	geometry.html#len,Vec2[N: SomeNumber]	geometry: len[N: SomeNumber](p: Vec2[N]): float	
+toUnitVec	geometry.html#toUnitVec,Vec2[N: SomeNumber]	geometry: toUnitVec[N: SomeNumber](p: Vec2[N]): Vec2[N]	
 gridPoints	geometry.html#gridPoints.i,Vec2[float],Vec2[float]	geometry: gridPoints(p1, p2: Vec2[float]): Vec2[float]	
 adjacentGridPoints	geometry.html#adjacentGridPoints.i,Vec2[float]	geometry: adjacentGridPoints(p: Vec2[float]): Vec2[float]	
 addGridPoints	geometry.html#addGridPoints,PointGraph,Vec2[float],Vec2[float]	geometry: addGridPoints(g: var PointGraph; p1, p2: Vec2[float])	

@@ -14,11 +14,15 @@ Jack	levels.html#Jack	CellKind.Jack
 CellKind	levels.html#CellKind	levels: CellKind	
 MazeCell	levels.html#MazeCell	levels: MazeCell	
 Level	levels.html#Level	levels: Level	
+`==`	levels.html#==,MazeCell,MazeCell	levels: `==`(c1, c2: MazeCell): bool	
+cellFromTopLeft	levels.html#cellFromTopLeft,Point2D	levels: cellFromTopLeft(p: Point2D): seq[Point2D]	
 makeEmptyGrid	levels.html#makeEmptyGrid,Level,Point2D,Point2D	levels: makeEmptyGrid(l: var Level; topLeftCorner, botRightCorner: Point2D)	
-setPointData	levels.html#setPointData,Level,Table[Point2D,PointKind]	levels: setPointData(l: var Level; pointData: Table[Point2D, PointKind])	
-setCellData	levels.html#setCellData,Level,Table[seq[Point2D],MazeCell]	levels: setCellData(l: var Level; cellData: Table[seq[Point2D], MazeCell])	
+setPointData	levels.html#setPointData,Level,Table[PointKind,seq[Point2D]]	levels: setPointData(l: var Level; pointData: Table[PointKind, seq[Point2D]])	
+setCellData	levels.html#setCellData,Level,Table[MazeCell,seq[seq[Point2D]]]	levels: setCellData(l: var Level; cellData: Table[MazeCell, seq[seq[Point2D]]])	
 removePoint	levels.html#removePoint,Level,Point2D	levels: removePoint(l: var Level; p: Point2D)	
-addConnectedPoint	levels.html#addConnectedPoint,Level,Point2D,Point2D,PointKind	levels: addConnectedPoint(l: var Level; p, connectedTo: Point2D; kind: PointKind)	
+addConnectedPoint	levels.html#addConnectedPoint,Level,PointKind,Point2D,varargs[Point2D]	levels: addConnectedPoint(l: var Level; kind: PointKind; newPoint: Point2D;\n                  connectedTo: varargs[Point2D])	
+removeEdges	levels.html#removeEdges,Level,varargs[tuple[Point2D,Point2D]]	levels: removeEdges(l: var Level; edges: varargs[tuple[p1, p2: Point2D]])	
+addPointBetween	levels.html#addPointBetween,Level,PointKind,Point2D,Point2D	levels: addPointBetween(l: var Level; kind: PointKind; p1, p2: Point2D)	
 checkSolution	levels.html#checkSolution,Level,LineSegments	levels: checkSolution(l: Level; line: LineSegments): bool	
 saveLevelToFile	levels.html#saveLevelToFile,Level,string	levels: saveLevelToFile(l: Level; filename: string)	
 loadLevelFromFile	levels.html#loadLevelFromFile,string	levels: loadLevelFromFile(filename: string): Level	

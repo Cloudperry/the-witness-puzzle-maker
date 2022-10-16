@@ -60,9 +60,15 @@
           <li><a class="reference external"
           data-doc-search-tag="geometry: `/`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]" href="geometry.html#/%2CVec2%5BV%3A%20SomeNumber%5D%2CS">geometry: `/`[V: SomeNumber; S: SomeNumber](p: Vec2[V]; n: S): Vec2[V]</a></li>
           </ul></dd>
+<dt><a name="%60%3D%3D%60" href="#%60%3D%3D%60"><span>`==`:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levels: `==`(c1, c2: MazeCell): bool" href="levels.html#%3D%3D%2CMazeCell%2CMazeCell">levels: `==`(c1, c2: MazeCell): bool</a></li>
+          </ul></dd>
 <dt><a name="addConnectedPoint" href="#addConnectedPoint"><span>addConnectedPoint:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="levels: addConnectedPoint(l: var Level; p, connectedTo: Point2D; kind: PointKind)" href="levels.html#addConnectedPoint%2CLevel%2CPoint2D%2CPoint2D%2CPointKind">levels: addConnectedPoint(l: var Level; p, connectedTo: Point2D; kind: PointKind)</a></li>
+          data-doc-search-tag="levels: addConnectedPoint(l: var Level; kind: PointKind; newPoint: Point2D;
+                  connectedTo: varargs[Point2D])" href="levels.html#addConnectedPoint%2CLevel%2CPointKind%2CPoint2D%2Cvarargs%5BPoint2D%5D">levels: addConnectedPoint(l: var Level; kind: PointKind; newPoint: Point2D;
+                  connectedTo: varargs[Point2D])</a></li>
           </ul></dd>
 <dt><a name="addEdge" href="#addEdge"><span>addEdge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -80,6 +86,10 @@
 <li><a class="reference external"
           data-doc-search-tag="graphs: addNode[T](g: var Graph; node: T)" href="graphs.html#addNode%2CGraph%2CT">graphs: addNode[T](g: var Graph; node: T)</a></li>
           </ul></dd>
+<dt><a name="addPointBetween" href="#addPointBetween"><span>addPointBetween:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levels: addPointBetween(l: var Level; kind: PointKind; p1, p2: Point2D)" href="levels.html#addPointBetween%2CLevel%2CPointKind%2CPoint2D%2CPoint2D">levels: addPointBetween(l: var Level; kind: PointKind; p1, p2: Point2D)</a></li>
+          </ul></dd>
 <dt><a name="adjacentGridPoints" href="#adjacentGridPoints"><span>adjacentGridPoints:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="geometry: adjacentGridPoints(p: Vec2[float]): Vec2[float]" href="geometry.html#adjacentGridPoints.i%2CVec2%5Bfloat%5D">geometry: adjacentGridPoints(p: Vec2[float]): Vec2[float]</a></li>
@@ -91,6 +101,10 @@
 <dt><a name="Block" href="#Block"><span>Block:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="CellKind.Block" href="levels.html#Block">CellKind.Block</a></li>
+          </ul></dd>
+<dt><a name="cellFromTopLeft" href="#cellFromTopLeft"><span>cellFromTopLeft:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levels: cellFromTopLeft(p: Point2D): seq[Point2D]" href="levels.html#cellFromTopLeft%2CPoint2D">levels: cellFromTopLeft(p: Point2D): seq[Point2D]</a></li>
           </ul></dd>
 <dt><a name="CellKind" href="#CellKind"><span>CellKind:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -114,7 +128,7 @@
           </ul></dd>
 <dt><a name="draw" href="#draw"><span>draw:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="levelGfx: draw(l: Level; v: LevelGfxData)" href="levelGfx.html#draw%2CLevel%2CLevelGfxData">levelGfx: draw(l: Level; v: LevelGfxData)</a></li>
+          data-doc-search-tag="levelGfx: draw(l: Level; v: LevelGfxData; o: DrawOptions)" href="levelGfx.html#draw%2CLevel%2CLevelGfxData%2CDrawOptions">levelGfx: draw(l: Level; v: LevelGfxData; o: DrawOptions)</a></li>
           </ul></dd>
 <dt><a name="DrawableLevel" href="#DrawableLevel"><span>DrawableLevel:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -169,6 +183,10 @@
 <dt><a name="Jack" href="#Jack"><span>Jack:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="CellKind.Jack" href="levels.html#Jack">CellKind.Jack</a></li>
+          </ul></dd>
+<dt><a name="len" href="#len"><span>len:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="geometry: len[N: SomeNumber](p: Vec2[N]): float" href="geometry.html#len%2CVec2%5BN%3A%20SomeNumber%5D">geometry: len[N: SomeNumber](p: Vec2[N]): float</a></li>
           </ul></dd>
 <dt><a name="Level" href="#Level"><span>Level:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -226,6 +244,10 @@
 <li><a class="reference external"
           data-doc-search-tag="graphs: removeEdge[T](g: var Graph; node1, node2: T)" href="graphs.html#removeEdge%2CGraph%2CT%2CT">graphs: removeEdge[T](g: var Graph; node1, node2: T)</a></li>
           </ul></dd>
+<dt><a name="removeEdges" href="#removeEdges"><span>removeEdges:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levels: removeEdges(l: var Level; edges: varargs[tuple[p1, p2: Point2D]])" href="levels.html#removeEdges%2CLevel%2Cvarargs%5Btuple%5BPoint2D%2CPoint2D%5D%5D">levels: removeEdges(l: var Level; edges: varargs[tuple[p1, p2: Point2D]])</a></li>
+          </ul></dd>
 <dt><a name="removeNode" href="#removeNode"><span>removeNode:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="graphs: removeNode[T](g: var Graph; node: T)" href="graphs.html#removeNode%2CGraph%2CT">graphs: removeNode[T](g: var Graph; node: T)</a></li>
@@ -240,11 +262,11 @@
           </ul></dd>
 <dt><a name="setCellData" href="#setCellData"><span>setCellData:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="levels: setCellData(l: var Level; cellData: Table[seq[Point2D], MazeCell])" href="levels.html#setCellData%2CLevel%2CTable%5Bseq%5BPoint2D%5D%2CMazeCell%5D">levels: setCellData(l: var Level; cellData: Table[seq[Point2D], MazeCell])</a></li>
+          data-doc-search-tag="levels: setCellData(l: var Level; cellData: Table[MazeCell, seq[seq[Point2D]]])" href="levels.html#setCellData%2CLevel%2CTable%5BMazeCell%2Cseq%5Bseq%5BPoint2D%5D%5D%5D">levels: setCellData(l: var Level; cellData: Table[MazeCell, seq[seq[Point2D]]])</a></li>
           </ul></dd>
 <dt><a name="setPointData" href="#setPointData"><span>setPointData:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="levels: setPointData(l: var Level; pointData: Table[Point2D, PointKind])" href="levels.html#setPointData%2CLevel%2CTable%5BPoint2D%2CPointKind%5D">levels: setPointData(l: var Level; pointData: Table[Point2D, PointKind])</a></li>
+          data-doc-search-tag="levels: setPointData(l: var Level; pointData: Table[PointKind, seq[Point2D]])" href="levels.html#setPointData%2CLevel%2CTable%5BPointKind%2Cseq%5BPoint2D%5D%5D">levels: setPointData(l: var Level; pointData: Table[PointKind, seq[Point2D]])</a></li>
           </ul></dd>
 <dt><a name="setPositionDefaults" href="#setPositionDefaults"><span>setPositionDefaults:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -270,6 +292,10 @@
 <li><a class="reference external"
           data-doc-search-tag="geometry: toInt(p: Point2D): Point2DInt" href="geometry.html#toInt%2CPoint2D">geometry: toInt(p: Point2D): Point2DInt</a></li>
           </ul></dd>
+<dt><a name="toUnitVec" href="#toUnitVec"><span>toUnitVec:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="geometry: toUnitVec[N: SomeNumber](p: Vec2[N]): Vec2[N]" href="geometry.html#toUnitVec%2CVec2%5BN%3A%20SomeNumber%5D">geometry: toUnitVec[N: SomeNumber](p: Vec2[N]): Vec2[N]</a></li>
+          </ul></dd>
 <dt><a name="Triangles" href="#Triangles"><span>Triangles:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="CellKind.Triangles" href="levels.html#Triangles">CellKind.Triangles</a></li>
@@ -282,7 +308,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-15 23:13:46 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-16 18:33:10 UTC</small>
       </div>
     </div>
   </div>

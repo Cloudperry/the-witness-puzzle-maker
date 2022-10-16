@@ -106,6 +106,10 @@
   <li><a class="reference" href="#connectGridPoints%2CPointGraph%2CVec2%5Bfloat%5D%2CVec2%5Bfloat%5D" title="connectGridPoints(g: var PointGraph; p1, p2: Vec2[float])">connectGridPoints(g: var PointGraph; p1, p2: Vec2[float])</a></li>
 
 </ul>
+<ul class="simple nested-toc-section">len
+  <li><a class="reference" href="#len%2CVec2%5BN%3A%20SomeNumber%5D" title="len[N: SomeNumber](p: Vec2[N]): float">len[N: SomeNumber](p: Vec2[N]): float</a></li>
+
+</ul>
 <ul class="simple nested-toc-section">lineToSegments
   <li><a class="reference" href="#lineToSegments%2Cseq%5BPoint2D%5D" title="lineToSegments(line: seq[Point2D]): seq[tuple[p1, p2: Point2D]]">lineToSegments(line: seq[Point2D]): seq[tuple[p1, p2: Point2D]]</a></li>
 
@@ -120,6 +124,10 @@
 </ul>
 <ul class="simple nested-toc-section">toInt
   <li><a class="reference" href="#toInt%2CPoint2D" title="toInt(p: Point2D): Point2DInt">toInt(p: Point2D): Point2DInt</a></li>
+
+</ul>
+<ul class="simple nested-toc-section">toUnitVec
+  <li><a class="reference" href="#toUnitVec%2CVec2%5BN%3A%20SomeNumber%5D" title="toUnitVec[N: SomeNumber](p: Vec2[N]): Vec2[N]">toUnitVec[N: SomeNumber](p: Vec2[N]): Vec2[N]</a></li>
 
 </ul>
 
@@ -352,6 +360,17 @@
 </div>
 
 </div>
+<div id="len-procs-all">
+  <div id="len,Vec2[N: SomeNumber]">
+  <dt><pre><span class="Keyword">proc</span> <a href="#len%2CVec2%5BN%3A%20SomeNumber%5D"><span class="Identifier">len</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="geometry.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span></pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
 <div id="lineToSegments-procs-all">
   <div id="lineToSegments,seq[Point2D]">
   <dt><pre><span class="Keyword">proc</span> <a href="#lineToSegments%2Cseq%5BPoint2D%5D"><span class="Identifier">lineToSegments</span></a><span class="Other">(</span><span class="Identifier">line</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">p1</span><span class="Other">,</span> <span class="Identifier">p2</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">]</span> {.
@@ -389,6 +408,17 @@
 <div id="toInt-procs-all">
   <div id="toInt,Point2D">
   <dt><pre><span class="Keyword">proc</span> <a href="#toInt%2CPoint2D"><span class="Identifier">toInt</span></a><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">)</span><span class="Other">:</span> <a href="geometry.html#Point2DInt"><span class="Identifier">Point2DInt</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
+<div id="toUnitVec-procs-all">
+  <div id="toUnitVec,Vec2[N: SomeNumber]">
+  <dt><pre><span class="Keyword">proc</span> <a href="#toUnitVec%2CVec2%5BN%3A%20SomeNumber%5D"><span class="Identifier">toUnitVec</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="geometry.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="geometry.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span></pre></dt>
   <dd>
     
     
@@ -437,7 +467,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-15 23:13:46 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-16 18:33:10 UTC</small>
       </div>
     </div>
   </div>

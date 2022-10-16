@@ -2,4 +2,4 @@ DrawOptions	levelGfx.html#DrawOptions	levelGfx: DrawOptions
 DrawableLevel	levelGfx.html#DrawableLevel	levelGfx: DrawableLevel	
 setPositionDefaults	levelGfx.html#setPositionDefaults,DrawOptions,tuple[int,int]	levelGfx: setPositionDefaults(opts: var DrawOptions; winSize: tuple[w, h: int])	
 getDrawableLevel	levelGfx.html#getDrawableLevel,Level,DrawOptions	levelGfx: getDrawableLevel(l: Level; o: DrawOptions): DrawableLevel	
-draw	levelGfx.html#draw,Level,LevelGfxData	levelGfx: draw(l: Level; v: LevelGfxData)	
+draw	levelGfx.html#draw,Level,LevelGfxData,DrawOptions	levelGfx: draw(l: Level; v: LevelGfxData; o: DrawOptions)	
