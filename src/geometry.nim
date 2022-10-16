@@ -36,6 +36,8 @@ proc len*[N: SomeNumber](p: Vec2[N]): float =
   let squared = p * p
   sqrt(squared.x + squared.y)
 proc toUnitVec*[N: SomeNumber](p: Vec2[N]): Vec2[N] = p / p.len
+proc rotateAroundOrigin*[N: SomeNumber](p: Vec2[N], angle: float): Vec2[N] =
+  (cos(angle), sin(angle)) * p.x + (-sin(angle), cos(angle)) * p.y
 
 iterator gridPoints*(p1, p2: Vec2[float]): Vec2[float] =
   ## Iterates over a rectangular region of coordinates
