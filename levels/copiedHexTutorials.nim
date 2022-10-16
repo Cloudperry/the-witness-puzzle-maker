@@ -12,17 +12,16 @@ level1.makeEmptyGrid((0.0, 0.0), (2.0, 2.0))
 level2.makeEmptyGrid((0.0, 0.0), (3.0, 3.0))
 
 level1.pointData[(0.0, 2.0)] = Start
-level1.addConnectedPoint((2.0, -0.25), (2.0, 0.0), End) # Add goal
+level1.addConnectedPoint(End, (2.0, -0.25), (2.0, 0.0)) # Add goal
 level1.setPointData({
-  (0.0, 0.0): Hex, (2.0, 2.0): Hex
+  Hex: @[(0.0, 0.0), (2.0, 2.0)]
 }.toTable)
 
 level2.pointData[(0.0, 3.0)] = Start
-level2.addConnectedPoint((3.0, -0.25), (3.0, 0.0), End)
+level2.addConnectedPoint(End, (3.0, -0.25), (3.0, 0.0))
 level2.removePoint((0.0, 0.0))
 level2.setPointData({
-  (0.0, 2.0): Hex, (1.0, 2.0): Hex, (1.0, 0.0): Hex, (2.0, 1.0): Hex,
-  (3.0, 3.0): Hex
+  Hex: @[(0.0, 2.0), (1.0, 2.0), (1.0, 0.0), (2.0, 1.0), (3.0, 3.0)]
 }.toTable)
 level2.pointGraph.removeEdge((2.0, 2.0), (2.0, 3.0))
 level2.pointGraph.removeEdge((2.0, 1.0), (3.0, 1.0))
