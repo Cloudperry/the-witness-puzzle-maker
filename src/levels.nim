@@ -19,7 +19,7 @@ type
       count*: int
     of Block, AntiBlock:
       shape*: seq[Point2DInt] ## Polyomino shape as a collection of points.
-    else:                     ## (0, 0) is the top left corner of the shape.
+    of Jack, Empty:                     ## (0, 0) is the top left corner of the shape.
       discard
     
   Level* = object
@@ -39,18 +39,34 @@ type
     bgColor*: Color
     lineColor*: Color
 
-## Level editing primitives that are used by the level editor
+# I had to manually implement this comparison, because Nim's case objects don't support it by default.
+# Case objects are like sum types in other languages. This enables setPointData and setCellData to work.
+proc `==`*(c1, c2: MazeCell): bool =
+  if c1.kind == c2.kind:
+    if c1.kind in {Square, Star}:
+      return c1.color == c2.color
+    elif c1.kind == Triangles:
+      return c1.count == c2.count
+    elif c1.kind in {Block, AntiBlock}:
+      return c1.shape == c2.shape
+  return false # False would be returned by default, but I wanted to make it explicit
+
+proc cellFromTopLeft*(p: Point2D): seq[Point2D] = 
+  @[p, p + (1.0, 0.0), p + (1.0, 1.0), p + (0.0, 1.0)]
+
 proc makeEmptyGrid*(l: var Level; topLeftCorner, botRightCorner: Point2D) =
+  l.topLeftCorner = topLeftCorner
+  l.botRightCorner = botRightCorner
   for p1 in gridPoints(topLeftCorner, botRightCorner):
     # Create lines around a maze cell
     l.pointData[p1] = Empty
     for p2 in [p1 + (1.0, 0.0), p1 + (0.0, 1.0)]:
       if p2.x <= botRightCorner.x and p2.y <= botRightCorner.y:
         l.pointGraph.addEdgeAndMissingNodes(p1, p2)
-    # Create empty maze cell
-    if p1.x in 0.0 .. 3.0 and p1.y in 0.0 .. 3.0:
-      let cell = @[p1, p1 + (1.0, 0.0), p1 + (1.0, 1.0), p1 + (0.0, 1.0)]
-      l.cellGraph.addNode(cell)
+    # Create empty maze cells
+    if p1.x in 0.0 .. botRightCorner.x and p1.y in 0.0 .. botRightCorner.y:
+      let cell = cellFromTopLeft(p1)
+      l.cellGraph.addNode cell
       l.cellData[cell] = MazeCell(kind: Empty)
   # Connect all the adjacent cells together in the graph
   for cell in l.cellGraph.nodes:
@@ -61,27 +77,40 @@ proc makeEmptyGrid*(l: var Level; topLeftCorner, botRightCorner: Point2D) =
     if cellBelow in l.cellGraph:
       l.cellGraph.addEdge(cell, cellBelow)
 
-proc setPointData*(l: var Level, pointData: Table[Point2D, PointKind]) = 
-  for point, kind in pointData:
-    if point in l.pointGraph:
-      if point.x < l.topLeftCorner.x: l.topLeftCorner.x = point.x
-      if point.y < l.topLeftCorner.y: l.topLeftCorner.y = point.y
-      if point.x > l.botRightCorner.x: l.botRightCorner.x = point.x
-      if point.y > l.botRightCorner.y: l.botRightCorner.y = point.y
-      l.pointData[point] = kind
+proc setPointData*(l: var Level, pointData: Table[PointKind, seq[Point2D]]) = 
+  for kind, points in pointData:
+    for point in points:
+      # Could be changed to an error if the point doesn't already exist (new points should be made with addConnectedPoint)
+      if point in l.pointGraph: 
+        l.pointData[point] = kind
 
-proc setCellData*(l: var Level, cellData: Table[seq[Point2D], MazeCell]) = 
-  for cell, data in cellData:
-    if cell in l.cellGraph:
-      l.cellData[cell] = data
+proc setCellData*(l: var Level, cellData: Table[MazeCell, seq[seq[Point2D]]]) =
+  for data, cells in cellData:
+    for cell in cells:
+      if cell in l.cellGraph:
+        l.cellData[cell] = data
 
 proc removePoint*(l: var Level, p: Point2D) =
   l.pointGraph.removeNode(p)
   l.pointData.del p
 
-proc addConnectedPoint*(l: var Level, p, connectedTo: Point2D, kind: PointKind) =
-  l.pointGraph.addEdgeAndMissingNodes(p, connectedTo)
-  l.setPointData({p: kind}.toTable)
+proc addConnectedPoint*(l: var Level, kind: PointKind, newPoint: Point2D,
+                        connectedTo: varargs[Point2D]) =
+  l.pointGraph.addNode(newPoint)
+  if newPoint.x < l.topLeftCorner.x: l.topLeftCorner.x = newPoint.x
+  if newPoint.y < l.topLeftCorner.y: l.topLeftCorner.y = newPoint.y
+  if newPoint.x > l.botRightCorner.x: l.botRightCorner.x = newPoint.x
+  if newPoint.y > l.botRightCorner.y: l.botRightCorner.y = newPoint.y
+  for point in connectedTo:
+    l.pointGraph.addEdge(newPoint, point)
+  l.pointData[newPoint] = kind
+
+proc removeEdges*(l: var Level, edges: varargs[tuple[p1, p2: Point2D]]) = 
+  for edge in edges:
+    l.pointGraph.removeEdge(edge.p1, edge.p2)
+
+proc addPointBetween*(l: var Level, kind: PointKind, p1, p2: Point2D) =
+  l.addConnectedPoint(kind, midpoint(p1, p2), p1, p2)
 
 proc lineGoesFromStartToEnd(l: Level, line: LineSegments): bool = 
   var lineHasRoute = true
