@@ -104,9 +104,12 @@ proc calcGfxData(l: Level, d: DrawableLevel, o: DrawOptions): LevelGfxData =
       result.stars.add (cellScreenCenter, symbol.color)
     of Jack:
       let jackRadius = d.mazeDistToScreen(o.jackRadius, o).float
-      result.jackTopDeltaVec = toUnitVec((0.0, -1.0)) * jackRadius
-      result.jackLeftDeltaVec = toUnitVec((-1.0, 1.0)) * jackRadius
-      result.jackRightDeltaVec = toUnitVec((1.0, 1.0)) * jackRadius
+      result.jackTopDeltaVec = (0.0, -1.0) * jackRadius
+      result.jackLeftDeltaVec = rotateAroundOrigin(result.jackTopDeltaVec,
+                                                   -2 * PI / 3)
+      result.jackRightDeltaVec = rotateAroundOrigin(result.jackLeftDeltaVec,
+                                                   -2 * PI / 3)
+
       result.jacks.add cellScreenCenter.toFloat
     of Triangles:
       if symbol.count in {1, 3}:
