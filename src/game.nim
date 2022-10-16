@@ -52,7 +52,7 @@ proc game(levels: seq[string]) =
     clearBackground(Darkgray)
     if playingLevel:
       drawText(fmt"Loaded level {levelName}", 300, 100, 20, Raywhite)
-      level.draw(drawableLevel.gfxData)
+      level.draw(drawableLevel.gfxData, drawOptions)
     else:
       drawText(fmt"Type level name to play and press ENTER: " & levelName, 300, 350, 20, Raywhite)
     endDrawing()
