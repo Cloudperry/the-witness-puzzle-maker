@@ -30,4 +30,4 @@ assert $sampleLevel == $sampleLevelFromDisk
 when not defined(saveLevel):
   removeFile("testLevel.bin")
 
-echo "level format and editing library (levels.nim) test ran successfully."
+echo "level format and editing library (levels.nim) tests ran successfully."
