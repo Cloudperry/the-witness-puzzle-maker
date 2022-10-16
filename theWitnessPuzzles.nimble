@@ -14,7 +14,7 @@ requires "nimraylib_now == 0.15.0"
 requires "https://github.com/disruptek/frosty == 3.0.0"
 
 task gendocs, "Generate source code documentation using the Nim documentation generator":
-  exec "nim doc --project --index:on --outdir:docs/generated src/editor.nim"
+  exec "nim doc --project --index:on --outdir:docs/generated src/game.nim"
 
 task gencoverage, "Generate coverage using coco":
   exec "coco -t='tests/*.nim' --cov='!tests' --compiler='--hints:off'"
