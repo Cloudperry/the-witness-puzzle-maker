@@ -1,6 +1,6 @@
-import std/[strformat, options]
+import std/[strformat, options, tables, sets]
 import cligen, nimraylib_now
-import levels, levelGfx, geometry
+import levels, levelGfx, geometry, graphs
 
 when defined(windows):
   {.passL: "-static".} # Use static linking on Windows
@@ -20,8 +20,10 @@ proc doTextEntry(text: var string): bool =
     return true
 
 proc game(levels: seq[string]) =
+  # Game state could be moved into an object. That would make for example
+  # unloading the level extremely simple.
   # Init
-  var
+  var 
     screenWidth = 1280
     screenHeight = 720
     levelName: string
@@ -29,9 +31,18 @@ proc game(levels: seq[string]) =
     drawOptions: DrawOptions 
     drawableLevel: DrawableLevel
     playingLevel: bool
+    levelSolved: bool
     currentPointStr: string
     playerLine: Line
   
+  proc unloadLevel() =
+    level = Level()
+    drawOptions = DrawOptions()
+    drawableLevel = DrawableLevel()
+    playingLevel = false
+    levelSolved = false
+    playerLine.setLen(0)
+
   proc loadLevel() =
     level = loadLevelFromFile(levelName)
     drawOptions = DrawOptions()
@@ -57,11 +68,24 @@ proc game(levels: seq[string]) =
       if doTextEntry(levelName):
         loadLevel()
     else:
-      if doTextEntry(currentPointStr):
-        let point = currentPointStr.parsePoint()
-        if point.isSome:
-          playerLine &= point.get
-          currentPointStr.setLen(0)
+      if not levelSolved:
+        if doTextEntry(currentPointStr):
+          let point = currentPointStr.parsePoint()
+          if point.isSome:
+            if playerLine.len == 0 and level.pointData.getOrDefault(point.get) == Start:
+              playerLine &= point.get
+            elif playerLine.len > 0 and point.get in level.pointGraph and 
+            point.get in level.pointGraph.adjList[playerLine[^1]]:
+              playerLine &= point.get
+              if level.pointData[playerLine[^1]] == End:
+                levelSolved = level.checkSolution(playerLine)
+            currentPointStr.setLen(0)
+      else:
+        if isKeyPressed(R):
+          levelSolved = false
+          playerLine.setLen(0)
+        elif isKeyPressed(S):
+          unloadLevel()
 
     # Draw
     beginDrawing()
@@ -74,7 +98,9 @@ proc game(levels: seq[string]) =
       let textTop = fmt"playing {levelName}"
       let textTopWidth = measureText(textTop.cstring, fontSize)
       drawText(textTop.cstring, screenWidth div 2 - textTopWidth div 2, textOffsetY, fontSize, Raywhite)
-      let textBot = fmt"enter a new point: {currentPointStr}"
+      var textBot = fmt"enter a new point: {currentPointStr}"
+      if levelSolved:
+        textBot = "You have solved the level. Press esc to quit, s to select another level or r to restart the level."
       let textBotWidth = measureText(textBot.cstring, fontSize)
       drawText(textBot.cstring, screenWidth div 2 - textBotWidth div 2, screenHeight - textOffsetY, fontSize, Raywhite)
       # Draw level
