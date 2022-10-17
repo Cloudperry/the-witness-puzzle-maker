@@ -80,6 +80,8 @@ proc game(levels: seq[string]) =
               if level.pointData[playerLine[^1]] == End:
                 levelSolved = level.checkSolution(playerLine)
             currentPointStr.setLen(0)
+        if isKeyDown(C): 
+          playerLine.setLen(0)
       else:
         if isKeyPressed(R):
           levelSolved = false
@@ -98,7 +100,7 @@ proc game(levels: seq[string]) =
       let textTop = fmt"playing {levelName}"
       let textTopWidth = measureText(textTop.cstring, fontSize)
       drawText(textTop.cstring, screenWidth div 2 - textTopWidth div 2, textOffsetY, fontSize, Raywhite)
-      var textBot = fmt"enter a new point: {currentPointStr}"
+      var textBot = fmt"enter a new point (or press S to clear line): {currentPointStr}"
       if levelSolved:
         textBot = "You have solved the level. Press esc to quit, s to select another level or r to restart the level."
       let textBotWidth = measureText(textBot.cstring, fontSize)
