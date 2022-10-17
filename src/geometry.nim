@@ -1,4 +1,4 @@
-import std/[math, lenientops, tables, strformat, options]
+import std/[math, lenientops, tables, strformat, options, strscans]
 import graphs
 
 type
@@ -11,7 +11,7 @@ type
   Point2DInt* = Vec2[int]
   PointGraph* = Graph[Vec2[float]]
   Line* = seq[Point2D]
-  LineSegments* = seq[tuple[p1, p2: Point2D]]
+  LineSegment* = tuple[p1, p2: Point2D]
 
 proc `+`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x + p2.x, p1.y + p2.y) 
   # NIMNOTE: The first expression in a function that produces a value will be 
@@ -30,6 +30,9 @@ proc `$`*[N: SomeNumber](p: Vec2[N]): string = fmt"({p.x}, {p.y})"
 proc midpoint*[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N] =
   ## Generalization of the normal 2 points midpoint formula "(A + B) / 2" to n points
   sum(vectors) / vectors.len
+proc avg*[N: SomeNumber](numbers: varargs[N]): N =
+  sum(numbers) / numbers.len
+proc dist*[N: SomeNumber](n1, n2: N): N = abs(n2 - n1)
 proc toInt*(p: Point2D): Point2DInt = (p.x.round.int, p.y.round.int)
 proc toFloat*(p: Point2DInt): Point2D = (p.x.float, p.y.float)
 proc len*[N: SomeNumber](p: Vec2[N]): float = 
@@ -68,9 +71,14 @@ proc connectGridPoints*(g: var PointGraph, p1, p2: Vec2[float]) =
 proc `->`*(a, b: Point2D): seq[Point2D] = @[a, b]
 proc `->`*(a: Line, b: Point2D): seq[Point2D] = a & b
 
-proc lineToSegments*(line: seq[Point2D]): seq[tuple[p1, p2: Point2D]] =
+iterator segments*(line: seq[Point2D]): tuple[p1, p2: Point2D] =
   var prevPoint: Option[Point2D]
   for point in line:
     if prevPoint.isSome:
-      result.add (prevPoint.get, point)
+      yield (prevPoint.get, point)
     prevPoint = some(point)
+
+proc parsePoint*(pointStr: string): Option[Point2D] =
+  var x, y: float
+  if scanf(pointStr, "$f $f", x, y):
+    return some((x, y)) 
