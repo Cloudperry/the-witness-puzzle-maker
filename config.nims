@@ -21,3 +21,6 @@
   # Make system.delete strict for index out of bounds accesses.
 
 --experimental: overloadableEnums
+
+--opt: speed
+--define: lto
