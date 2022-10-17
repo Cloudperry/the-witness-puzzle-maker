@@ -1,9 +1,23 @@
-import std/strformat
+import std/[strformat, options]
 import cligen, nimraylib_now
-import levels, levelGfx
+import levels, levelGfx, geometry
 
 when defined(windows):
   {.passL: "-static".} # Use static linking on Windows
+
+const fontSize = 30
+
+proc doTextEntry(text: var string): bool =
+  var key = getCharPressed()
+  while key in 32 .. 125:
+    text &= key.char
+    key = getCharPressed()
+  if isKeyPressed(BACKSPACE) and text.len > 0:
+    text.setLen(text.len - 1)
+  elif isKeyPressed(DELETE) and text.len > 0:
+    text.setLen(0)
+  elif isKeyPressed(ENTER) and text.len > 0:
+    return true
 
 proc game(levels: seq[string]) =
   # Init
@@ -15,6 +29,8 @@ proc game(levels: seq[string]) =
     drawOptions: DrawOptions 
     drawableLevel: DrawableLevel
     playingLevel: bool
+    currentPointStr: string
+    playerLine: Line
   
   proc loadLevel() =
     level = loadLevelFromFile(levelName)
@@ -38,23 +54,39 @@ proc game(levels: seq[string]) =
   while not windowShouldClose(): # Main loop
     # Update
     if not playingLevel:
-      var key = getCharPressed()
-      while key in 32 .. 125:
-        levelName &= key.char
-        key = getCharPressed()
-      if isKeyPressed(BACKSPACE) and levelName.len > 0:
-        levelName.setLen(levelName.len - 1)
-      elif isKeyPressed(ENTER) and levelName.len > 0:
+      if doTextEntry(levelName):
         loadLevel()
+    else:
+      if doTextEntry(currentPointStr):
+        let point = currentPointStr.parsePoint()
+        if point.isSome:
+          playerLine &= point.get
+          currentPointStr.setLen(0)
 
     # Draw
     beginDrawing()
     clearBackground(Darkgray)
     if playingLevel:
-      drawText(fmt"Loaded level {levelName}", 300, 100, 20, Raywhite)
+      # Draw text
+      let textOffsetY = drawableLevel.mazeDistToScreen(
+        dist(level.topLeftCorner.y, drawableLevel.topLeft.y) / 2, drawOptions
+      )
+      let textTop = fmt"playing {levelName}"
+      let textTopWidth = measureText(textTop.cstring, fontSize)
+      drawText(textTop.cstring, screenWidth div 2 - textTopWidth div 2, textOffsetY, fontSize, Raywhite)
+      let textBot = fmt"enter a new point: {currentPointStr}"
+      let textBotWidth = measureText(textBot.cstring, fontSize)
+      drawText(textBot.cstring, screenWidth div 2 - textBotWidth div 2, screenHeight - textOffsetY, fontSize, Raywhite)
+      # Draw level
       level.draw(drawableLevel.gfxData, drawOptions)
+      if playerLine.len > 0:
+        level.drawPlayerLine(playerLine, drawableLevel, drawOptions)
     else:
-      drawText(fmt"Type level name to play and press ENTER: " & levelName, 300, 350, 20, Raywhite)
+      let text = fmt"Type level name to play and press ENTER: {levelName}" 
+      let textWidth = measureText(text.cstring, fontSize)
+      # Text is not vertically centered, because using measureTextEx was giving me segfaults
+      drawText(text.cstring, screenWidth div 2 - textWidth div 2, 
+               screenHeight div 2, fontSize, Raywhite) 
     endDrawing()
 
   closeWindow()
