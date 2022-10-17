@@ -25,7 +25,7 @@ type
     jackColor* = (60, 60, 60)
     bgColor* = (80, 80, 80)
   DrawableLevel* = object
-    topLeft, botRight, size: Point2D
+    topLeft*, botRight*, size: Point2D
     gfxData*: LevelGfxData
   LevelGfxData = object 
     ## This object is used to store pixel coordinates for the level.
@@ -48,13 +48,13 @@ func setPositionDefaults*(opts: var DrawOptions, winSize: tuple[w, h: int]) =
     opts.shorterWinDimension = min(winSize.w, winSize.h)
     opts.centerPoint = (winSize.w div 2, winSize.h div 2)
 
-func mazeDistToScreen(d: DrawableLevel, dist: float, o: DrawOptions): int =
+func mazeDistToScreen*(d: DrawableLevel, dist: float, o: DrawOptions): int =
   if o.winSize.w == o.shorterWinDimension:
     result = toInt(o.shorterWinDimension * (dist / d.size.x))
   else:
     result = toInt(o.shorterWinDimension * (dist / d.size.y))
 
-proc mazePosToScreen(d: DrawableLevel, p: Point2D, o: DrawOptions): Point2DInt =
+proc mazePosToScreen*(d: DrawableLevel, p: Point2D, o: DrawOptions): Point2DInt =
   # Transforms maze coordinates to screen pixel coordinates
   let panelCenter = midpoint(d.topLeft, d.botRight)
   # Variable below is a vector for how long the distance on each axis is relative to the entire
@@ -157,3 +157,13 @@ proc draw*(l: Level, v: LevelGfxData, o: DrawOptions) =
     drawLineEx(jack, jack + v.jackLeftDeltaVec, v.jackWidth, o.jackColor)
     drawLineEx(jack, jack + v.jackRightDeltaVec, v.jackWidth, o.jackColor)
   #TODO: Add block symbol drawing, maze borders, player line and rounded lines
+
+proc drawPlayerLine*(l: Level, line: Line, d: DrawableLevel, o: DrawOptions) =
+  let lineStartScreen = d.mazePosToScreen(line[0], o)
+  drawCircle(lineStartScreen.x, lineStartScreen.y, d.gfxData.startRadius, l.lineColor)
+  for segment in line.segments:
+    let segmentScreenPos: LineSegment = (
+      d.mazePosToScreen(segment.p1, o).toFloat, 
+      d.mazePosToScreen(segment.p2, o).toFloat
+    )
+    drawLineEx(segmentScreenPos.p1, segmentScreenPos.p2, d.gfxData.lineWidth, l.lineColor)
