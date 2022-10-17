@@ -112,21 +112,21 @@ proc removeEdges*(l: var Level, edges: varargs[tuple[p1, p2: Point2D]]) =
 proc addPointBetween*(l: var Level, kind: PointKind, p1, p2: Point2D) =
   l.addConnectedPoint(kind, midpoint(p1, p2), p1, p2)
 
-proc lineGoesFromStartToEnd(l: Level, line: LineSegments): bool = 
+proc lineGoesFromStartToEnd(l: Level, line: Line): bool = 
   var lineHasRoute = true
-  for segment in line:
+  for segment in line.segments:
     if not l.pointGraph.hasRoute(segment.p1, segment.p2):
       lineHasRoute = false
-  return l.pointData[line[0].p1] == Start and 
-  l.pointData[line[^1].p2] == End and lineHasRoute
+  return l.pointData[line[0]] == Start and 
+  l.pointData[line[^1]] == End and lineHasRoute
 
-proc checkSolution*(l: Level, line: LineSegments): bool =
+proc checkSolution*(l: Level, line: Line): bool =
   let hexes = collect:
     for point, kind in l.pointData.pairs:
       if kind == Hex: {point}
   var touchedHexes: HashSet[Point2D] # Hexes that the line doesn't pass through (set is needed for jacks to work later)
-  for segment in line:
-    if l.pointData[segment.p1] == Hex: touchedHexes.incl segment.p1
+  for point in line:
+    if l.pointData[point] == Hex: touchedHexes.incl point
   # For now, the level is solved if the line passes through each hex and stays on the level lines, because other symbols are not implemented yet
   return (hexes - touchedHexes).len == 0 and l.lineGoesFromStartToEnd(line)
   #TODO: implement symbols other than hexes

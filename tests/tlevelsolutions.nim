@@ -6,17 +6,16 @@ let
   hexTutorial2 = loadLevelFromFile("levels/hexTutorial2.bin") #TODO: Add a few tests for this level (its a bit more complex)
 
 const wrongSolutionsTut1 = [ 
-  # This line is wrong because it doesn't start from start point
-  lineToSegments((0.0, 0.0) -> (1.0, 0.0) -> (1.0, 1.0) -> (1.0, 2.0) -> 
-                 (2.0, 2.0) -> (2.0, 1.0) -> (2.0, 0.0) -> (2.0, -0.25)),
+  # This line is wrong because it doesn't start from a start point
+  (0.0, 0.0) -> (1.0, 0.0) -> (1.0, 1.0) -> (1.0, 2.0) -> (2.0, 2.0) -> 
+  (2.0, 1.0) -> (2.0, 0.0) -> (2.0, -0.25),
   # This line is wrong because it doesn't go through any of the hexes
-  lineToSegments((0.0, 2.0) -> (1.0, 2.0) -> (1.0, 1.0) -> (2.0, 1.0) -> 
-                 (2.0, 0.0) -> (2.0, -0.25))
+  (0.0, 2.0) -> (1.0, 2.0) -> (1.0, 1.0) -> (2.0, 1.0) -> (2.0, 0.0) ->
+  (2.0, -0.25)
 ]
 const correctSolutionsTut1 = [
-  lineToSegments((0.0, 2.0) -> (0.0, 1.0) -> (0.0, 0.0) -> (1.0, 0.0) ->
-                 (1.0, 1.0) -> (1.0, 2.0) -> (2.0, 2.0) -> (2.0, 1.0) ->
-                 (2.0, 0.0) -> (2.0, -0.25))
+  (0.0, 2.0) -> (0.0, 1.0) -> (0.0, 0.0) -> (1.0, 0.0) -> (1.0, 1.0) -> 
+  (1.0, 2.0) -> (2.0, 2.0) -> (2.0, 1.0) -> (2.0, 0.0) -> (2.0, -0.25)
 ]
 
 for line in wrongSolutionsTut1: 
