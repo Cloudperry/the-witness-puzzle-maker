@@ -1,5 +1,5 @@
-import std/[tables, sets, lenientops, os]
-import ../src/levels, ../src/graphs, ../src/geometry
+import std/[tables, sets, lenientops, os, options]
+import ../src/[levels, graphs, geometry]
 
 var quarryMetalBridgePanel2 = Level(
   bgColor: (110, 70, 50),
@@ -9,7 +9,7 @@ var quarryMetalBridgePanel2 = Level(
 
 quarryMetalBridgePanel2.makeEmptyGrid((0.0, 0.0), (3.0, 3.0))
 quarryMetalBridgePanel2.setPointData({Start: @[(0.0, 3.0)]}.toTable)
-quarryMetalBridgePanel2.addConnectedPoint(End, (3.25, -0.25), (3.0, 0.0))
+quarryMetalBridgePanel2.addConnectedPoint((3.25, -0.25), End, (3.0, 0.0))
 quarryMetalBridgePanel2.setCellData({
   MazeCell(kind: Square, color: (245, 100, 0)): @[
     cellFromTopLeft((1.0, 0.0)), cellFromTopLeft((2.0, 1.0))

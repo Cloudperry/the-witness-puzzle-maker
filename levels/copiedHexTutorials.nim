@@ -1,5 +1,5 @@
-import std/[tables, sets]
-import ../src/levels, ../src/graphs, ../src/geometry
+import std/[tables, sets, options]
+import ../src/[levels, graphs, geometry]
 
 let levelBase = Level(
   bgColor: (0, 230, 80),
@@ -12,13 +12,13 @@ level1.makeEmptyGrid((0.0, 0.0), (2.0, 2.0))
 level2.makeEmptyGrid((0.0, 0.0), (3.0, 3.0))
 
 level1.pointData[(0.0, 2.0)] = Start
-level1.addConnectedPoint(End, (2.0, -0.25), (2.0, 0.0)) # Add goal
+level1.addConnectedPoint((2.0, -0.25), End, (2.0, 0.0)) # Add goal
 level1.setPointData({
   Hex: @[(0.0, 0.0), (2.0, 2.0)]
 }.toTable)
 
 level2.pointData[(0.0, 3.0)] = Start
-level2.addConnectedPoint(End, (3.0, -0.25), (3.0, 0.0))
+level2.addConnectedPoint((3.0, -0.25), End, (3.0, 0.0))
 level2.removePoint((0.0, 0.0))
 level2.setPointData({
   Hex: @[(0.0, 2.0), (1.0, 2.0), (1.0, 0.0), (2.0, 1.0), (3.0, 3.0)]
