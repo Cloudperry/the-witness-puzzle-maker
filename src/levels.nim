@@ -70,6 +70,7 @@ func cellFromCornerAndDirection*(corner, direction: Point2D): seq[Point2D] =
     corner + (direction.x, direction.y), corner + (0.0, direction.y)
   ].sorted()
   swap(result[1], result[2])
+  swap(result[^2], result[^1])
 
 func cellFromTopLeft*(p: Point2D): seq[Point2D] = 
   cellFromCornerAndDirection(p, (1.0, 1.0))
