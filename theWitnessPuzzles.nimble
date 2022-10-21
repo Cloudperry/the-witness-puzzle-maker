@@ -25,3 +25,11 @@ task gencoverage, "Generate coverage using coco":
 
 task genlevel, "Generate level file from program":
   exec "cd levels; nim r " & commandLineParams[^1]
+
+task regenlevels, "Generate level files from all programs under levels/":
+  exec """cd levels
+    for filename in *.nim; do
+      # Using unsafe release build without optimizations for fast build times
+      nim r -d:danger --opt:none $filename 
+    done
+  """
