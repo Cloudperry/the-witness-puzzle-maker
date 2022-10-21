@@ -1,5 +1,5 @@
 import std/[tables, sets, lenientops, os]
-import ../src/levels, ../src/graphs, ../src/geometry
+import ../src/[levels, graphs]
 
 var sampleLevel = Level(
   topLeftCorner: (0.0, 0.0),
@@ -23,10 +23,8 @@ sampleLevel.setCellData({
 
 sampleLevel.saveLevelToFile("testLevel.bin")
 let sampleLevelFromDisk = loadLevelFromFile("testLevel.bin")
-# Check that the levels are equal. For now I'm comparing the string representations
-# of the objects, because Nim doesn't support comparing objects that use some features.
-# See https://forum.nim-lang.org/t/6781 for details.
-assert $sampleLevel == $sampleLevelFromDisk
+# Check that the level is the same after loading it from disk
+assert sampleLevel == sampleLevelFromDisk
 when not defined(saveLevel):
   removeFile("testLevel.bin")
 
