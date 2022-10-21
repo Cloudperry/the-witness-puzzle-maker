@@ -1,4 +1,4 @@
-import std/[tables, sets, sequtils, options, math, sugar, strformat]
+import std/[tables, sets, sequtils, options, math, strformat, sugar]
 import frosty/streams
 import graphs, geometry
 
@@ -8,6 +8,8 @@ type
     Empty, Start, End, Hex
   CellKind* = enum ## All the puzzle symbols that can be attached to a cell
     Empty, Square, Triangles, Star, Block, AntiBlock, Jack
+  PuzzleSym = enum
+    Hex, Square, Triangles, Star, Block, AntiBlock, Jack
   MazeCell* = object
     # NIMNOTE: Here kind is one field in the object, but the other fields the
     # object has depends on the value of kind. For example squares have a color
@@ -19,19 +21,23 @@ type
       count*: int
     of Block, AntiBlock:
       shape*: seq[Point2DInt] ## Polyomino shape as a collection of points.
-    of Jack, Empty:                     ## (0, 0) is the top left corner of the shape.
+    of Jack, Empty:                  ## (0, 0) is the top left corner of the shape.
       discard
+
+  PointAddResult* = enum
+    ## This is used when adding a new point to the player's line
+    None, Invalid, Valid, CorrectSolution, IncorrectSolution
     
   Level* = object
-    # A bit later I will add support for arbitrary maze shapes
-    # For that the field below will be used to determine the coordinate space of the level
+    # The below field could be used for arbitrary maze shapes
     # borderVertices*: seq[Point2D]
-    # Right now the coordinate space of the level is determined by the 2 following fields
+    # The coordinate space of the level is determined by the 2 following fields
     topLeftCorner*: Point2D
     botRightCorner*: Point2D
     pointGraph*: Graph[Point2D]
     cellGraph*: Graph[seq[Point2D]]
     pointData*: Table[Point2D, PointKind]
+    hexesBetweenCells*: TableRef[LineSegment, Point2D] # Do a pointgraph dfs from the value of this, if during room division the key is seen as a segmeent
     cellData*: Table[seq[Point2D], MazeCell]
     # Might need to add a color palette definition later for convenience 
     # as the colors will be reused a lot in the same level
@@ -39,9 +45,13 @@ type
     bgColor*: Color
     lineColor*: Color
 
-# I had to manually implement this comparison, because Nim's case objects don't support it by default.
-# Case objects are like sum types in other languages. This enables setPointData and setCellData to work.
-proc `==`*(c1, c2: MazeCell): bool =
+  MazeRoom = object
+    startCell: seq[Point2D]
+    unsolvedSyms: CountTable[PuzzleSym]
+    uncheckedSyms: CountTable[MazeCell]
+  
+func `==`*(c1, c2: MazeCell): bool =
+  ## This comparison is needed for comparing level objects and when hashing cells
   if c1.kind == c2.kind:
     if c1.kind in {Square, Star}:
       return c1.color == c2.color
@@ -49,9 +59,13 @@ proc `==`*(c1, c2: MazeCell): bool =
       return c1.count == c2.count
     elif c1.kind in {Block, AntiBlock}:
       return c1.shape == c2.shape
-  return false # False would be returned by default, but I wanted to make it explicit
+    elif c1.kind in {CellKind.Empty, Jack}:
+      return true
 
-proc cellFromTopLeft*(p: Point2D): seq[Point2D] = 
+# --------------------------------Level creation--------------------------------
+# Error handling is important to have in the level creation functions, because
+# creating a level that uses the format in unintentional ways leads to weird bugs. 
+func cellFromTopLeft*(p: Point2D): seq[Point2D] = 
   @[p, p + (1.0, 0.0), p + (1.0, 1.0), p + (0.0, 1.0)]
 
 proc makeEmptyGrid*(l: var Level; topLeftCorner, botRightCorner: Point2D) =
@@ -59,15 +73,14 @@ proc makeEmptyGrid*(l: var Level; topLeftCorner, botRightCorner: Point2D) =
   l.botRightCorner = botRightCorner
   for p1 in gridPoints(topLeftCorner, botRightCorner):
     # Create lines around a maze cell
-    l.pointData[p1] = Empty
     for p2 in [p1 + (1.0, 0.0), p1 + (0.0, 1.0)]:
       if p2.x <= botRightCorner.x and p2.y <= botRightCorner.y:
         l.pointGraph.addEdgeAndMissingNodes(p1, p2)
     # Create empty maze cells
-    if p1.x in 0.0 .. botRightCorner.x and p1.y in 0.0 .. botRightCorner.y:
+    if p1.x in 0.0 .. botRightCorner.x - 1.0 and
+    p1.y in 0.0 .. botRightCorner.y - 1.0:
       let cell = cellFromTopLeft(p1)
       l.cellGraph.addNode cell
-      l.cellData[cell] = MazeCell(kind: Empty)
   # Connect all the adjacent cells together in the graph
   for cell in l.cellGraph.nodes:
     let cellToRight = cell.mapIt(it + (1.0, 0.0))
@@ -80,70 +93,184 @@ proc makeEmptyGrid*(l: var Level; topLeftCorner, botRightCorner: Point2D) =
 proc setPointData*(l: var Level, pointData: Table[PointKind, seq[Point2D]]) = 
   for kind, points in pointData:
     for point in points:
-      # Could be changed to an error if the point doesn't already exist (new points should be made with addConnectedPoint)
-      if point in l.pointGraph: 
+      if point notin l.pointGraph: 
+        raise newException(ValueError, fmt"Point {point} doesn't exist")
+      else:
         l.pointData[point] = kind
 
 proc setCellData*(l: var Level, cellData: Table[MazeCell, seq[seq[Point2D]]]) =
   for data, cells in cellData:
     for cell in cells:
-      if cell in l.cellGraph:
+      if cell notin l.cellGraph:
+        raise newException(ValueError, fmt"Cell {cell} doesn't exist")
+      else:
         l.cellData[cell] = data
 
 proc removePoint*(l: var Level, p: Point2D) =
   l.pointGraph.removeNode(p)
   l.pointData.del p
 
-proc addConnectedPoint*(l: var Level, kind: PointKind, newPoint: Point2D,
-                        connectedTo: varargs[Point2D]) =
-  l.pointGraph.addNode(newPoint)
-  if newPoint.x < l.topLeftCorner.x: l.topLeftCorner.x = newPoint.x
-  if newPoint.y < l.topLeftCorner.y: l.topLeftCorner.y = newPoint.y
-  if newPoint.x > l.botRightCorner.x: l.botRightCorner.x = newPoint.x
-  if newPoint.y > l.botRightCorner.y: l.botRightCorner.y = newPoint.y
-  for point in connectedTo:
-    l.pointGraph.addEdge(newPoint, point)
-  l.pointData[newPoint] = kind
+proc addConnectedPoint*(l: var Level, newPoint: Point2D, kind = Empty,
+                        connTo: varargs[Point2D]) =
+  if newPoint in l.pointGraph:
+    raise newException(ValueError, fmt"Point {newPoint} already exists")
+  else:
+    l.pointGraph.addNode(newPoint)
+    if newPoint.x < l.topLeftCorner.x: l.topLeftCorner.x = newPoint.x
+    if newPoint.y < l.topLeftCorner.y: l.topLeftCorner.y = newPoint.y
+    if newPoint.x > l.botRightCorner.x: l.botRightCorner.x = newPoint.x
+    if newPoint.y > l.botRightCorner.y: l.botRightCorner.y = newPoint.y
+    for point in connTo:
+      l.pointGraph.addEdge(newPoint, point)
+    if kind != Empty: 
+      l.pointData[newPoint] = kind
 
-proc removeEdges*(l: var Level, edges: varargs[tuple[p1, p2: Point2D]]) = 
+proc removeEdges*(l: var Level, edges: varargs[Edge[Point2D]]) = 
   for edge in edges:
-    l.pointGraph.removeEdge(edge.p1, edge.p2)
+    l.pointGraph.removeEdge(edge.node1, edge.node2)
 
-proc addPointBetween*(l: var Level, kind: PointKind, p1, p2: Point2D) =
-  l.addConnectedPoint(kind, midpoint(p1, p2), p1, p2)
+proc addPointBetween*(l: var Level; p1, p2: Point2D, kind = Empty) =
+  let newPoint = midpoint(p1, p2)
+  l.addConnectedPoint(newPoint, kind, p1, p2)
+  l.pointGraph.removeEdge(p1, p2)
+  l.pointGraph.addEdge(p1, newPoint)
+  l.pointGraph.addEdge(p2, newPoint)
 
-proc lineGoesFromStartToEnd(l: Level, line: Line): bool = 
-  var lineHasRoute = true
-  for segment in line.segments:
-    if not l.pointGraph.hasRoute(segment.p1, segment.p2):
-      lineHasRoute = false
-  return l.pointData[line[0]] == Start and 
-  l.pointData[line[^1]] == End and lineHasRoute
-
-proc checkSolution*(l: Level, line: Line): bool =
-  let hexes = collect:
-    for point, kind in l.pointData.pairs:
-      if kind == Hex: {point}
-  var touchedHexes: HashSet[Point2D] # Hexes that the line doesn't pass through (set is needed for jacks to work later)
-  for point in line:
-    if l.pointData[point] == Hex: touchedHexes.incl point
-  # For now, the level is solved if the line passes through each hex and stays on the level lines, because other symbols are not implemented yet
-  return (hexes - touchedHexes).len == 0 and l.lineGoesFromStartToEnd(line)
-  #TODO: implement symbols other than hexes
-
-## Saving and loading levels is implemented below
-# Weird workaround used because of openFileStream errors. According to frosty sample code
-# I shouldn't need to import std/streams at all.
-#TODO: Maybe all the hash tables and sets in the level should be shrinked down to exactly the length
-# of their elements before saving it to a file. That way the level file will be much smaller and it
-# helps with iteration performance as well.
+# ---------------------------Level saving and loading---------------------------
+# Weird workaround used here. According to frosty examples I shouldn't need to import std/streams.
 import std/streams as s
 proc saveLevelToFile*(l: Level, filename: string) =
+  ## Saves level object to a file.
   var handle = openFileStream(filename, fmWrite)
   freeze(handle, l)
   close handle
 
 proc loadLevelFromFile*(filename: string): Level =
+  ## Loads level object from a file.
   var handle = openFileStream(filename, fmRead)
   thaw(handle, result)
   close handle
+
+# --------------------------------Game mechanics--------------------------------
+func goesFromStartToEnd*(line: Line, l: Level): bool = 
+  var lineHasRoute = true
+  for segment in line.segments:
+    if not l.pointGraph.hasRoute(segment.p1, segment.p2):
+      lineHasRoute = false
+  return l.pointData.getOrDefault(line[0]) == Start and 
+  l.pointData.getOrDefault(line[^1]) == End and lineHasRoute
+
+func divideSymbolsToRooms*(level: Level, line: Line): seq[MazeRoom] =
+  ## Divides the level into rooms based on the player's line. Checks triangle symbols
+  ## at the same time, because all the relevant information is available here.
+  let lineSegments = line.toSetOfSegments()
+  var visited: HashSet[seq[Point2D]]
+
+  func findSymsInRoom(node: seq[Point2D], room: var MazeRoom) =
+    visited.incl node
+    let nodeSegments = toSetOfSegments(node & node[0])
+    if node in level.cellData:
+      if level.cellData[node].kind == Triangles:
+        if (nodeSegments * lineSegments).len != level.cellData[node].count:
+          room.unsolvedSyms.inc Triangles # Add one unsolved triangle symbol to room
+      else: 
+        # This symbol will be checked after the room division is done
+        room.uncheckedSyms.inc level.cellData[node] 
+
+    for neighbor in level.cellGraph.adjList[node]:
+      if neighbor notin visited:
+        let neighborSegments = toSetOfSegments(neighbor & neighbor[0])
+        # Two non-overlapping polygons have 0 sides in common with the line if they are in the same room
+        if len(nodeSegments * neighborSegments * lineSegments) == 0:
+          findSymsInRoom(neighbor, room)
+
+  for cell in level.cellGraph.nodes:
+    if cell notin visited:
+      var currRoom = MazeRoom(startCell: cell)
+      findSymsInRoom(cell, currRoom)
+      result.add currRoom
+
+proc findUnsolvedHexes(level: Level, line: Line, r: var MazeRoom) =
+  ## Finds unsolved hexagons in a given room with a DFS. Room is given as 
+  ## a cell by the room division of the previous function.
+  var visited: HashSet[Point2D]
+  let linePoints = line.toHashSet()
+
+  proc findHexesInRoom(point: Point2D, r: var MazeRoom) =
+    visited.incl point
+    if level.pointData.getOrDefault(point) == Hex:
+      r.unsolvedSyms.inc Hex
+    for neighbor in level.pointGraph.adjList[point]:
+      if neighbor notin visited and neighbor notin linePoints:
+        findHexesInRoom(neighbor, r)
+
+  for point in r.startCell:
+    if point notin linePoints:
+      findHexesInRoom(point, r)
+      break
+
+func checkSolution*(level: Level, line: Line): bool =
+  var rooms = level.divideSymbolsToRooms(line)
+  for room in rooms.mitems:
+    level.findUnsolvedHexes(line, room)
+    var squares, stars: CountTable[Color]
+    for symbol, count in room.uncheckedSyms:
+      if symbol.kind == Square:
+        squares.inc(symbol.color, count) 
+      elif symbol.kind == Star:
+        stars.inc(symbol.color, count) 
+    # Find unsolved squares
+    if squares.len > 1:
+      squares.sort()
+      room.unsolvedSyms[Square] = squares.values.toSeq()[1..^1].sum()
+    # Find unsolved stars
+    for color, count in stars:
+      let squareCount = squares[color]
+      if squareCount notin {0, 1} or (count + squareCount) mod 2 != 0:
+        room.unsolvedSyms[Star] = count
+    # Fix unsolved symbols if there are jacks
+    let unsolvedSymsAfterJacks = room.unsolvedSyms.values.toSeq().sum() - room.uncheckedSyms[MazeCell(kind: Jack)] 
+    if unsolvedSymsAfterJacks != 0:
+      # Not all unsolved symbols could be fixed by jacks or not all jacks were used
+      when defined(printReasonNotSolved):
+        debugEcho fmt"room {room.startCell} unsolved symbols {room.unsolvedSyms}, jacks {room.uncheckedSyms[MazeCell(kind: Jack)]}"
+      return false
+  return true
+  #TODO: Implement blocks (polyominos)
+
+proc checkAndAddPoint*(line: var Line, point: Point2D, 
+                      level: Level): PointAddResult =
+  if line.len == 0:
+    if level.pointData.getOrDefault(point) != Start:
+      return Invalid
+    else:
+      line &= point
+      return Valid
+  else:
+    let eraseLast = line.len >= 2 and point == line[^2]
+    if point notin level.pointGraph.adjList[line[^1]] or 
+    (not eraseLast and point in line):
+      return Invalid
+    elif eraseLast:
+      line.del line.high
+    else:
+      line &= point
+      if line.goesFromStartToEnd(level):
+        if level.checkSolution(line):
+          return CorrectSolution
+        else:
+          return IncorrectSolution
+      return Valid
+
+func pointInDirection*(line: Line, direction: Point2D, level: Level): Option[Point2D] =
+  if line.len > 0:
+    let currPoint = line[^1]
+    proc toDirectionUnitVec(point: Vec2): Point2D =
+      toUnitVec(point - currPoint)
+    let neighbors = collect: 
+      for neighbor in level.pointGraph.adjList[currPoint]:
+        {neighbor.toDirectionUnitVec: neighbor}
+    if direction in neighbors:
+      result = some(neighbors[direction])
+      debugEcho neighbors
+      debugEcho fmt"point towards {direction}: {result}"
