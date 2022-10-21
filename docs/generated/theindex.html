@@ -21,7 +21,7 @@
   <div class="document" id="documentId">
     <div class="container">
       <h1 class="title">Index</h1>
-      Modules: <a href="geometry.html">geometry</a>, <a href="graphs.html">graphs</a>, <a href="levelGfx.html">levelGfx</a>, <a href="levels.html">levels</a>.<br/><p /><h2>API symbols</h2>
+      Modules: <a href="game.html">game</a>, <a href="geometry.html">geometry</a>, <a href="graphs.html">graphs</a>, <a href="levelGfx.html">levelGfx</a>, <a href="levels.html">levels</a>.<br/><p /><h2>API symbols</h2>
 <dl><dt><a name="%60%24%60" href="#%60%24%60"><span>`$`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="geometry: `$`(line: Line): string" href="geometry.html#%24%2CLine">geometry: `$`(line: Line): string</a></li>
@@ -74,8 +74,8 @@
           </ul></dd>
 <dt><a name="addConnectedPoint" href="#addConnectedPoint"><span>addConnectedPoint:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="levels: addConnectedPoint(l: var Level; newPoint: Point2D; kind = Empty;
-                  connTo: varargs[Point2D])" href="levels.html#addConnectedPoint%2CLevel%2CPoint2D%2Cvarargs%5BPoint2D%5D">levels: addConnectedPoint(l: var Level; newPoint: Point2D; kind = Empty;
+          data-doc-search-tag="levels: addConnectedPoint(l: var Level; newPoint: Point2D; kind = PointKind.Empty;
+                  connTo: varargs[Point2D])" href="levels.html#addConnectedPoint%2CLevel%2CPoint2D%2Cvarargs%5BPoint2D%5D">levels: addConnectedPoint(l: var Level; newPoint: Point2D; kind = PointKind.Empty;
                   connTo: varargs[Point2D])</a></li>
           </ul></dd>
 <dt><a name="addEdge" href="#addEdge"><span>addEdge:</span></a></dt><dd><ul class="simple">
@@ -94,9 +94,13 @@
 <li><a class="reference external"
           data-doc-search-tag="graphs: addNode[T](g: var Graph; node: T)" href="graphs.html#addNode%2CGraph%2CT">graphs: addNode[T](g: var Graph; node: T)</a></li>
           </ul></dd>
+<dt><a name="addPointAndCheckResult" href="#addPointAndCheckResult"><span>addPointAndCheckResult:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="game: addPointAndCheckResult(game: var GameState; point: Point2D)" href="game.html#addPointAndCheckResult%2CGameState%2CPoint2D">game: addPointAndCheckResult(game: var GameState; point: Point2D)</a></li>
+          </ul></dd>
 <dt><a name="addPointBetween" href="#addPointBetween"><span>addPointBetween:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="levels: addPointBetween(l: var Level; p1, p2: Point2D; kind = Empty)" href="levels.html#addPointBetween%2CLevel%2CPoint2D%2CPoint2D">levels: addPointBetween(l: var Level; p1, p2: Point2D; kind = Empty)</a></li>
+          data-doc-search-tag="levels: addPointBetween(l: var Level; p1, p2: Point2D; kind = PointKind.Empty)" href="levels.html#addPointBetween%2CLevel%2CPoint2D%2CPoint2D">levels: addPointBetween(l: var Level; p1, p2: Point2D; kind = PointKind.Empty)</a></li>
           </ul></dd>
 <dt><a name="adjacentGridPoints" href="#adjacentGridPoints"><span>adjacentGridPoints:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -114,6 +118,10 @@
 <li><a class="reference external"
           data-doc-search-tag="CellKind.Block" href="levels.html#Block">CellKind.Block</a></li>
           </ul></dd>
+<dt><a name="cellFromCornerAndDirection" href="#cellFromCornerAndDirection"><span>cellFromCornerAndDirection:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levels: cellFromCornerAndDirection(corner, direction: Point2D): seq[Point2D]" href="levels.html#cellFromCornerAndDirection%2CPoint2D%2CPoint2D">levels: cellFromCornerAndDirection(corner, direction: Point2D): seq[Point2D]</a></li>
+          </ul></dd>
 <dt><a name="cellFromTopLeft" href="#cellFromTopLeft"><span>cellFromTopLeft:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="levels: cellFromTopLeft(p: Point2D): seq[Point2D]" href="levels.html#cellFromTopLeft%2CPoint2D">levels: cellFromTopLeft(p: Point2D): seq[Point2D]</a></li>
@@ -122,13 +130,9 @@
 <li><a class="reference external"
           data-doc-search-tag="levels: CellKind" href="levels.html#CellKind">levels: CellKind</a></li>
           </ul></dd>
-<dt><a name="checkAndAddPoint" href="#checkAndAddPoint"><span>checkAndAddPoint:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="levels: checkAndAddPoint(line: var Line; point: Point2D; level: Level): PointAddResult" href="levels.html#checkAndAddPoint%2CLine%2CPoint2D%2CLevel">levels: checkAndAddPoint(line: var Line; point: Point2D; level: Level): PointAddResult</a></li>
-          </ul></dd>
 <dt><a name="checkSolution" href="#checkSolution"><span>checkSolution:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="levels: checkSolution(level: Level; line: Line): bool" href="levels.html#checkSolution%2CLevel%2CLine">levels: checkSolution(level: Level; line: Line): bool</a></li>
+          data-doc-search-tag="game: checkSolution(level: Level; line: Line): bool" href="game.html#checkSolution%2CLevel%2CLine">game: checkSolution(level: Level; line: Line): bool</a></li>
           </ul></dd>
 <dt><a name="Color" href="#Color"><span>Color:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -144,7 +148,7 @@
           </ul></dd>
 <dt><a name="CorrectSolution" href="#CorrectSolution"><span>CorrectSolution:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="PointAddResult.CorrectSolution" href="levels.html#CorrectSolution">PointAddResult.CorrectSolution</a></li>
+          data-doc-search-tag="LineStatus.CorrectSolution" href="game.html#CorrectSolution">LineStatus.CorrectSolution</a></li>
           </ul></dd>
 <dt><a name="dfs" href="#dfs"><span>dfs:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -156,7 +160,7 @@
           </ul></dd>
 <dt><a name="divideSymbolsToRooms" href="#divideSymbolsToRooms"><span>divideSymbolsToRooms:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="levels: divideSymbolsToRooms(level: Level; line: Line): seq[MazeRoom]" href="levels.html#divideSymbolsToRooms%2CLevel%2CLine">levels: divideSymbolsToRooms(level: Level; line: Line): seq[MazeRoom]</a></li>
+          data-doc-search-tag="game: divideSymbolsToRooms(level: Level; line: Line): seq[MazeRoom]" href="game.html#divideSymbolsToRooms%2CLevel%2CLine">game: divideSymbolsToRooms(level: Level; line: Line): seq[MazeRoom]</a></li>
           </ul></dd>
 <dt><a name="draw" href="#draw"><span>draw:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -192,6 +196,10 @@
 <li><a class="reference external"
           data-doc-search-tag="graphs: findReachableNodes[T](g: Graph; node: T): HashSet[T]" href="graphs.html#findReachableNodes%2CGraph%2CT">graphs: findReachableNodes[T](g: Graph; node: T): HashSet[T]</a></li>
           </ul></dd>
+<dt><a name="GameState" href="#GameState"><span>GameState:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="game: GameState" href="game.html#GameState">game: GameState</a></li>
+          </ul></dd>
 <dt><a name="getDrawableLevel" href="#getDrawableLevel"><span>getDrawableLevel:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="levelGfx: getDrawableLevel(l: Level; o: DrawOptions): DrawableLevel" href="levelGfx.html#getDrawableLevel%2CLevel%2CDrawOptions">levelGfx: getDrawableLevel(l: Level; o: DrawOptions): DrawableLevel</a></li>
@@ -202,7 +210,7 @@
           </ul></dd>
 <dt><a name="goesFromStartToEnd" href="#goesFromStartToEnd"><span>goesFromStartToEnd:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="levels: goesFromStartToEnd(line: Line; l: Level): bool" href="levels.html#goesFromStartToEnd%2CLine%2CLevel">levels: goesFromStartToEnd(line: Line; l: Level): bool</a></li>
+          data-doc-search-tag="game: goesFromStartToEnd(line: Line; l: Level): bool" href="game.html#goesFromStartToEnd%2CLine%2CLevel">game: goesFromStartToEnd(line: Line; l: Level): bool</a></li>
           </ul></dd>
 <dt><a name="Graph" href="#Graph"><span>Graph:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -211,6 +219,10 @@
 <dt><a name="gridPoints" href="#gridPoints"><span>gridPoints:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="geometry: gridPoints(p1, p2: Vec2[float]): Vec2[float]" href="geometry.html#gridPoints.i%2CVec2%5Bfloat%5D%2CVec2%5Bfloat%5D">geometry: gridPoints(p1, p2: Vec2[float]): Vec2[float]</a></li>
+          </ul></dd>
+<dt><a name="HasDiagNeighbors" href="#HasDiagNeighbors"><span>HasDiagNeighbors:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="LineStatus.HasDiagNeighbors" href="game.html#HasDiagNeighbors">LineStatus.HasDiagNeighbors</a></li>
           </ul></dd>
 <dt><a name="hasRoute" href="#hasRoute"><span>hasRoute:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -222,11 +234,15 @@
           </ul></dd>
 <dt><a name="IncorrectSolution" href="#IncorrectSolution"><span>IncorrectSolution:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="PointAddResult.IncorrectSolution" href="levels.html#IncorrectSolution">PointAddResult.IncorrectSolution</a></li>
+          data-doc-search-tag="LineStatus.IncorrectSolution" href="game.html#IncorrectSolution">LineStatus.IncorrectSolution</a></li>
           </ul></dd>
-<dt><a name="Invalid" href="#Invalid"><span>Invalid:</span></a></dt><dd><ul class="simple">
+<dt><a name="init" href="#init"><span>init:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="PointAddResult.Invalid" href="levels.html#Invalid">PointAddResult.Invalid</a></li>
+          data-doc-search-tag="game: init(game: var GameState; levelName: string)" href="game.html#init%2CGameState%2Cstring">game: init(game: var GameState; levelName: string)</a></li>
+          </ul></dd>
+<dt><a name="isDiagonal" href="#isDiagonal"><span>isDiagonal:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="geometry: isDiagonal[N: SomeNumber](p: Vec2[N]): bool" href="geometry.html#isDiagonal%2CVec2%5BN%3A%20SomeNumber%5D">geometry: isDiagonal[N: SomeNumber](p: Vec2[N]): bool</a></li>
           </ul></dd>
 <dt><a name="Jack" href="#Jack"><span>Jack:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -247,6 +263,10 @@
 <dt><a name="LineSegment" href="#LineSegment"><span>LineSegment:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="geometry: LineSegment" href="geometry.html#LineSegment">geometry: LineSegment</a></li>
+          </ul></dd>
+<dt><a name="LineStatus" href="#LineStatus"><span>LineStatus:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="game: LineStatus" href="game.html#LineStatus">game: LineStatus</a></li>
           </ul></dd>
 <dt><a name="loadLevelFromFile" href="#loadLevelFromFile"><span>loadLevelFromFile:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -272,13 +292,21 @@
 <li><a class="reference external"
           data-doc-search-tag="geometry: midpoint[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N]" href="geometry.html#midpoint%2Cvarargs%5BVec2%5BN%3A%20SomeNumber%5D%5D">geometry: midpoint[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N]</a></li>
           </ul></dd>
+<dt><a name="neighborInDirection" href="#neighborInDirection"><span>neighborInDirection:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="game: neighborInDirection(game: var GameState; direction: Point2D): Option[Point2D]" href="game.html#neighborInDirection%2CGameState%2CPoint2D">game: neighborInDirection(game: var GameState; direction: Point2D): Option[Point2D]</a></li>
+          </ul></dd>
 <dt><a name="nodes" href="#nodes"><span>nodes:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="graphs: nodes[T](g: Graph[T]): T" href="graphs.html#nodes.i%2CGraph%5BT%5D">graphs: nodes[T](g: Graph[T]): T</a></li>
           </ul></dd>
 <dt><a name="None" href="#None"><span>None:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="PointAddResult.None" href="levels.html#None">PointAddResult.None</a></li>
+          data-doc-search-tag="LineStatus.None" href="game.html#None">LineStatus.None</a></li>
+          </ul></dd>
+<dt><a name="OnlyGridNeighbors" href="#OnlyGridNeighbors"><span>OnlyGridNeighbors:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="LineStatus.OnlyGridNeighbors" href="game.html#OnlyGridNeighbors">LineStatus.OnlyGridNeighbors</a></li>
           </ul></dd>
 <dt><a name="parsePoint" href="#parsePoint"><span>parsePoint:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -292,17 +320,9 @@
 <li><a class="reference external"
           data-doc-search-tag="geometry: Point2DInt" href="geometry.html#Point2DInt">geometry: Point2DInt</a></li>
           </ul></dd>
-<dt><a name="PointAddResult" href="#PointAddResult"><span>PointAddResult:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="levels: PointAddResult" href="levels.html#PointAddResult">levels: PointAddResult</a></li>
-          </ul></dd>
 <dt><a name="PointGraph" href="#PointGraph"><span>PointGraph:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="geometry: PointGraph" href="geometry.html#PointGraph">geometry: PointGraph</a></li>
-          </ul></dd>
-<dt><a name="pointInDirection" href="#pointInDirection"><span>pointInDirection:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="levels: pointInDirection(line: Line; direction: Point2D; level: Level): Option[Point2D]" href="levels.html#pointInDirection%2CLine%2CPoint2D%2CLevel">levels: pointInDirection(line: Line; direction: Point2D; level: Level): Option[Point2D]</a></li>
           </ul></dd>
 <dt><a name="PointKind" href="#PointKind"><span>PointKind:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -384,10 +404,6 @@
 <li><a class="reference external"
           data-doc-search-tag="CellKind.Triangles" href="levels.html#Triangles">CellKind.Triangles</a></li>
           </ul></dd>
-<dt><a name="Valid" href="#Valid"><span>Valid:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PointAddResult.Valid" href="levels.html#Valid">PointAddResult.Valid</a></li>
-          </ul></dd>
 <dt><a name="Vec2" href="#Vec2"><span>Vec2:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="geometry: Vec2" href="geometry.html#Vec2">geometry: Vec2</a></li>
@@ -396,7 +412,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-21 12:10:39 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-21 23:24:13 UTC</small>
       </div>
     </div>
   </div>

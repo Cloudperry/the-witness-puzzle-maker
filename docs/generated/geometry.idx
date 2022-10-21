@@ -25,6 +25,7 @@ rotateAroundOrigin	geometry.html#rotateAroundOrigin,Vec2[N: SomeNumber],float	ge
 `$`	geometry.html#$,Vec2[N: SomeNumber]	geometry: `$`[N: SomeNumber](p: Vec2[N]): string	
 `$`	geometry.html#$,LineSegment	geometry: `$`(s: LineSegment): string	
 `$`	geometry.html#$,Line	geometry: `$`(line: Line): string	
+isDiagonal	geometry.html#isDiagonal,Vec2[N: SomeNumber]	geometry: isDiagonal[N: SomeNumber](p: Vec2[N]): bool	
 gridPoints	geometry.html#gridPoints.i,Vec2[float],Vec2[float]	geometry: gridPoints(p1, p2: Vec2[float]): Vec2[float]	
 adjacentGridPoints	geometry.html#adjacentGridPoints.i,Vec2[float]	geometry: adjacentGridPoints(p: Vec2[float]): Vec2[float]	
 addGridPoints	geometry.html#addGridPoints,PointGraph,Vec2[float],Vec2[float]	geometry: addGridPoints(g: var PointGraph; p1, p2: Vec2[float])	

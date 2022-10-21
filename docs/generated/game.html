@@ -50,6 +50,53 @@
   <li>
   <a class="reference reference-toplevel" href="#6" id="56">Imports</a>
 </li>
+<li>
+  <details open>
+    <summary><a class="reference reference-toplevel" href="#7" id="57">Types</a></summary>
+    <ul class="simple simple-toc-section">
+      <li><a class="reference" href="#GameState" title="GameState = object
+  level*: Level
+  line*: Line
+  status*: LineStatus
+  nxtMoves*: seq[Point2D]">GameState</a></li>
+<li><a class="reference" href="#LineStatus" title="LineStatus = enum
+  None, OnlyGridNeighbors, HasDiagNeighbors, CorrectSolution, IncorrectSolution">LineStatus</a></li>
+
+    </ul>
+  </details>
+</li>
+<li>
+  <details open>
+    <summary><a class="reference reference-toplevel" href="#12" id="62">Procs</a></summary>
+    <ul class="simple simple-toc-section">
+      <ul class="simple nested-toc-section">addPointAndCheckResult
+  <li><a class="reference" href="#addPointAndCheckResult%2CGameState%2CPoint2D" title="addPointAndCheckResult(game: var GameState; point: Point2D)">addPointAndCheckResult(game: var GameState; point: Point2D)</a></li>
+
+</ul>
+<ul class="simple nested-toc-section">checkSolution
+  <li><a class="reference" href="#checkSolution%2CLevel%2CLine" title="checkSolution(level: Level; line: Line): bool">checkSolution(level: Level; line: Line): bool</a></li>
+
+</ul>
+<ul class="simple nested-toc-section">divideSymbolsToRooms
+  <li><a class="reference" href="#divideSymbolsToRooms%2CLevel%2CLine" title="divideSymbolsToRooms(level: Level; line: Line): seq[MazeRoom]">divideSymbolsToRooms(level: Level; line: Line): seq[MazeRoom]</a></li>
+
+</ul>
+<ul class="simple nested-toc-section">goesFromStartToEnd
+  <li><a class="reference" href="#goesFromStartToEnd%2CLine%2CLevel" title="goesFromStartToEnd(line: Line; l: Level): bool">goesFromStartToEnd(line: Line; l: Level): bool</a></li>
+
+</ul>
+<ul class="simple nested-toc-section">init
+  <li><a class="reference" href="#init%2CGameState%2Cstring" title="init(game: var GameState; levelName: string)">init(game: var GameState; levelName: string)</a></li>
+
+</ul>
+<ul class="simple nested-toc-section">neighborInDirection
+  <li><a class="reference" href="#neighborInDirection%2CGameState%2CPoint2D" title="neighborInDirection(game: var GameState; direction: Point2D): Option[Point2D]">neighborInDirection(game: var GameState; direction: Point2D): Option[Point2D]</a></li>
+
+</ul>
+
+    </ul>
+  </details>
+</li>
 
 </ul>
 
@@ -62,7 +109,114 @@
     <div class="section" id="6">
   <h1><a class="toc-backref" href="#6">Imports</a></h1>
   <dl class="item">
-    <a class="reference external" href="levels.html">levels</a>, <a class="reference external" href="levelGfx.html">levelGfx</a>, <a class="reference external" href="geometry.html">geometry</a>, <a class="reference external" href="graphs.html">graphs</a>
+    <a class="reference external" href="geometry.html">geometry</a>, <a class="reference external" href="levels.html">levels</a>, <a class="reference external" href="graphs.html">graphs</a>
+  </dl>
+</div>
+<div class="section" id="7">
+  <h1><a class="toc-backref" href="#7">Types</a></h1>
+  <dl class="item">
+    <div id="GameState">
+  <dt><pre><a href="game.html#GameState"><span class="Identifier">GameState</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
+  <span class="Identifier">level</span><span class="Operator">*</span><span class="Other">:</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a>
+  <span class="Identifier">line</span><span class="Operator">*</span><span class="Other">:</span> <a href="geometry.html#Line"><span class="Identifier">Line</span></a>
+  <span class="Identifier">status</span><span class="Operator">*</span><span class="Other">:</span> <a href="game.html#LineStatus"><span class="Identifier">LineStatus</span></a>
+  <span class="Identifier">nxtMoves</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span>
+</pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+<div id="LineStatus">
+  <dt><pre><a href="game.html#LineStatus"><span class="Identifier">LineStatus</span></a> <span class="Other">=</span> <span class="Keyword">enum</span>
+  <span class="Identifier">None</span><span class="Other">,</span> <span class="Identifier">OnlyGridNeighbors</span><span class="Other">,</span> <span class="Identifier">HasDiagNeighbors</span><span class="Other">,</span> <span class="Identifier">CorrectSolution</span><span class="Other">,</span> <span class="Identifier">IncorrectSolution</span></pre></dt>
+  <dd>
+    
+    This is used when adding a new point to the player's line
+    
+  </dd>
+</div>
+
+  </dl>
+</div>
+<div class="section" id="12">
+  <h1><a class="toc-backref" href="#12">Procs</a></h1>
+  <dl class="item">
+    <div id="addPointAndCheckResult-procs-all">
+  <div id="addPointAndCheckResult,GameState,Point2D">
+  <dt><pre><span class="Keyword">proc</span> <a href="#addPointAndCheckResult%2CGameState%2CPoint2D"><span class="Identifier">addPointAndCheckResult</span></a><span class="Other">(</span><span class="Identifier">game</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="game.html#GameState"><span class="Identifier">GameState</span></a><span class="Other">;</span> <span class="Identifier">point</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">)</span> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
+<div id="checkSolution-procs-all">
+  <div id="checkSolution,Level,Line">
+  <dt><pre><span class="Keyword">func</span> <a href="#checkSolution%2CLevel%2CLine"><span class="Identifier">checkSolution</span></a><span class="Other">(</span><span class="Identifier">level</span><span class="Other">:</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">;</span> <span class="Identifier">line</span><span class="Other">:</span> <a href="geometry.html#Line"><span class="Identifier">Line</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
+<div id="divideSymbolsToRooms-procs-all">
+  <div id="divideSymbolsToRooms,Level,Line">
+  <dt><pre><span class="Keyword">func</span> <a href="#divideSymbolsToRooms%2CLevel%2CLine"><span class="Identifier">divideSymbolsToRooms</span></a><span class="Other">(</span><span class="Identifier">level</span><span class="Other">:</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">;</span> <span class="Identifier">line</span><span class="Other">:</span> <a href="geometry.html#Line"><span class="Identifier">Line</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">MazeRoom</span><span class="Other">]</span> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dd>
+    
+    Divides the level into rooms based on the player's line. Checks triangle symbols at the same time, because all the relevant information is available here.
+    
+  </dd>
+</div>
+
+</div>
+<div id="goesFromStartToEnd-procs-all">
+  <div id="goesFromStartToEnd,Line,Level">
+  <dt><pre><span class="Keyword">func</span> <a href="#goesFromStartToEnd%2CLine%2CLevel"><span class="Identifier">goesFromStartToEnd</span></a><span class="Other">(</span><span class="Identifier">line</span><span class="Other">:</span> <a href="geometry.html#Line"><span class="Identifier">Line</span></a><span class="Other">;</span> <span class="Identifier">l</span><span class="Other">:</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
+<div id="init-procs-all">
+  <div id="init,GameState,string">
+  <dt><pre><span class="Keyword">proc</span> <a href="#init%2CGameState%2Cstring"><span class="Identifier">init</span></a><span class="Other">(</span><span class="Identifier">game</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="game.html#GameState"><span class="Identifier">GameState</span></a><span class="Other">;</span> <span class="Identifier">levelName</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">ThawError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
+<div id="neighborInDirection-procs-all">
+  <div id="neighborInDirection,GameState,Point2D">
+  <dt><pre><span class="Keyword">proc</span> <a href="#neighborInDirection%2CGameState%2CPoint2D"><span class="Identifier">neighborInDirection</span></a><span class="Other">(</span><span class="Identifier">game</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="game.html#GameState"><span class="Identifier">GameState</span></a><span class="Other">;</span> <span class="Identifier">direction</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Option</span><span class="Other">[</span>
+    <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
+
   </dl>
 </div>
 
@@ -72,7 +226,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-21 12:10:39 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-21 23:24:13 UTC</small>
       </div>
     </div>
   </div>

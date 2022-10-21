@@ -1,0 +1,13 @@
+None	game.html#None	LineStatus.None	
+OnlyGridNeighbors	game.html#OnlyGridNeighbors	LineStatus.OnlyGridNeighbors	
+HasDiagNeighbors	game.html#HasDiagNeighbors	LineStatus.HasDiagNeighbors	
+CorrectSolution	game.html#CorrectSolution	LineStatus.CorrectSolution	
+IncorrectSolution	game.html#IncorrectSolution	LineStatus.IncorrectSolution	
+LineStatus	game.html#LineStatus	game: LineStatus	
+GameState	game.html#GameState	game: GameState	
+goesFromStartToEnd	game.html#goesFromStartToEnd,Line,Level	game: goesFromStartToEnd(line: Line; l: Level): bool	
+divideSymbolsToRooms	game.html#divideSymbolsToRooms,Level,Line	game: divideSymbolsToRooms(level: Level; line: Line): seq[MazeRoom]	
+checkSolution	game.html#checkSolution,Level,Line	game: checkSolution(level: Level; line: Line): bool	
+init	game.html#init,GameState,string	game: init(game: var GameState; levelName: string)	
+addPointAndCheckResult	game.html#addPointAndCheckResult,GameState,Point2D	game: addPointAndCheckResult(game: var GameState; point: Point2D)	
+neighborInDirection	game.html#neighborInDirection,GameState,Point2D	game: neighborInDirection(game: var GameState; direction: Point2D): Option[Point2D]	
