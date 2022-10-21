@@ -79,4 +79,4 @@ for name, level in levelsAndSolutions:
       fmt"Level {name} line {line} should be an incorrect solution"
     ) 
 
-echo "level solution algorithm (levels.nim) tests ran successfully."
+echo "level solution algorithm (game.nim) tests ran successfully."
