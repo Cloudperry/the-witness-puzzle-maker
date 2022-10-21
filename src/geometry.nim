@@ -1,4 +1,4 @@
-import std/[math, lenientops, tables, strformat, options, strscans]
+import std/[math, lenientops, sets, tables, strformat, options, strscans, sugar]
 import graphs
 
 type
@@ -12,6 +12,7 @@ type
   PointGraph* = Graph[Vec2[float]]
   Line* = seq[Point2D]
   LineSegment* = tuple[p1, p2: Point2D]
+  SegmentSet* = HashSet[LineSegment]
 
 proc `+`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x + p2.x, p1.y + p2.y) 
   # NIMNOTE: The first expression in a function that produces a value will be 
@@ -26,7 +27,6 @@ proc `*`*[V: SomeNumber, S: SomeNumber](p: Vec2[V], n: S): Vec2[V] =
   (p.x * n, p.y * n)
 proc `/`*[V: SomeNumber, S: SomeNumber](p: Vec2[V], n: S): Vec2[V] =
   (p.x / n, p.y / n)
-proc `$`*[N: SomeNumber](p: Vec2[N]): string = fmt"({p.x}, {p.y})"
 proc midpoint*[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N] =
   ## Generalization of the normal 2 points midpoint formula "(A + B) / 2" to n points
   sum(vectors) / vectors.len
@@ -41,6 +41,13 @@ proc len*[N: SomeNumber](p: Vec2[N]): float =
 proc toUnitVec*[N: SomeNumber](p: Vec2[N]): Vec2[N] = p / p.len
 proc rotateAroundOrigin*[N: SomeNumber](p: Vec2[N], angle: float): Vec2[N] =
   (cos(angle), sin(angle)) * p.x + (-sin(angle), cos(angle)) * p.y
+# Stringify operators for debugging
+proc `$`*[N: SomeNumber](p: Vec2[N]): string = fmt"({p.x}, {p.y})"
+proc `$`*(s: LineSegment): string = fmt"{s.p1} -> {s.p2}"
+proc `$`*(line: Line): string =
+  for i, point in line:
+    result.add $point
+    if i != line.high: result.add " -> "
 
 iterator gridPoints*(p1, p2: Vec2[float]): Vec2[float] =
   ## Iterates over a rectangular region of coordinates
@@ -71,12 +78,19 @@ proc connectGridPoints*(g: var PointGraph, p1, p2: Vec2[float]) =
 proc `->`*(a, b: Point2D): seq[Point2D] = @[a, b]
 proc `->`*(a: Line, b: Point2D): seq[Point2D] = a & b
 
-iterator segments*(line: seq[Point2D]): tuple[p1, p2: Point2D] =
+iterator segments*(line: Line): LineSegment =
   var prevPoint: Option[Point2D]
   for point in line:
     if prevPoint.isSome:
       yield (prevPoint.get, point)
     prevPoint = some(point)
+
+proc toSetOfSegments*(line: Line): SegmentSet = 
+  for segment in line.segments:
+    if segment.p1 < segment.p2:
+      result.incl segment
+    else:
+      result.incl (segment.p2, segment.p1)
 
 proc parsePoint*(pointStr: string): Option[Point2D] =
   var x, y: float
