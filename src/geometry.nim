@@ -1,4 +1,4 @@
-import std/[math, lenientops, sets, tables, strformat, options, strscans, sugar]
+import std/[math, lenientops, sets, tables, strformat, options, strscans]
 import graphs
 
 type
@@ -48,6 +48,10 @@ proc `$`*(line: Line): string =
   for i, point in line:
     result.add $point
     if i != line.high: result.add " -> "
+
+proc isDiagonal*[N: SomeNumber](p: Vec2[N]): bool = 
+  ## Returns whether a point is diagonal relative to the origin or not
+  toUnitVec(p) notin [(1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0)]
 
 iterator gridPoints*(p1, p2: Vec2[float]): Vec2[float] =
   ## Iterates over a rectangular region of coordinates
