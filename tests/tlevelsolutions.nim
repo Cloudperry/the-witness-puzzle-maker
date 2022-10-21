@@ -1,5 +1,5 @@
 import std/[strformat, tables, sets, lenientops, os]
-import ../src/[levels, geometry]
+import ../src/[levels, game, geometry]
 
 type 
   LevelSolutions = object
