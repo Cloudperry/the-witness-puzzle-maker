@@ -164,7 +164,7 @@ proc draw*(l: Level, v: LevelGfxData, o: DrawOptions) =
     drawLineEx(jack, jack + v.jackRightDeltaVec, v.jackWidth, o.jackColor)
   #TODO: Add block symbol drawing, maze borders, player line and rounded lines
 
-proc drawPlayerLine*(l: Level, line: Line, d: DrawableLevel, o: DrawOptions) =
+proc drawPlayerLine*(line: Line, l: Level, d: DrawableLevel, o: DrawOptions) =
   let lineStartScreen = d.mazePosToScreen(line[0], o)
   drawCircle(lineStartScreen.x, lineStartScreen.y, d.gfxData.startRadius, l.lineColor)
   for segment in line.segments:
