@@ -1,4 +1,4 @@
-import std/[tables, sets, sequtils, options, math, strformat, sugar]
+import std/[tables, sets, sequtils, options, math, strformat, sugar, algorithm]
 import frosty/streams
 import graphs, geometry
 
@@ -37,7 +37,6 @@ type
     pointGraph*: Graph[Point2D]
     cellGraph*: Graph[seq[Point2D]]
     pointData*: Table[Point2D, PointKind]
-    hexesBetweenCells*: TableRef[LineSegment, Point2D] # Do a pointgraph dfs from the value of this, if during room division the key is seen as a segmeent
     cellData*: Table[seq[Point2D], MazeCell]
     # Might need to add a color palette definition later for convenience 
     # as the colors will be reused a lot in the same level
@@ -65,8 +64,15 @@ func `==`*(c1, c2: MazeCell): bool =
 # --------------------------------Level creation--------------------------------
 # Error handling is important to have in the level creation functions, because
 # creating a level that uses the format in unintentional ways leads to weird bugs. 
+func cellFromCornerAndDirection*(corner, direction: Point2D): seq[Point2D] = 
+  result = @[
+    corner, corner + (direction.x, 0.0), 
+    corner + (direction.x, direction.y), corner + (0.0, direction.y)
+  ].sorted()
+  swap(result[1], result[2])
+
 func cellFromTopLeft*(p: Point2D): seq[Point2D] = 
-  @[p, p + (1.0, 0.0), p + (1.0, 1.0), p + (0.0, 1.0)]
+  cellFromCornerAndDirection(p, (1.0, 1.0))
 
 proc makeEmptyGrid*(l: var Level; topLeftCorner, botRightCorner: Point2D) =
   l.topLeftCorner = topLeftCorner
@@ -106,10 +112,6 @@ proc setCellData*(l: var Level, cellData: Table[MazeCell, seq[seq[Point2D]]]) =
       else:
         l.cellData[cell] = data
 
-proc removePoint*(l: var Level, p: Point2D) =
-  l.pointGraph.removeNode(p)
-  l.pointData.del p
-
 proc addConnectedPoint*(l: var Level, newPoint: Point2D, kind = Empty,
                         connTo: varargs[Point2D]) =
   if newPoint in l.pointGraph:
@@ -125,9 +127,23 @@ proc addConnectedPoint*(l: var Level, newPoint: Point2D, kind = Empty,
     if kind != Empty: 
       l.pointData[newPoint] = kind
 
+proc removePoint*(l: var Level, p: Point2D) =
+  l.pointGraph.removeNode p
+  l.pointData.del p
+  for direction in [(1.0, 1.0), (-1.0, 1.0), (-1.0, -1.0), (1.0, -1.0)]:
+    let cell = cellFromCornerAndDirection(p, direction)
+    if cell in l.cellGraph:
+      l.cellGraph.removeNode cell
+
 proc removeEdges*(l: var Level, edges: varargs[Edge[Point2D]]) = 
   for edge in edges:
     l.pointGraph.removeEdge(edge.node1, edge.node2)
+    if l.pointGraph.adjList[edge.node1].len == 0 or
+    l.pointGraph.adjList[edge.node2].len == 0:
+      raise newException(
+        ValueError,
+        fmt"Removing edge {edge} would leave a point without connections"
+      )
 
 proc addPointBetween*(l: var Level; p1, p2: Point2D, kind = Empty) =
   let newPoint = midpoint(p1, p2)
@@ -272,5 +288,3 @@ func pointInDirection*(line: Line, direction: Point2D, level: Level): Option[Poi
         {neighbor.toDirectionUnitVec: neighbor}
     if direction in neighbors:
       result = some(neighbors[direction])
-      debugEcho neighbors
-      debugEcho fmt"point towards {direction}: {result}"
