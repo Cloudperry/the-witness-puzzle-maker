@@ -24,7 +24,21 @@ let levelsAndSolutions = {
     ]
   ),
   "hexTutorial2": LevelSolutions(
-    level: loadLevelFromFile("levels/hexTutorial2.bin") #TODO: Add a few tests for this level (its a bit more complex)
+    level: loadLevelFromFile("levels/hexTutorial2.bin"),
+    correctLines: @[
+      (0.0, 3.0) -> (0.0, 2.0) -> (1.0, 2.0) -> (1.0, 3.0) -> (2.0, 3.0) -> 
+      (3.0, 3.0) -> (3.0, 2.0) -> (2.0, 2.0) -> (2.0, 1.0) -> (1.0, 1.0) -> 
+      (1.0, 0.0) -> (2.0, 0.0) -> (3.0, 0.0) -> (3.0, -0.25),
+      (0.0, 3.0) -> (0.0, 2.0) -> (0.0, 1.0) -> (1.0, 1.0) -> (1.0, 0.0) ->
+      (2.0, 0.0) -> (2.0, 1.0) -> (2.0, 2.0) -> (1.0, 2.0) -> (1.0, 3.0) ->
+      (2.0, 3.0) -> (3.0, 3.0) -> (3.0, 2.0) -> (3.0, 1.0) -> (3.0, 0.0) ->
+      (3.0, -0.25)
+    ],
+    incorrectLines: @[
+      (0.0, 3.0) -> (0.0, 2.0) -> (1.0, 2.0) -> (1.0, 1.0) -> (1.0, 0.0) -> 
+      (2.0, 0.0) -> (2.0, 1.0) -> (2.0, 2.0) -> (3.0, 2.0) -> (3.0, 1.0) -> 
+      (3.0, 0.0) -> (3.0, -0.25)
+    ]
   ),
   "shipwreckTriangles": LevelSolutions(
     level: loadLevelFromFile("levels/shipwreckTriangles.bin"),
