@@ -135,10 +135,16 @@ proc getDrawableLevel*(l: Level, o: DrawOptions): DrawableLevel =
 proc squareToRect(pos: Point2DInt, length: float): Rectangle = 
   Rectangle(x: pos.x.float, y: pos.y.float, width: length, height: length)
 
+proc drawLineRoundedEnds(startPos, endPos: Vec2; thickness: float, 
+                         color: raylib.Color) =
+  drawLineEx(startPos, endPos, thickness, color)
+  drawCircle(startPos.x.int, startPos.y.int, thickness / 2, color)
+  drawCircle(endPos.x.int, endPos.y.int, thickness / 2, color)
+
 proc draw*(l: Level, v: LevelGfxData, o: DrawOptions) = 
   drawRectangleV(v.bgRect[0], v.bgRect[1], l.bgColor)
   for line in v.lineSegments:
-    drawLineEx(line.p1, line.p2, v.lineWidth, l.fgColor)
+    drawLineRoundedEnds(line.p1, line.p2, v.lineWidth, l.fgColor)
   for point in v.startingPoints:
     drawCircle(point.x, point.y, v.startRadius, l.fgColor)
   for square in v.squares:
@@ -166,4 +172,4 @@ proc drawPlayerLine*(l: Level, line: Line, d: DrawableLevel, o: DrawOptions) =
       d.mazePosToScreen(segment.p1, o).toFloat, 
       d.mazePosToScreen(segment.p2, o).toFloat
     )
-    drawLineEx(segmentScreenPos.p1, segmentScreenPos.p2, d.gfxData.lineWidth, l.lineColor)
+    drawLineRoundedEnds(segmentScreenPos.p1, segmentScreenPos.p2, d.gfxData.lineWidth, l.lineColor)
