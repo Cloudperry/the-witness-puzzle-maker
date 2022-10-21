@@ -66,6 +66,10 @@
   <li><a class="reference" href="#%24%2CEdge" title="`$`(e: Edge): string">`$`(e: Edge): string</a></li>
 
 </ul>
+<ul class="simple nested-toc-section"><->
+  <li><a class="reference" href="#%3C-%3E%2CN%2CN" title="`&lt;-&gt;`[N](node1, node2: N): Edge[N]">`&lt;-&gt;`[N](node1, node2: N): Edge[N]</a></li>
+
+</ul>
 <ul class="simple nested-toc-section">addEdge
   <li><a class="reference" href="#addEdge%2CGraph%2CT%2CT" title="addEdge[T](g: var Graph; node1, node2: T)">addEdge[T](g: var Graph; node1, node2: T)</a></li>
 
@@ -82,6 +86,10 @@
   <li><a class="reference" href="#contains%2CGraph%2CT" title="contains[T](g: Graph; node: T): bool">contains[T](g: Graph; node: T): bool</a></li>
 
 </ul>
+<ul class="simple nested-toc-section">dfs
+  <li><a class="reference" href="#dfs%2CGraph%2CT%2CHashSet%5BT%5D" title="dfs[T](g: Graph; node: T; stopAt: HashSet[T]): HashSet[T]">dfs[T](g: Graph; node: T; stopAt: HashSet[T]): HashSet[T]</a></li>
+
+</ul>
 <ul class="simple nested-toc-section">findReachableNodes
   <li><a class="reference" href="#findReachableNodes%2CGraph%2CT" title="findReachableNodes[T](g: Graph; node: T): HashSet[T]">findReachableNodes[T](g: Graph; node: T): HashSet[T]</a></li>
 
@@ -91,7 +99,7 @@
 
 </ul>
 <ul class="simple nested-toc-section">hasRoute
-  <li><a class="reference" href="#hasRoute%2CGraph%2CT%2CT" title="hasRoute[T](g: Graph; currNode, goalNode: T): bool">hasRoute[T](g: Graph; currNode, goalNode: T): bool</a></li>
+  <li><a class="reference" href="#hasRoute%2CGraph%2CT%2CT" title="hasRoute[T](g: Graph; startNode, goalNode: T): bool">hasRoute[T](g: Graph; startNode, goalNode: T): bool</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">removeEdge
@@ -165,6 +173,17 @@
 </div>
 
 </div>
+<div id="&lt;-&gt;-procs-all">
+  <div id="<->,N,N">
+  <dt><pre><span class="Keyword">proc</span> <a href="#%3C-%3E%2CN%2CN"><span class="Identifier">`&lt;-&gt;`</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">node1</span><span class="Other">,</span> <span class="Identifier">node2</span><span class="Other">:</span> <span class="Identifier">N</span><span class="Other">)</span><span class="Other">:</span> <a href="graphs.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">]</span></pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
 <div id="addEdge-procs-all">
   <div id="addEdge,Graph,T,T">
   <dt><pre><span class="Keyword">proc</span> <a href="#addEdge%2CGraph%2CT%2CT"><span class="Identifier">addEdge</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">g</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">node1</span><span class="Other">,</span> <span class="Identifier">node2</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span></pre></dt>
@@ -209,6 +228,17 @@
 </div>
 
 </div>
+<div id="dfs-procs-all">
+  <div id="dfs,Graph,T,HashSet[T]">
+  <dt><pre><span class="Keyword">func</span> <a href="#dfs%2CGraph%2CT%2CHashSet%5BT%5D"><span class="Identifier">dfs</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">g</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">node</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">;</span> <span class="Identifier">stopAt</span><span class="Other">:</span> <span class="Identifier">HashSet</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">HashSet</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
 <div id="findReachableNodes-procs-all">
   <div id="findReachableNodes,Graph,T">
   <dt><pre><span class="Keyword">func</span> <a href="#findReachableNodes%2CGraph%2CT"><span class="Identifier">findReachableNodes</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">g</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">node</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">HashSet</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
@@ -233,7 +263,7 @@
 </div>
 <div id="hasRoute-procs-all">
   <div id="hasRoute,Graph,T,T">
-  <dt><pre><span class="Keyword">func</span> <a href="#hasRoute%2CGraph%2CT%2CT"><span class="Identifier">hasRoute</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">g</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">currNode</span><span class="Other">,</span> <span class="Identifier">goalNode</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span></pre></dt>
+  <dt><pre><span class="Keyword">func</span> <a href="#hasRoute%2CGraph%2CT%2CT"><span class="Identifier">hasRoute</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">g</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">startNode</span><span class="Other">,</span> <span class="Identifier">goalNode</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span></pre></dt>
   <dd>
     
     
@@ -291,7 +321,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-16 18:33:10 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-21 12:10:38 UTC</small>
       </div>
     </div>
   </div>

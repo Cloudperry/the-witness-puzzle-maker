@@ -1,5 +1,8 @@
 DrawOptions	levelGfx.html#DrawOptions	levelGfx: DrawOptions	
 DrawableLevel	levelGfx.html#DrawableLevel	levelGfx: DrawableLevel	
 setPositionDefaults	levelGfx.html#setPositionDefaults,DrawOptions,tuple[int,int]	levelGfx: setPositionDefaults(opts: var DrawOptions; winSize: tuple[w, h: int])	
+mazeDistToScreen	levelGfx.html#mazeDistToScreen,DrawableLevel,float,DrawOptions	levelGfx: mazeDistToScreen(d: DrawableLevel; dist: float; o: DrawOptions): int	
+mazePosToScreen	levelGfx.html#mazePosToScreen,DrawableLevel,Point2D,DrawOptions	levelGfx: mazePosToScreen(d: DrawableLevel; p: Point2D; o: DrawOptions): Point2DInt	
 getDrawableLevel	levelGfx.html#getDrawableLevel,Level,DrawOptions	levelGfx: getDrawableLevel(l: Level; o: DrawOptions): DrawableLevel	
 draw	levelGfx.html#draw,Level,LevelGfxData,DrawOptions	levelGfx: draw(l: Level; v: LevelGfxData; o: DrawOptions)	
+drawPlayerLine	levelGfx.html#drawPlayerLine,Level,Line,DrawableLevel,DrawOptions	levelGfx: drawPlayerLine(l: Level; line: Line; d: DrawableLevel; o: DrawOptions)	

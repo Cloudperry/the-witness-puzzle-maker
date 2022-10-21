@@ -31,18 +31,18 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">24</td>
-            <td class="headerCovTableEntry">24</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntry">37</td>
+            <td class="headerCovTableEntry">42</td>
+            <td class="headerCovTableEntryMed">88.1 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-10-16 21:33:02</td>
+            <td class="headerValue">2022-10-21 15:10:04</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">7</td>
             <td class="headerCovTableEntry">9</td>
-            <td class="headerCovTableEntryMed">77.8 %</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntryLo">69.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Legend:</td>
@@ -68,12 +68,12 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : import std/[math, lenientops, tables, strformat, options]</a>
+<a name="1"><span class="lineNum">       1 </span>            : import std/[math, lenientops, sets, tables, strformat, options, strscans, sugar]</a>
 <a name="2"><span class="lineNum">       2 </span>            : import graphs</a>
 <a name="3"><span class="lineNum">       3 </span>            : </a>
 <a name="4"><span class="lineNum">       4 </span>            : type</a>
-<a name="5"><span class="lineNum">       5 </span><span class="lineCov">       1768 :   Vec2*[N: SomeNumber] = tuple[x, y: N]</span></a>
-<a name="6"><span class="lineNum">       6 </span><span class="lineCov">       1768 :     # NIMNOTE: Generics can be constrained to specific types. Here N is restricted</span></a>
+<a name="5"><span class="lineNum">       5 </span><span class="lineCov">       3006 :   Vec2*[N: SomeNumber] = tuple[x, y: N]</span></a>
+<a name="6"><span class="lineNum">       6 </span><span class="lineCov">       3006 :     # NIMNOTE: Generics can be constrained to specific types. Here N is restricted</span></a>
 <a name="7"><span class="lineNum">       7 </span>            :     # to be a number (float or int of any size).</a>
 <a name="8"><span class="lineNum">       8 </span>            :   Point2D* = Vec2[float]</a>
 <a name="9"><span class="lineNum">       9 </span>            :     # NIMNOTE: Symbols marked with asterisk are exported symbols. That means </a>
@@ -81,67 +81,91 @@
 <a name="11"><span class="lineNum">      11 </span>            :   Point2DInt* = Vec2[int]</a>
 <a name="12"><span class="lineNum">      12 </span>            :   PointGraph* = Graph[Vec2[float]]</a>
 <a name="13"><span class="lineNum">      13 </span>            :   Line* = seq[Point2D]</a>
-<a name="14"><span class="lineNum">      14 </span>            :   LineSegments* = seq[tuple[p1, p2: Point2D]]</a>
-<a name="15"><span class="lineNum">      15 </span>            : </a>
-<a name="16"><span class="lineNum">      16 </span><span class="lineCov">        325 : proc `+`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x + p2.x, p1.y + p2.y) </span></a>
-<a name="17"><span class="lineNum">      17 </span>            :   # NIMNOTE: The first expression in a function that produces a value will be </a>
-<a name="18"><span class="lineNum">      18 </span>            :   # the return value. Operators can be overridden by having the operator in backticks.</a>
-<a name="19"><span class="lineNum">      19 </span>            : proc `+`*[N: SomeNumber](p: Vec2, n: N): Vec2[N] = (p.x + n, p.y + n)</a>
-<a name="20"><span class="lineNum">      20 </span>            : proc `-`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x - p2.x, p1.y - p2.y)</a>
-<a name="21"><span class="lineNum">      21 </span>            : proc `-`*[N: SomeNumber](p: Vec2, n: N): Vec2[N] = (p.x - n, p.y - n)</a>
-<a name="22"><span class="lineNum">      22 </span>            : proc `-`*[N: SomeNumber](p: Vec2[N]): Vec2[N] = (-p.x, -p.y)</a>
-<a name="23"><span class="lineNum">      23 </span>            : proc `*`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x * p2.x, p1.y * p2.y)</a>
-<a name="24"><span class="lineNum">      24 </span>            : proc `/`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x / p2.x, p1.y / p2.y)</a>
-<a name="25"><span class="lineNum">      25 </span>            : proc `*`*[V: SomeNumber, S: SomeNumber](p: Vec2[V], n: S): Vec2[V] = </a>
-<a name="26"><span class="lineNum">      26 </span>            :   (p.x * n, p.y * n)</a>
-<a name="27"><span class="lineNum">      27 </span>            : proc `/`*[V: SomeNumber, S: SomeNumber](p: Vec2[V], n: S): Vec2[V] =</a>
-<a name="28"><span class="lineNum">      28 </span>            :   (p.x / n, p.y / n)</a>
-<a name="29"><span class="lineNum">      29 </span><span class="lineCov">       3936 : proc `$`*[N: SomeNumber](p: Vec2[N]): string = fmt&quot;({p.x}, {p.y})&quot;</span></a>
-<a name="30"><span class="lineNum">      30 </span><span class="lineCov">       2624 : proc midpoint*[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N] =</span></a>
+<a name="14"><span class="lineNum">      14 </span><span class="lineNoCov">          0 :   LineSegment* = tuple[p1, p2: Point2D]</span></a>
+<a name="15"><span class="lineNum">      15 </span><span class="lineNoCov">          0 :   SegmentSet* = HashSet[LineSegment]</span></a>
+<a name="16"><span class="lineNum">      16 </span>            : </a>
+<a name="17"><span class="lineNum">      17 </span><span class="lineCov">        226 : proc `+`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x + p2.x, p1.y + p2.y) </span></a>
+<a name="18"><span class="lineNum">      18 </span>            :   # NIMNOTE: The first expression in a function that produces a value will be </a>
+<a name="19"><span class="lineNum">      19 </span>            :   # the return value. Operators can be overridden by having the operator in backticks.</a>
+<a name="20"><span class="lineNum">      20 </span>            : proc `+`*[N: SomeNumber](p: Vec2, n: N): Vec2[N] = (p.x + n, p.y + n)</a>
+<a name="21"><span class="lineNum">      21 </span>            : proc `-`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x - p2.x, p1.y - p2.y)</a>
+<a name="22"><span class="lineNum">      22 </span>            : proc `-`*[N: SomeNumber](p: Vec2, n: N): Vec2[N] = (p.x - n, p.y - n)</a>
+<a name="23"><span class="lineNum">      23 </span>            : proc `-`*[N: SomeNumber](p: Vec2[N]): Vec2[N] = (-p.x, -p.y)</a>
+<a name="24"><span class="lineNum">      24 </span>            : proc `*`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x * p2.x, p1.y * p2.y)</a>
+<a name="25"><span class="lineNum">      25 </span>            : proc `/`*[N: SomeNumber](p1, p2: Vec2[N]): Vec2[N] = (p1.x / p2.x, p1.y / p2.y)</a>
+<a name="26"><span class="lineNum">      26 </span>            : proc `*`*[V: SomeNumber, S: SomeNumber](p: Vec2[V], n: S): Vec2[V] = </a>
+<a name="27"><span class="lineNum">      27 </span>            :   (p.x * n, p.y * n)</a>
+<a name="28"><span class="lineNum">      28 </span>            : proc `/`*[V: SomeNumber, S: SomeNumber](p: Vec2[V], n: S): Vec2[V] =</a>
+<a name="29"><span class="lineNum">      29 </span>            :   (p.x / n, p.y / n)</a>
+<a name="30"><span class="lineNum">      30 </span>            : proc midpoint*[N: SomeNumber](vectors: varargs[Vec2[N]]): Vec2[N] =</a>
 <a name="31"><span class="lineNum">      31 </span>            :   ## Generalization of the normal 2 points midpoint formula &quot;(A + B) / 2&quot; to n points</a>
 <a name="32"><span class="lineNum">      32 </span>            :   sum(vectors) / vectors.len</a>
-<a name="33"><span class="lineNum">      33 </span>            : proc toInt*(p: Point2D): Point2DInt = (p.x.round.int, p.y.round.int)</a>
-<a name="34"><span class="lineNum">      34 </span>            : proc toFloat*(p: Point2DInt): Point2D = (p.x.float, p.y.float)</a>
-<a name="35"><span class="lineNum">      35 </span>            : proc len*[N: SomeNumber](p: Vec2[N]): float = </a>
-<a name="36"><span class="lineNum">      36 </span>            :   let squared = p * p</a>
-<a name="37"><span class="lineNum">      37 </span>            :   sqrt(squared.x + squared.y)</a>
-<a name="38"><span class="lineNum">      38 </span>            : proc toUnitVec*[N: SomeNumber](p: Vec2[N]): Vec2[N] = p * p.len</a>
-<a name="39"><span class="lineNum">      39 </span>            : </a>
-<a name="40"><span class="lineNum">      40 </span>            : iterator gridPoints*(p1, p2: Vec2[float]): Vec2[float] =</a>
-<a name="41"><span class="lineNum">      41 </span>            :   ## Iterates over a rectangular region of coordinates</a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">         15 :   for x in p1.x.int .. p2.x.int:</span></a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">        100 :     for y in p1.y.int .. p2.y.int:</span></a>
-<a name="44"><span class="lineNum">      44 </span>            :       yield (x.float, y.float)</a>
-<a name="45"><span class="lineNum">      45 </span>            : </a>
-<a name="46"><span class="lineNum">      46 </span>            : iterator adjacentGridPoints*(p: Vec2[float]): Vec2[float] =</a>
-<a name="47"><span class="lineNum">      47 </span>            :   const adjacents: array[4, Vec2[float]] = [</a>
-<a name="48"><span class="lineNum">      48 </span>            :     (1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0)</a>
-<a name="49"><span class="lineNum">      49 </span>            :   ]</a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">        200 :   for delta in adjacents:</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">        200 :     yield (p.x + delta.x, p.y + delta.y)</span></a>
-<a name="52"><span class="lineNum">      52 </span>            : </a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          1 : proc addGridPoints*(g: var PointGraph, p1, p2: Vec2[float]) =</span></a>
-<a name="54"><span class="lineNum">      54 </span>            :   ## Adds nodes in a rectangular region of coordinates to the graph</a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">         25 :   for point in gridPoints(p1, p2):</span></a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         25 :     g.addNode point</span></a>
+<a name="33"><span class="lineNum">      33 </span>            : proc avg*[N: SomeNumber](numbers: varargs[N]): N =</a>
+<a name="34"><span class="lineNum">      34 </span>            :   sum(numbers) / numbers.len</a>
+<a name="35"><span class="lineNum">      35 </span>            : proc dist*[N: SomeNumber](n1, n2: N): N = abs(n2 - n1)</a>
+<a name="36"><span class="lineNum">      36 </span>            : proc toInt*(p: Point2D): Point2DInt = (p.x.round.int, p.y.round.int)</a>
+<a name="37"><span class="lineNum">      37 </span>            : proc toFloat*(p: Point2DInt): Point2D = (p.x.float, p.y.float)</a>
+<a name="38"><span class="lineNum">      38 </span>            : proc len*[N: SomeNumber](p: Vec2[N]): float = </a>
+<a name="39"><span class="lineNum">      39 </span>            :   let squared = p * p</a>
+<a name="40"><span class="lineNum">      40 </span>            :   sqrt(squared.x + squared.y)</a>
+<a name="41"><span class="lineNum">      41 </span>            : proc toUnitVec*[N: SomeNumber](p: Vec2[N]): Vec2[N] = p / p.len</a>
+<a name="42"><span class="lineNum">      42 </span>            : proc rotateAroundOrigin*[N: SomeNumber](p: Vec2[N], angle: float): Vec2[N] =</a>
+<a name="43"><span class="lineNum">      43 </span>            :   (cos(angle), sin(angle)) * p.x + (-sin(angle), cos(angle)) * p.y</a>
+<a name="44"><span class="lineNum">      44 </span>            : # Stringify operators for debugging</a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 : proc `$`*[N: SomeNumber](p: Vec2[N]): string = fmt&quot;({p.x}, {p.y})&quot;</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 : proc `$`*(s: LineSegment): string = fmt&quot;{s.p1} -&gt; {s.p2}&quot;</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 : proc `$`*(line: Line): string =</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">      22262 :   for i, point in line:</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">        288 :     result.add $point</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">       7448 :     if i != line.high: result.add &quot; -&gt; &quot;</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">        192 : </span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">         21 : iterator gridPoints*(p1, p2: Vec2[float]): Vec2[float] =</span></a>
+<a name="53"><span class="lineNum">      53 </span>            :   ## Iterates over a rectangular region of coordinates</a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          5 :   for x in p1.x.int .. p2.x.int:</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        100 :     for y in p1.y.int .. p2.y.int:</span></a>
+<a name="56"><span class="lineNum">      56 </span>            :       yield (x.float, y.float)</a>
 <a name="57"><span class="lineNum">      57 </span>            : </a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          1 : proc connectGridPoints*(g: var PointGraph, p1, p2: Vec2[float]) =</span></a>
-<a name="59"><span class="lineNum">      59 </span>            :   ## Connects all nodes in a rectangular region of coordinates</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">         25 :   for currPoint in gridPoints(p1, p2):</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        100 :     for adjPoint in adjacentGridPoints(currPoint):</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        100 :       if adjPoint in g.adjList:</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         80 :         g.addEdge(currPoint, adjPoint)</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         80 : </span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        100 : # Convenience operators for building a line from points</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">       6025 : proc `-&gt;`*(a, b: Point2D): seq[Point2D] = @[a, b]</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        119 : proc `-&gt;`*(a: Line, b: Point2D): seq[Point2D] = a &amp; b</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">       1338 : </span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         67 : proc lineToSegments*(line: seq[Point2D]): seq[tuple[p1, p2: Point2D]] =</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          4 :   var prevPoint: Option[Point2D]</span></a>
-<a name="71"><span class="lineNum">      71 </span>            :   for point in line:</a>
-<a name="72"><span class="lineNum">      72 </span>            :     if prevPoint.isSome:</a>
-<a name="73"><span class="lineNum">      73 </span>            :       result.add (prevPoint.get, point)</a>
-<a name="74"><span class="lineNum">      74 </span>            :     prevPoint = some(point)</a>
+<a name="58"><span class="lineNum">      58 </span>            : iterator adjacentGridPoints*(p: Vec2[float]): Vec2[float] =</a>
+<a name="59"><span class="lineNum">      59 </span>            :   const adjacents: array[4, Vec2[float]] = [</a>
+<a name="60"><span class="lineNum">      60 </span>            :     (1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0)</a>
+<a name="61"><span class="lineNum">      61 </span>            :   ]</a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        200 :   for delta in adjacents:</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        200 :     yield (p.x + delta.x, p.y + delta.y)</span></a>
+<a name="64"><span class="lineNum">      64 </span>            : </a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          1 : proc addGridPoints*(g: var PointGraph, p1, p2: Vec2[float]) =</span></a>
+<a name="66"><span class="lineNum">      66 </span>            :   ## Adds nodes in a rectangular region of coordinates to the graph</a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">         25 :   for point in gridPoints(p1, p2):</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         25 :     g.addNode point</span></a>
+<a name="69"><span class="lineNum">      69 </span>            : </a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          1 : proc connectGridPoints*(g: var PointGraph, p1, p2: Vec2[float]) =</span></a>
+<a name="71"><span class="lineNum">      71 </span>            :   ## Connects all nodes in a rectangular region of coordinates</a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">         25 :   for currPoint in gridPoints(p1, p2):</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        100 :     for adjPoint in adjacentGridPoints(currPoint):</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        100 :       if adjPoint in g.adjList:</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">         80 :         g.addEdge(currPoint, adjPoint)</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">         80 : </span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        100 : # Convenience operators for building a line from points</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">          6 : proc `-&gt;`*(a, b: Point2D): seq[Point2D] = @[a, b]</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         53 : proc `-&gt;`*(a: Line, b: Point2D): seq[Point2D] = a &amp; b</span></a>
+<a name="80"><span class="lineNum">      80 </span>            : </a>
+<a name="81"><span class="lineNum">      81 </span>            : iterator segments*(line: Line): LineSegment =</a>
+<a name="82"><span class="lineNum">      82 </span>            :   var prevPoint: Option[Point2D]</a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">        507 :   for point in line:</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">        507 :     if prevPoint.isSome:</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        419 :       yield (prevPoint.get, point)</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        507 :     prevPoint = some(point)</span></a>
+<a name="87"><span class="lineNum">      87 </span>            : </a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">         82 : proc toSetOfSegments*(line: Line): SegmentSet = </span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        360 :   for segment in line.segments:</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">        360 :     if segment.p1 &lt; segment.p2:</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">        178 :       result.incl segment</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">        178 :     else:</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">        178 :       result.incl (segment.p2, segment.p1)</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">        182 : </span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">        542 : proc parsePoint*(pointStr: string): Option[Point2D] =</span></a>
+<a name="96"><span class="lineNum">      96 </span>            :   var x, y: float</a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">        442 :   if scanf(pointStr, &quot;$f $f&quot;, x, y):</span></a>
+<a name="98"><span class="lineNum">      98 </span>            :     return some((x, y)) </a>
 </pre>
       </td>
     </tr>

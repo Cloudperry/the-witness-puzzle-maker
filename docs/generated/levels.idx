@@ -13,6 +13,12 @@ AntiBlock	levels.html#AntiBlock	CellKind.AntiBlock
 Jack	levels.html#Jack	CellKind.Jack	
 CellKind	levels.html#CellKind	levels: CellKind	
 MazeCell	levels.html#MazeCell	levels: MazeCell	
+None	levels.html#None	PointAddResult.None	
+Invalid	levels.html#Invalid	PointAddResult.Invalid	
+Valid	levels.html#Valid	PointAddResult.Valid	
+CorrectSolution	levels.html#CorrectSolution	PointAddResult.CorrectSolution	
+IncorrectSolution	levels.html#IncorrectSolution	PointAddResult.IncorrectSolution	
+PointAddResult	levels.html#PointAddResult	levels: PointAddResult	
 Level	levels.html#Level	levels: Level	
 `==`	levels.html#==,MazeCell,MazeCell	levels: `==`(c1, c2: MazeCell): bool	
 cellFromTopLeft	levels.html#cellFromTopLeft,Point2D	levels: cellFromTopLeft(p: Point2D): seq[Point2D]	
@@ -20,9 +26,13 @@ makeEmptyGrid	levels.html#makeEmptyGrid,Level,Point2D,Point2D	levels: makeEmptyG
 setPointData	levels.html#setPointData,Level,Table[PointKind,seq[Point2D]]	levels: setPointData(l: var Level; pointData: Table[PointKind, seq[Point2D]])	
 setCellData	levels.html#setCellData,Level,Table[MazeCell,seq[seq[Point2D]]]	levels: setCellData(l: var Level; cellData: Table[MazeCell, seq[seq[Point2D]]])	
 removePoint	levels.html#removePoint,Level,Point2D	levels: removePoint(l: var Level; p: Point2D)	
-addConnectedPoint	levels.html#addConnectedPoint,Level,PointKind,Point2D,varargs[Point2D]	levels: addConnectedPoint(l: var Level; kind: PointKind; newPoint: Point2D;\n                  connectedTo: varargs[Point2D])	
-removeEdges	levels.html#removeEdges,Level,varargs[tuple[Point2D,Point2D]]	levels: removeEdges(l: var Level; edges: varargs[tuple[p1, p2: Point2D]])	
-addPointBetween	levels.html#addPointBetween,Level,PointKind,Point2D,Point2D	levels: addPointBetween(l: var Level; kind: PointKind; p1, p2: Point2D)	
-checkSolution	levels.html#checkSolution,Level,LineSegments	levels: checkSolution(l: Level; line: LineSegments): bool	
+addConnectedPoint	levels.html#addConnectedPoint,Level,Point2D,varargs[Point2D]	levels: addConnectedPoint(l: var Level; newPoint: Point2D; kind = Empty;\n                  connTo: varargs[Point2D])	
+removeEdges	levels.html#removeEdges,Level,varargs[Edge[Point2D]]	levels: removeEdges(l: var Level; edges: varargs[Edge[Point2D]])	
+addPointBetween	levels.html#addPointBetween,Level,Point2D,Point2D	levels: addPointBetween(l: var Level; p1, p2: Point2D; kind = Empty)	
 saveLevelToFile	levels.html#saveLevelToFile,Level,string	levels: saveLevelToFile(l: Level; filename: string)	
 loadLevelFromFile	levels.html#loadLevelFromFile,string	levels: loadLevelFromFile(filename: string): Level	
+goesFromStartToEnd	levels.html#goesFromStartToEnd,Line,Level	levels: goesFromStartToEnd(line: Line; l: Level): bool	
+divideSymbolsToRooms	levels.html#divideSymbolsToRooms,Level,Line	levels: divideSymbolsToRooms(level: Level; line: Line): seq[MazeRoom]	
+checkSolution	levels.html#checkSolution,Level,Line	levels: checkSolution(level: Level; line: Line): bool	
+checkAndAddPoint	levels.html#checkAndAddPoint,Line,Point2D,Level	levels: checkAndAddPoint(line: var Line; point: Point2D; level: Level): PointAddResult	
+pointInDirection	levels.html#pointInDirection,Line,Point2D,Level	levels: pointInDirection(line: Line; direction: Point2D; level: Level): Option[Point2D]	

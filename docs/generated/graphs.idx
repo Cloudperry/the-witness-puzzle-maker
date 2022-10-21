@@ -1,13 +1,15 @@
 Graph	graphs.html#Graph	graphs: Graph	
 Edge	graphs.html#Edge	graphs: Edge	
-addNode	graphs.html#addNode,Graph,T	graphs: addNode[T](g: var Graph; node: T)	
-removeNode	graphs.html#removeNode,Graph,T	graphs: removeNode[T](g: var Graph; node: T)	
-contains	graphs.html#contains,Graph,T	graphs: contains[T](g: Graph; node: T): bool	
+`&lt;-&gt;`	graphs.html#<->,N,N	graphs: `&lt;-&gt;`[N](node1, node2: N): Edge[N]	
 addEdge	graphs.html#addEdge,Graph,T,T	graphs: addEdge[T](g: var Graph; node1, node2: T)	
 addEdgeAndMissingNodes	graphs.html#addEdgeAndMissingNodes,Graph,T,T	graphs: addEdgeAndMissingNodes[T](g: var Graph; node1, node2: T)	
 removeEdge	graphs.html#removeEdge,Graph,T,T	graphs: removeEdge[T](g: var Graph; node1, node2: T)	
 `$`	graphs.html#$,Edge	graphs: `$`(e: Edge): string	
+addNode	graphs.html#addNode,Graph,T	graphs: addNode[T](g: var Graph; node: T)	
+removeNode	graphs.html#removeNode,Graph,T	graphs: removeNode[T](g: var Graph; node: T)	
+contains	graphs.html#contains,Graph,T	graphs: contains[T](g: Graph; node: T): bool	
 nodes	graphs.html#nodes.i,Graph[T]	graphs: nodes[T](g: Graph[T]): T	
 getEdges	graphs.html#getEdges,Graph[T]	graphs: getEdges[T](g: Graph[T]): HashSet[Edge[T]]	
+dfs	graphs.html#dfs,Graph,T,HashSet[T]	graphs: dfs[T](g: Graph; node: T; stopAt: HashSet[T]): HashSet[T]	
 findReachableNodes	graphs.html#findReachableNodes,Graph,T	graphs: findReachableNodes[T](g: Graph; node: T): HashSet[T]	
-hasRoute	graphs.html#hasRoute,Graph,T,T	graphs: hasRoute[T](g: Graph; currNode, goalNode: T): bool	
+hasRoute	graphs.html#hasRoute,Graph,T,T	graphs: hasRoute[T](g: Graph; startNode, goalNode: T): bool	
