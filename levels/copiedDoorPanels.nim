@@ -36,10 +36,5 @@ entryAreaDoor.setCellData({
     cellFromTopLeft((5.0, 6.0))
   ]
 }.toTable)
-#let symbols = collect:
-#  for cell, symbol in entryAreaDoor.cellData.pairs:
-#    if symbol.kind != Empty:
-#      {cell: symbol}
-#echo symbols
 
 entryAreaDoor.saveLevelToFile("entryAreaDoor.bin")
