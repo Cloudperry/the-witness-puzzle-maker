@@ -30,8 +30,10 @@ gridPoints	geometry.html#gridPoints.i,Vec2[float],Vec2[float]	geometry: gridPoin
 adjacentGridPoints	geometry.html#adjacentGridPoints.i,Vec2[float]	geometry: adjacentGridPoints(p: Vec2[float]): Vec2[float]	
 addGridPoints	geometry.html#addGridPoints,PointGraph,Vec2[float],Vec2[float]	geometry: addGridPoints(g: var PointGraph; p1, p2: Vec2[float])	
 connectGridPoints	geometry.html#connectGridPoints,PointGraph,Vec2[float],Vec2[float]	geometry: connectGridPoints(g: var PointGraph; p1, p2: Vec2[float])	
-`-&gt;`	geometry.html#->,Point2D,Point2D	geometry: `-&gt;`(a, b: Point2D): seq[Point2D]	
-`-&gt;`	geometry.html#->,Line,Point2D	geometry: `-&gt;`(a: Line; b: Point2D): seq[Point2D]	
+combine	geometry.html#combine,LineSegment,LineSegment	geometry: combine(edge1, edge2: LineSegment): LineSegment	
+`-&gt;`	geometry.html#->,Point2D,Point2D	geometry: `-&gt;`(a, b: Point2D): Line	
+`-&gt;`	geometry.html#->,Line,Point2D	geometry: `-&gt;`(a: Line; b: Point2D): Line	
 segments	geometry.html#segments.i,Line	geometry: segments(line: Line): LineSegment	
-toSetOfSegments	geometry.html#toSetOfSegments,Line	geometry: toSetOfSegments(line: Line): SegmentSet	
+inAscOrder	geometry.html#inAscOrder,LineSegment	geometry: inAscOrder(segment: LineSegment): LineSegment	
+toSetOfSegments	geometry.html#toSetOfSegments,Line	geometry: toSetOfSegments(l: Line): SegmentSet	
 parsePoint	geometry.html#parsePoint,string	geometry: parsePoint(pointStr: string): Option[Point2D]	

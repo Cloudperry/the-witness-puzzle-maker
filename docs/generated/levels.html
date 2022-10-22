@@ -60,18 +60,19 @@
 <li><a class="reference" href="#Level" title="Level = object
   topLeftCorner*: Point2D
   botRightCorner*: Point2D
-  pointGraph*: Graph[Point2D]
-  cellGraph*: Graph[seq[Point2D]]
-  pointData*: Table[Point2D, PointKind]
+  pointGraph*: Graph[Point2D] ## This graph represents the points where the line can go
+  cellGraph*: Graph[seq[Point2D]] ## This graph represents cells between the lines
+                                  ## The table below contains all the non-empty points and their types 
+  pointData*: Table[Point2D, PointKind] ## The table below contains all the non-empty cells and their symbols 
   cellData*: Table[seq[Point2D], MazeCell]
   fgColor*: Color
   bgColor*: Color
   lineColor*: Color">Level</a></li>
 <li><a class="reference" href="#MazeCell" title="MazeCell = object
   case kind*: CellKind
-  of Square, Star:          ## Only these puzzle symbols have a customizable color
-      color*: Color          ## The color will affect the puzzle solution
-    
+  of Square, Star:
+      color*: Color
+
   of Triangles:
       count*: int
 
@@ -167,7 +168,7 @@
   <span class="Identifier">Empty</span><span class="Other">,</span> <span class="Identifier">Square</span><span class="Other">,</span> <span class="Identifier">Triangles</span><span class="Other">,</span> <span class="Identifier">Star</span><span class="Other">,</span> <span class="Identifier">Block</span><span class="Other">,</span> <span class="Identifier">AntiBlock</span><span class="Other">,</span> <span class="Identifier">Jack</span></pre></dt>
   <dd>
     
-    All the puzzle symbols that can be attached to a cell
+    Types of cells in levels. Again empty is a default value. These are puzzle symbols that are too complicated to explain here. Most of them are explained in the project definition document.
     
   </dd>
 </div>
@@ -183,9 +184,10 @@
   <dt><pre><a href="levels.html#Level"><span class="Identifier">Level</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">topLeftCorner</span><span class="Operator">*</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a>
   <span class="Identifier">botRightCorner</span><span class="Operator">*</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a>
-  <span class="Identifier">pointGraph</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span>
-  <span class="Identifier">cellGraph</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">]</span>
-  <span class="Identifier">pointData</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">,</span> <a href="levels.html#PointKind"><span class="Identifier">PointKind</span></a><span class="Other">]</span>
+  <span class="Identifier">pointGraph</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span> <span class="Comment">## This graph represents the points where the line can go</span>
+  <span class="Identifier">cellGraph</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">]</span> <span class="Comment">## This graph represents cells between the lines</span>
+                                  <span class="Comment">## The table below contains all the non-empty points and their types </span>
+  <span class="Identifier">pointData</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">,</span> <a href="levels.html#PointKind"><span class="Identifier">PointKind</span></a><span class="Other">]</span> <span class="Comment">## The table below contains all the non-empty cells and their symbols </span>
   <span class="Identifier">cellData</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">,</span> <a href="levels.html#MazeCell"><span class="Identifier">MazeCell</span></a><span class="Other">]</span>
   <span class="Identifier">fgColor</span><span class="Operator">*</span><span class="Other">:</span> <a href="levels.html#Color"><span class="Identifier">Color</span></a>
   <span class="Identifier">bgColor</span><span class="Operator">*</span><span class="Other">:</span> <a href="levels.html#Color"><span class="Identifier">Color</span></a>
@@ -200,9 +202,9 @@
 <div id="MazeCell">
   <dt><pre><a href="levels.html#MazeCell"><span class="Identifier">MazeCell</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Keyword">case</span> <span class="Identifier">kind</span><span class="Operator">*</span><span class="Other">:</span> <a href="levels.html#CellKind"><span class="Identifier">CellKind</span></a>
-  <span class="Keyword">of</span> <span class="Identifier">Square</span><span class="Other">,</span> <span class="Identifier">Star</span><span class="Other">:</span>          <span class="Comment">## Only these puzzle symbols have a customizable color</span>
-      <span class="Identifier">color</span><span class="Operator">*</span><span class="Other">:</span> <a href="levels.html#Color"><span class="Identifier">Color</span></a>          <span class="Comment">## The color will affect the puzzle solution</span>
-    
+  <span class="Keyword">of</span> <span class="Identifier">Square</span><span class="Other">,</span> <span class="Identifier">Star</span><span class="Other">:</span>
+      <span class="Identifier">color</span><span class="Operator">*</span><span class="Other">:</span> <a href="levels.html#Color"><span class="Identifier">Color</span></a>
+
   <span class="Keyword">of</span> <span class="Identifier">Triangles</span><span class="Other">:</span>
       <span class="Identifier">count</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">int</span>
 
@@ -224,7 +226,7 @@
   <span class="Identifier">Empty</span><span class="Other">,</span> <span class="Identifier">Start</span><span class="Other">,</span> <span class="Identifier">End</span><span class="Other">,</span> <span class="Identifier">Hex</span></pre></dt>
   <dd>
     
-    All the puzzle symbols that can be attached to a point
+    Types of points in levels. Empty is only used as a default value. Hex is a point that requires the player to visit it, the line has to start from a point labeled as start and end at a point labeled end.
     
   </dd>
 </div>
@@ -252,7 +254,7 @@
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    
+    Adds a new point and connects it to points listed in connTo
     
   </dd>
 </div>
@@ -264,7 +266,7 @@
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    
+    Creates a new point between two points and connects the points to the new point
     
   </dd>
 </div>
@@ -276,7 +278,7 @@
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    
+    Creates a cell's vertices from a corner point and a vector pointing towards the opposite corner
     
   </dd>
 </div>
@@ -288,7 +290,7 @@
     <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    
+    Creates a cell's vertices from its top left corner
     
   </dd>
 </div>
@@ -301,7 +303,7 @@
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    Loads level object from a file.
+    Loads level object from a file
     
   </dd>
 </div>
@@ -313,7 +315,7 @@
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    
+    Creates an empty grid in the point and cell graphs
     
   </dd>
 </div>
@@ -325,7 +327,7 @@
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    
+    Removes connections between points
     
   </dd>
 </div>
@@ -337,7 +339,7 @@
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    
+    Removes a point and cleans up all the cells that had this point as a corner
     
   </dd>
 </div>
@@ -350,7 +352,7 @@
     <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    Saves level object to a file.
+    Saves level object to a file
     
   </dd>
 </div>
@@ -390,7 +392,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-21 23:24:13 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-22 19:29:42 UTC</small>
       </div>
     </div>
   </div>

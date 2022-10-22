@@ -92,8 +92,8 @@
 
 </ul>
 <ul class="simple nested-toc-section">->
-  <li><a class="reference" href="#-%3E%2CPoint2D%2CPoint2D" title="`-&gt;`(a, b: Point2D): seq[Point2D]">`-&gt;`(a, b: Point2D): seq[Point2D]</a></li>
-<li><a class="reference" href="#-%3E%2CLine%2CPoint2D" title="`-&gt;`(a: Line; b: Point2D): seq[Point2D]">`-&gt;`(a: Line; b: Point2D): seq[Point2D]</a></li>
+  <li><a class="reference" href="#-%3E%2CPoint2D%2CPoint2D" title="`-&gt;`(a, b: Point2D): Line">`-&gt;`(a, b: Point2D): Line</a></li>
+<li><a class="reference" href="#-%3E%2CLine%2CPoint2D" title="`-&gt;`(a: Line; b: Point2D): Line">`-&gt;`(a: Line; b: Point2D): Line</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">/
@@ -109,12 +109,20 @@
   <li><a class="reference" href="#avg%2Cvarargs%5BN%5D" title="avg[N: SomeNumber](numbers: varargs[N]): N">avg[N: SomeNumber](numbers: varargs[N]): N</a></li>
 
 </ul>
+<ul class="simple nested-toc-section">combine
+  <li><a class="reference" href="#combine%2CLineSegment%2CLineSegment" title="combine(edge1, edge2: LineSegment): LineSegment">combine(edge1, edge2: LineSegment): LineSegment</a></li>
+
+</ul>
 <ul class="simple nested-toc-section">connectGridPoints
   <li><a class="reference" href="#connectGridPoints%2CPointGraph%2CVec2%5Bfloat%5D%2CVec2%5Bfloat%5D" title="connectGridPoints(g: var PointGraph; p1, p2: Vec2[float])">connectGridPoints(g: var PointGraph; p1, p2: Vec2[float])</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">dist
   <li><a class="reference" href="#dist%2CN%2CN" title="dist[N: SomeNumber](n1, n2: N): N">dist[N: SomeNumber](n1, n2: N): N</a></li>
+
+</ul>
+<ul class="simple nested-toc-section">inAscOrder
+  <li><a class="reference" href="#inAscOrder%2CLineSegment" title="inAscOrder(segment: LineSegment): LineSegment">inAscOrder(segment: LineSegment): LineSegment</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">isDiagonal
@@ -146,7 +154,7 @@
 
 </ul>
 <ul class="simple nested-toc-section">toSetOfSegments
-  <li><a class="reference" href="#toSetOfSegments%2CLine" title="toSetOfSegments(line: Line): SegmentSet">toSetOfSegments(line: Line): SegmentSet</a></li>
+  <li><a class="reference" href="#toSetOfSegments%2CLine" title="toSetOfSegments(l: Line): SegmentSet">toSetOfSegments(l: Line): SegmentSet</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">toUnitVec
@@ -351,7 +359,7 @@
 </div>
 <div id="-&gt;-procs-all">
   <div id="->,Point2D,Point2D">
-  <dt><pre><span class="Keyword">proc</span> <a href="#-%3E%2CPoint2D%2CPoint2D"><span class="Identifier">`-&gt;`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#-%3E%2CPoint2D%2CPoint2D"><span class="Identifier">`-&gt;`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">)</span><span class="Other">:</span> <a href="geometry.html#Line"><span class="Identifier">Line</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     
@@ -359,7 +367,7 @@
   </dd>
 </div>
 <div id="->,Line,Point2D">
-  <dt><pre><span class="Keyword">proc</span> <a href="#-%3E%2CLine%2CPoint2D"><span class="Identifier">`-&gt;`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">:</span> <a href="geometry.html#Line"><span class="Identifier">Line</span></a><span class="Other">;</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#-%3E%2CLine%2CPoint2D"><span class="Identifier">`-&gt;`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">:</span> <a href="geometry.html#Line"><span class="Identifier">Line</span></a><span class="Other">;</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">)</span><span class="Other">:</span> <a href="geometry.html#Line"><span class="Identifier">Line</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     
@@ -410,6 +418,18 @@
 </div>
 
 </div>
+<div id="combine-procs-all">
+  <div id="combine,LineSegment,LineSegment">
+  <dt><pre><span class="Keyword">proc</span> <a href="#combine%2CLineSegment%2CLineSegment"><span class="Identifier">combine</span></a><span class="Other">(</span><span class="Identifier">edge1</span><span class="Other">,</span> <span class="Identifier">edge2</span><span class="Other">:</span> <a href="geometry.html#LineSegment"><span class="Identifier">LineSegment</span></a><span class="Other">)</span><span class="Other">:</span> <a href="geometry.html#LineSegment"><span class="Identifier">LineSegment</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
 <div id="connectGridPoints-procs-all">
   <div id="connectGridPoints,PointGraph,Vec2[float],Vec2[float]">
   <dt><pre><span class="Keyword">proc</span> <a href="#connectGridPoints%2CPointGraph%2CVec2%5Bfloat%5D%2CVec2%5Bfloat%5D"><span class="Identifier">connectGridPoints</span></a><span class="Other">(</span><span class="Identifier">g</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="geometry.html#PointGraph"><span class="Identifier">PointGraph</span></a><span class="Other">;</span> <span class="Identifier">p1</span><span class="Other">,</span> <span class="Identifier">p2</span><span class="Other">:</span> <a href="geometry.html#Vec2"><span class="Identifier">Vec2</span></a><span class="Other">[</span><span class="Identifier">float</span><span class="Other">]</span><span class="Other">)</span> {.
@@ -425,6 +445,18 @@
 <div id="dist-procs-all">
   <div id="dist,N,N">
   <dt><pre><span class="Keyword">proc</span> <a href="#dist%2CN%2CN"><span class="Identifier">dist</span></a><span class="Other">[</span><span class="Identifier">N</span><span class="Other">:</span> <span class="Identifier">SomeNumber</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">n1</span><span class="Other">,</span> <span class="Identifier">n2</span><span class="Other">:</span> <span class="Identifier">N</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">N</span></pre></dt>
+  <dd>
+    
+    
+    
+  </dd>
+</div>
+
+</div>
+<div id="inAscOrder-procs-all">
+  <div id="inAscOrder,LineSegment">
+  <dt><pre><span class="Keyword">proc</span> <a href="#inAscOrder%2CLineSegment"><span class="Identifier">inAscOrder</span></a><span class="Other">(</span><span class="Identifier">segment</span><span class="Other">:</span> <a href="geometry.html#LineSegment"><span class="Identifier">LineSegment</span></a><span class="Other">)</span><span class="Other">:</span> <a href="geometry.html#LineSegment"><span class="Identifier">LineSegment</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     
@@ -513,7 +545,7 @@
 </div>
 <div id="toSetOfSegments-procs-all">
   <div id="toSetOfSegments,Line">
-  <dt><pre><span class="Keyword">proc</span> <a href="#toSetOfSegments%2CLine"><span class="Identifier">toSetOfSegments</span></a><span class="Other">(</span><span class="Identifier">line</span><span class="Other">:</span> <a href="geometry.html#Line"><span class="Identifier">Line</span></a><span class="Other">)</span><span class="Other">:</span> <a href="geometry.html#SegmentSet"><span class="Identifier">SegmentSet</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#toSetOfSegments%2CLine"><span class="Identifier">toSetOfSegments</span></a><span class="Other">(</span><span class="Identifier">l</span><span class="Other">:</span> <a href="geometry.html#Line"><span class="Identifier">Line</span></a><span class="Other">)</span><span class="Other">:</span> <a href="geometry.html#SegmentSet"><span class="Identifier">SegmentSet</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     
@@ -584,7 +616,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-21 23:24:13 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-22 19:29:42 UTC</small>
       </div>
     </div>
   </div>
