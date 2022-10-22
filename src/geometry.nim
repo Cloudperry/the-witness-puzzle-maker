@@ -78,9 +78,17 @@ proc connectGridPoints*(g: var PointGraph, p1, p2: Vec2[float]) =
       if adjPoint in g.adjList:
         g.addEdge(currPoint, adjPoint)
 
+proc combine*(edge1, edge2: LineSegment): LineSegment =
+  let (edge1Delta, edge2Delta) = (edge1.p2 - edge1.p1, edge2.p2 - edge2.p1)
+  let endPoint = edge1.p1 + edge1Delta + edge2Delta
+  if endPoint != edge2.p2:
+    raise newException(ValueError, fmt"Cannot combine edges {edge1} and {edge2} into 1 vector")
+  else:
+    return (edge1.p1, endPoint)
+
 # Convenience operators for building a line from points
-proc `->`*(a, b: Point2D): seq[Point2D] = @[a, b]
-proc `->`*(a: Line, b: Point2D): seq[Point2D] = a & b
+proc `->`*(a, b: Point2D): Line = @[a, b]
+proc `->`*(a: Line, b: Point2D): Line = a & b
 
 iterator segments*(line: Line): LineSegment =
   var prevPoint: Option[Point2D]
@@ -89,12 +97,15 @@ iterator segments*(line: Line): LineSegment =
       yield (prevPoint.get, point)
     prevPoint = some(point)
 
-proc toSetOfSegments*(line: Line): SegmentSet = 
-  for segment in line.segments:
-    if segment.p1 < segment.p2:
-      result.incl segment
-    else:
-      result.incl (segment.p2, segment.p1)
+proc inAscOrder*(segment: LineSegment): LineSegment =
+  if segment.p1 < segment.p2:
+    return segment
+  else:
+    return (segment.p2, segment.p1)
+
+proc toSetOfSegments*(l: Line): SegmentSet = 
+  for segment in l.segments:
+    result.incl segment.inAscOrder
 
 proc parsePoint*(pointStr: string): Option[Point2D] =
   var x, y: float
