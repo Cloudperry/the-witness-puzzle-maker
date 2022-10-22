@@ -4,17 +4,21 @@ import graphs, geometry
 
 type
   Color* = tuple[r, g, b: int]
-  PointKind* = enum ## All the puzzle symbols that can be attached to a point
-    Empty, Start, End, Hex
-  CellKind* = enum ## All the puzzle symbols that can be attached to a cell
+  PointKind* = enum ## Types of points in levels. Empty is only used as a default value.
+    ## Hex is a point that requires the player to visit it, the line has to 
+    ## start from a point labeled as start and end at a point labeled end.
+    Empty, Start, End, Hex 
+  CellKind* = enum ## Types of cells in levels. Again empty is a default value. 
+    ## These are puzzle symbols that are too complicated to explain here.
+    ## Most of them are explained in the project definition document.
     Empty, Square, Triangles, Star, Block, AntiBlock, Jack
   MazeCell* = object
     # NIMNOTE: Here kind is one field in the object, but the other fields the
     # object has depends on the value of kind. For example squares have a color
     # field, but no shape field and Blocks have the opposite. 
     case kind*: CellKind 
-    of Square, Star: ## Only these puzzle symbols have a customizable color
-      color*: Color  ## The color will affect the puzzle solution
+    of Square, Star:
+      color*: Color  
     of Triangles:
       count*: int
     of Block, AntiBlock:
@@ -28,12 +32,12 @@ type
     # The coordinate space of the level is determined by the 2 following fields
     topLeftCorner*: Point2D
     botRightCorner*: Point2D
-    pointGraph*: Graph[Point2D]
-    cellGraph*: Graph[seq[Point2D]]
-    pointData*: Table[Point2D, PointKind]
+    pointGraph*: Graph[Point2D] ## This graph represents the points where the line can go
+    cellGraph*: Graph[seq[Point2D]] ## This graph represents cells between the lines
+    ## The table below contains all the non-empty points and their types 
+    pointData*: Table[Point2D, PointKind] 
+    ## The table below contains all the non-empty cells and their symbols 
     cellData*: Table[seq[Point2D], MazeCell]
-    # Might need to add a color palette definition later for convenience 
-    # as the colors will be reused a lot in the same level
     fgColor*: Color
     bgColor*: Color
     lineColor*: Color
@@ -55,6 +59,8 @@ func `==`*(c1, c2: MazeCell): bool =
 # creating a level that uses the format in unintentional ways leads to weird 
 # bugs in the level solution algorithm.
 func cellFromCornerAndDirection*(corner, direction: Point2D): seq[Point2D] = 
+  ## Creates a cell's vertices from a corner point and a vector pointing towards
+  ## the opposite corner
   result = @[
     corner, corner + (direction.x, 0.0), 
     corner + (direction.x, direction.y), corner + (0.0, direction.y)
@@ -63,13 +69,15 @@ func cellFromCornerAndDirection*(corner, direction: Point2D): seq[Point2D] =
   swap(result[^2], result[^1])
 
 func cellFromTopLeft*(p: Point2D): seq[Point2D] = 
+  ## Creates a cell's vertices from its top left corner
   cellFromCornerAndDirection(p, (1.0, 1.0))
 
 proc makeEmptyGrid*(l: var Level; topLeftCorner, botRightCorner: Point2D) =
+  ## Creates an empty grid in the point and cell graphs
   l.topLeftCorner = topLeftCorner
   l.botRightCorner = botRightCorner
   for p1 in gridPoints(topLeftCorner, botRightCorner):
-    # Create lines around a maze cell
+    # Create nodes around a maze cell and connect them
     for p2 in [p1 + (1.0, 0.0), p1 + (0.0, 1.0)]:
       if p2.x <= botRightCorner.x and p2.y <= botRightCorner.y:
         l.pointGraph.addEdgeAndMissingNodes(p1, p2)
@@ -105,6 +113,7 @@ proc setCellData*(l: var Level, cellData: Table[MazeCell, seq[seq[Point2D]]]) =
 
 proc addConnectedPoint*(l: var Level, newPoint: Point2D, kind = PointKind.Empty,
                         connTo: varargs[Point2D]) =
+  ## Adds a new point and connects it to points listed in connTo
   if newPoint in l.pointGraph:
     raise newException(ValueError, fmt"Point {newPoint} already exists")
   else:
@@ -119,6 +128,7 @@ proc addConnectedPoint*(l: var Level, newPoint: Point2D, kind = PointKind.Empty,
       l.pointData[newPoint] = kind
 
 proc removePoint*(l: var Level, p: Point2D) =
+  ## Removes a point and cleans up all the cells that had this point as a corner
   l.pointGraph.removeNode p
   l.pointData.del p
   for direction in [(1.0, 1.0), (-1.0, 1.0), (-1.0, -1.0), (1.0, -1.0)]:
@@ -127,6 +137,7 @@ proc removePoint*(l: var Level, p: Point2D) =
       l.cellGraph.removeNode cell
 
 proc removeEdges*(l: var Level, edges: varargs[Edge[Point2D]]) = 
+  ## Removes connections between points
   for edge in edges:
     l.pointGraph.removeEdge(edge.node1, edge.node2)
     if l.pointGraph.adjList[edge.node1].len == 0 or
@@ -137,6 +148,7 @@ proc removeEdges*(l: var Level, edges: varargs[Edge[Point2D]]) =
       )
 
 proc addPointBetween*(l: var Level; p1, p2: Point2D, kind = PointKind.Empty) =
+  ## Creates a new point between two points and connects the points to the new point
   let newPoint = midpoint(p1, p2)
   l.addConnectedPoint(newPoint, kind, p1, p2)
   l.pointGraph.removeEdge(p1, p2)
@@ -147,13 +159,13 @@ proc addPointBetween*(l: var Level; p1, p2: Point2D, kind = PointKind.Empty) =
 # Weird workaround used here. According to frosty examples I shouldn't need to import std/streams.
 import std/streams as s
 proc saveLevelToFile*(l: Level, filename: string) =
-  ## Saves level object to a file.
+  ## Saves level object to a file
   var handle = openFileStream(filename, fmWrite)
   freeze(handle, l)
   close handle
 
 proc loadLevelFromFile*(filename: string): Level =
-  ## Loads level object from a file.
+  ## Loads level object from a file
   var handle = openFileStream(filename, fmRead)
   thaw(handle, result)
   close handle
