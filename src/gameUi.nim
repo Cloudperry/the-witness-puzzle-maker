@@ -88,7 +88,7 @@ proc update(ui: var UiState, game: var GameState, win: Window, deltaTime: int64)
     if game.status notin {CorrectSolution, IncorrectSolution}:
       var nextMove: Option[Point2D]
       if isKeyDown(C):
-        game.line.setLen 0
+        game.init(ui.levels[ui.selectedLevel])
       elif isKeyPressed(KeyboardKey.LEFT):
         nextMove = game.neighborInDirection((-1.0, 0.0))
       elif isKeyPressed(KeyboardKey.RIGHT):
@@ -99,7 +99,8 @@ proc update(ui: var UiState, game: var GameState, win: Window, deltaTime: int64)
         nextMove = game.neighborInDirection((0.0, -1.0))
       elif doTextEntry(ui.currentPointStr):
         try:
-          nextMove = some game.nxtMoves[ui.currentPointStr.parseInt() - 1]
+          let selected = ui.currentPointStr.parseInt()
+          nextMove = some game.nxtMovesChoice[selected - 1]
         except:
           ui.textFlashTimer += deltaTime
           ui.currentPointStr.setLen 0
@@ -111,7 +112,7 @@ proc update(ui: var UiState, game: var GameState, win: Window, deltaTime: int64)
       elif isKeyPressed(S):
         ui.init(game, win, @[])
       elif isKeyPressed(P):
-        echo game.line
+        echo fmt"Level {ui.levels[ui.selectedLevel]} {game.status}: {game.line}"
 
 proc draw(ui: var UiState, game: var GameState, win: Window) =
   proc removeExtAndDir(s: string): string =
@@ -146,9 +147,9 @@ proc draw(ui: var UiState, game: var GameState, win: Window) =
         "Invalid point. Please enter a number that corresponds to the points listed."
       elif game.status == None:
         "Choose one of the points by entering a number" &
-        fmt" {getChoiceStr(game.nxtMoves)}: {ui.currentPointStr}"
+        fmt" {getChoiceStr(game.nxtMovesChoice)}: {ui.currentPointStr}"
       elif game.status == HasDiagNeighbors:
-        fmt"Move with arrow keys or choose {getChoiceStr(game.nxtMoves)}:" &
+        fmt"Move with arrow keys or choose {getChoiceStr(game.nxtMovesChoice)}:" &
         fmt" {ui.currentPointStr} (C to clear line)"
       elif game.status == OnlyGridNeighbors:
         fmt"Use arrow keys to move. (C to clear line)"
