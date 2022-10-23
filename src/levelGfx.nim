@@ -22,7 +22,7 @@ type
     squareLength* = 0.25
     starLength* = 0.2
     borderColor* = (140, 140, 155)
-    jackColor* = (60, 60, 60)
+    jackColor* = (240, 240, 240)
     bgColor* = (80, 80, 80)
   DrawableLevel* = object
     topLeft*, botRight*, size: Point2D
@@ -65,7 +65,7 @@ proc mazePosToScreen*(d: DrawableLevel, p: Point2D, o: DrawOptions): Point2DInt 
   result = o.centerPoint + (relativeDeltaFromCenter * o.shorterWinDimension).toInt()
 
 proc calcGfxData(l: Level, d: DrawableLevel, o: DrawOptions): LevelGfxData =
-  #TODO: Make templates for the most repetitive parts of this function
+  #TODO: Make macros? for the most repetitive parts of this function
   # Calculate sizes for symbols and maze elements
   result.lineWidth = d.mazeDistToScreen(o.lineWidth, o).float 
   result.startRadius = d.mazeDistToScreen(o.startRadius, o).float
