@@ -26,5 +26,5 @@ level2.setPointData({
 level2.pointGraph.removeEdge((2.0, 2.0), (2.0, 3.0))
 level2.pointGraph.removeEdge((2.0, 1.0), (3.0, 1.0))
 
-level1.saveLevelToFile("hexTutorial1.bin")
-level2.saveLevelToFile("hexTutorial2.bin")
+level1.saveLevelToFile("hex-tutorial1.bin")
+level2.saveLevelToFile("hex-tutorial2.bin")

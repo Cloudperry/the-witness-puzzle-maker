@@ -16,4 +16,4 @@ shipwreckTriangles.removeEdges(
 )
 shipwreckTriangles.setCellData({MazeCell(kind: Triangles, count: 2): @[cellFromTopLeft((2.0, 1.0))]}.toTable)
 
-shipwreckTriangles.saveLevelToFile("shipwreckTriangles.bin")
+shipwreckTriangles.saveLevelToFile("shipwreck-triangles.bin")

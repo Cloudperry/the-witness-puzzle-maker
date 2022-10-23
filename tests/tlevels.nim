@@ -21,11 +21,11 @@ sampleLevel.setCellData({
   MazeCell(kind: Triangles, count: 3): @[@[(1.0, 2.0), (2.0, 2.0), (2.0, 3.0), (1.0, 3.0)]]
 }.toTable)
 
-sampleLevel.saveLevelToFile("testLevel.bin")
-let sampleLevelFromDisk = loadLevelFromFile("testLevel.bin")
+sampleLevel.saveLevelToFile("testlevel.bin")
+let sampleLevelFromDisk = loadLevelFromFile("testlevel.bin")
 # Check that the level is the same after loading it from disk
 assert sampleLevel == sampleLevelFromDisk
 when not defined(saveLevel):
-  removeFile("testLevel.bin")
+  removeFile("testlevel.bin")
 
 echo "level format and editing library (levels.nim) tests ran successfully."

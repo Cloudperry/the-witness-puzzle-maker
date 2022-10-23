@@ -37,4 +37,4 @@ entryAreaDoor.setCellData({
   ]
 }.toTable)
 
-entryAreaDoor.saveLevelToFile("entryAreaDoor.bin")
+entryAreaDoor.saveLevelToFile("entryarea-secretdoor.bin")
