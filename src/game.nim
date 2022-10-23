@@ -125,7 +125,6 @@ func checkSolution*(game: GameState): bool =
         stars.inc(symbol.color, count) 
     # Count unsolved squares
     if squares.len > 1:
-      debugEcho squares.values.toSeq()
       room.unsolvedSyms[Square] = squares.values.toSeq().sorted()[0..^2].sum()
     # Count unsolved stars
     for color, count in stars:
