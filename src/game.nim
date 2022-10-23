@@ -1,4 +1,4 @@
-import std/[math, sets, tables, sequtils, options, sugar, strformat]
+import std/[math, sets, tables, sequtils, options, sugar, strformat, algorithm]
 import geometry, levels, graphs
 
 type
@@ -125,16 +125,17 @@ func checkSolution*(game: GameState): bool =
         stars.inc(symbol.color, count) 
     # Count unsolved squares
     if squares.len > 1:
-      squares.sort()
-      room.unsolvedSyms[Square] = squares.values.toSeq()[1..^1].sum()
+      debugEcho squares.values.toSeq()
+      room.unsolvedSyms[Square] = squares.values.toSeq().sorted()[0..^2].sum()
     # Count unsolved stars
     for color, count in stars:
       let squareCount = squares[color]
-      if squareCount notin {0, 1} or (count + squareCount) mod 2 != 0:
-        room.unsolvedSyms[Star] = count
+      if squareCount notin {0, 1} or (count + squareCount) != 2:
+        # 2 stars are paired and the rest are not, if there is one star abs() will make this 1
+        room.unsolvedSyms[Star] = abs(count - 2) 
     # Fix unsolved symbols if there are jacks
     let unsolvedSymsAfterJacks = room.unsolvedSyms.values.toSeq().sum() -
-                                 room.uncheckedSyms[MazeCell(kind: Jack)] 
+                                 room.uncheckedSyms[MazeCell(kind: Jack)]
     if unsolvedSymsAfterJacks != 0:
       # Not all unsolved symbols could be fixed by jacks or not all jacks were used
       when defined(printReasonNotSolved):
