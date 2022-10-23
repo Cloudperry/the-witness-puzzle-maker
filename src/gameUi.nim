@@ -1,4 +1,4 @@
-import std/[strformat, strutils, options, tables, sets, monotimes, times, os]
+import std/[strformat, strutils, sequtils, options, tables, sets, monotimes, times, os]
 import cligen, nimraylib_now
 import game, levelGfx, geometry
 
@@ -17,7 +17,7 @@ type
 
   UiState = object
     levels: seq[string]
-    selectedLevel: int
+    selectedLvl: int
     drawOptions: DrawOptions 
     drawableLevel: DrawableLevel
     playingLevel: bool
@@ -25,7 +25,7 @@ type
     textFlashTimer: int64
 
 proc loadLevel(ui: var UiState, game: var GameState, win: Window) =
-  game.init(ui.levels[ui.selectedLevel])
+  game.init(ui.levels[ui.selectedLvl])
   ui.drawOptions = DrawOptions()
   ui.drawOptions.setPositionDefaults((win.width, win.height))
   ui.drawableLevel = game.level.getDrawableLevel(ui.drawOptions)
@@ -77,18 +77,18 @@ proc update(ui: var UiState, game: var GameState, win: Window, deltaTime: int64)
         ui.loadLevel(game, win)
     else:
       if isKeyPressed(KeyboardKey.LEFT):
-        if ui.selectedLevel > 0:
-          dec ui.selectedLevel
+        if ui.selectedLvl > 0:
+          dec ui.selectedLvl
       elif isKeyPressed(KeyboardKey.RIGHT):
-        if ui.selectedLevel < ui.levels.high:
-          inc ui.selectedLevel
+        if ui.selectedLvl < ui.levels.high:
+          inc ui.selectedLvl
       elif isKeyPressed(ENTER):
         ui.loadLevel(game, win)
   else:
     if game.status notin {CorrectSolution, IncorrectSolution}:
       var nextMove: Option[Point2D]
       if isKeyDown(C):
-        game.init(ui.levels[ui.selectedLevel])
+        game.init(ui.levels[ui.selectedLvl])
       elif isKeyPressed(KeyboardKey.LEFT):
         nextMove = game.neighborInDirection((-1.0, 0.0))
       elif isKeyPressed(KeyboardKey.RIGHT):
@@ -108,27 +108,36 @@ proc update(ui: var UiState, game: var GameState, win: Window, deltaTime: int64)
         ui.addPoint(game, nextMove.get)
     else:
       if isKeyPressed(R):
-        game.init(ui.levels[ui.selectedLevel])
+        game.init(ui.levels[ui.selectedLvl])
       elif isKeyPressed(S):
         ui.init(game, win, @[])
       elif isKeyPressed(P):
-        echo fmt"Level {ui.levels[ui.selectedLevel]} {game.status}: {game.line}"
+        echo fmt"Level {ui.levels[ui.selectedLvl]} {game.status}: {game.line}"
 
 proc draw(ui: var UiState, game: var GameState, win: Window) =
   proc removeExtAndDir(s: string): string =
     s.multiReplace(("levels/", ""), (".bin", ""))
   clearBackground(Darkgray)
-  let levelName = ui.levels[ui.selectedLevel].removeExtAndDir()
+  let levelName = ui.levels[ui.selectedLvl].removeExtAndDir()
   if not ui.playingLevel:
     if ui.levels.len > 0:
       let padding = win.height div 40
-      var currWidth = padding
+      var texts: seq[string]
+      var xAndW: seq[tuple[x, w: int]] = @[(0, 0)]
       for i, level in ui.levels:
-        var text = fmt"""{ui.levels[i].removeExtAndDir()}"""
-        if i == ui.selectedLevel: 
-          text = '[' & text & ']'
-        drawText(text.cstring, currWidth, win.height div 2, fontSize, Raywhite) 
-        currWidth += measureText(text.cstring, fontSize) + padding
+        texts.add fmt"""{ui.levels[i].removeExtAndDir()}"""
+        if i == ui.selectedLvl: 
+          texts[^1] = '[' & texts[^1] & ']'
+        let width = measureText(texts[^1].cstring, fontSize).int
+        xAndW.add (
+          xAndW[^1].x + xAndW[^1].w + padding, width
+        )
+      if xAndW[ui.selectedLvl+1].x + xAndW[ui.selectedLvl+1].w > win.width:
+        xAndW.applyIt( # FIX THIS MESS
+          (it.x - (padding + xAndW[ui.selectedLvl+1].x + xAndW[ui.selectedLvl+1].w - win.width), it.w)
+        )
+      for i, text in texts:
+        drawText(text.cstring, xAndW[i+1].x, win.height div 2, fontSize, Raywhite) 
     else:
       let text = fmt"Type level path to play and press ENTER: {levelName}" 
       let textWidth = measureText(text.cstring, fontSize)
