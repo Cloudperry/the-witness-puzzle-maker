@@ -11,14 +11,14 @@ type
   CellKind* = enum ## Types of cells in levels. Again empty is a default value. 
     ## These are puzzle symbols that are too complicated to explain here.
     ## Most of them are explained in the project definition document.
-    Empty, Square, Triangles, Star, Block, AntiBlock, Jack
+    Empty, Square, Triangles, Star, Block, AntiBlock, Jack, ColoredJack
   MazeCell* = object
     # NIMNOTE: Here kind is one field in the object, but the other fields the
     # object has depends on the value of kind. For example squares have a color
     # field, but no shape field and Blocks have the opposite. 
     case kind*: CellKind 
-    of Square, Star:
-      color*: Color  
+    of Square, Star, ColoredJack:
+      color*: Color
     of Triangles:
       count*: int
     of Block, AntiBlock:
@@ -110,6 +110,16 @@ proc setCellData*(l: var Level, cellData: Table[MazeCell, seq[seq[Point2D]]]) =
         raise newException(ValueError, fmt"Cell {cell} doesn't exist")
       else:
         l.cellData[cell] = data
+
+proc setCellData*(l: var Level, cellData: Table[MazeCell, seq[Point2D]]) =
+  var newCellData: Table[MazeCell, seq[seq[Point2D]]]
+  for cell, points in cellData:
+    for point in points:
+      if cell notin newCellData:
+        newCellData[cell] = @[cellFromTopLeft(point)]
+      else:
+        newCellData[cell].add cellFromTopLeft(point)
+  l.setCellData(newCellData)
 
 proc addConnectedPoint*(l: var Level, newPoint: Point2D, kind = PointKind.Empty,
                         connTo: varargs[Point2D]) =
