@@ -9,7 +9,7 @@ type
 
 let tests = [
   LevelSolutionsTest(
-    levelName: "hexTutorial1",
+    levelName: "hex-tutorial1",
     correctLines: @[
       (0.0, 2.0) -> (0.0, 1.0) -> (0.0, 0.0) -> (1.0, 0.0) -> (1.0, 1.0) -> 
       (1.0, 2.0) -> (2.0, 2.0) -> (2.0, 1.0) -> (2.0, 0.0) -> (2.0, -0.25)
@@ -24,7 +24,7 @@ let tests = [
     ]
   ),
   LevelSolutionsTest(
-    levelName: "hexTutorial2",
+    levelName: "hex-tutorial2",
     correctLines: @[
       (0.0, 3.0) -> (0.0, 2.0) -> (1.0, 2.0) -> (1.0, 3.0) -> (2.0, 3.0) -> 
       (3.0, 3.0) -> (3.0, 2.0) -> (2.0, 2.0) -> (2.0, 1.0) -> (1.0, 1.0) -> 
@@ -41,7 +41,7 @@ let tests = [
     ]
   ),
   LevelSolutionsTest(
-    levelName: "shipwreckTriangles",
+    levelName: "shipwreck-triangles",
     correctLines: @[
       (0.0, 3.0) -> (1.0, 3.0) -> (2.0, 3.0) -> (3.0, 3.0) -> (3.0, 2.0) -> (2.0, 2.0) -> 
       (1.0, 2.0) -> (1.0, 1.0) -> (2.0, 1.0) -> (3.0, 1.0) -> (3.0, 0.0) -> (3.25, -0.25)
@@ -52,7 +52,7 @@ let tests = [
     ]
   ),
   LevelSolutionsTest(
-    levelName: "treehouseBridge1Puzzle8",
+    levelName: "treehouse-yellowbridge-puzzle8",
     correctLines: @[
       (1.5, 3.0) -> (1.0, 3.0) -> (0.0, 3.0) -> (0.0, 2.0) -> (1.0, 2.0) -> 
       (2.0, 2.0) -> (2.0, 3.0) -> (3.0, 3.0) -> (3.0, 2.0) -> (3.0, 1.0) ->
@@ -63,11 +63,14 @@ let tests = [
       (1.5, 3.0) -> (2.0, 3.0) -> (3.0, 3.0) -> (3.0, 2.0) -> (2.0, 2.0) ->
       (1.0, 2.0) -> (1.0, 3.0) -> (0.0, 3.0) -> (0.0, 2.0) -> (0.0, 1.0) ->
       (0.0, 0.0) -> (1.0, 0.0) -> (1.0, 1.0) -> (2.0, 1.0) -> (2.0, 0.0) ->
-      (1.5, 0.0) -> (1.5, -0.25)
+      (1.5, 0.0) -> (1.5, -0.25),
+      # This line groups 4 stars together when stars should be paired
+      (1.5, 3.0) -> (1.0, 3.0) -> (0.0, 3.0) -> (0.0, 2.0) -> (1.0, 2.0) ->
+      (2.0, 2.0) -> (2.0, 1.0) -> (2.0, 0.0) -> (1.5, 0.0) -> (1.5, -0.25)
     ]
   ),
   LevelSolutionsTest(
-    levelName: "entryAreaDoor",
+    levelName: "entryarea-secretdoor",
     correctLines: @[
       (6.0, 4.0) -> (6.5, 4.0) -> (7.0, 4.0) -> (7.0, 3.5) -> (7.0, 3.0) -> 
       (7.0, 2.0) -> (7.0, 1.0) -> (7.0, 0.5) -> (7.0, 0.0) -> (6.5, 0.0) ->
@@ -94,7 +97,7 @@ let tests = [
     ]
   ),
   LevelSolutionsTest(
-    levelName: "quarryMetalBridgePanel2",
+    levelName: "quarry-metalplatform-panel2",
     correctLines: @[
       (0.0, 3.0) -> (1.0, 3.0) -> (2.0, 3.0) -> (3.0, 3.0) -> (3.0, 2.0) ->
       (3.0, 1.0) -> (2.0, 1.0) -> (2.0, 0.0) -> (3.0, 0.0) -> (3.25, -0.25)
