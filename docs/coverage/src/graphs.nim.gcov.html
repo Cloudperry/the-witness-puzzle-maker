@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-10-22 22:30:08</td>
+            <td class="headerValue">2022-10-31 03:30:40</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">28</td>
@@ -110,7 +110,7 @@
 <a name="40"><span class="lineNum">      40 </span><span class="lineCov">        164 : proc contains*[T](g: Graph, node: T): bool = node in g.adjList</span></a>
 <a name="41"><span class="lineNum">      41 </span><span class="lineCov">        164 : </span></a>
 <a name="42"><span class="lineNum">      42 </span>            : iterator nodes*[T](g: Graph[T]): T = # NIMNOTE: Iterators work just like python generator functions</a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">        288 :   for node in g.adjList.keys:</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">        630 :   for node in g.adjList.keys:</span></a>
 <a name="44"><span class="lineNum">      44 </span>            :     yield node</a>
 <a name="45"><span class="lineNum">      45 </span>            : </a>
 <a name="46"><span class="lineNum">      46 </span>            : proc getEdges*[T](g: Graph[T]): HashSet[Edge[T]] =</a>
@@ -123,29 +123,29 @@
 <a name="53"><span class="lineNum">      53 </span>            :       if (node2, node1) notin result:</a>
 <a name="54"><span class="lineNum">      54 </span>            :         result.incl (node1, node2)</a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">       1236 : func dfs*[T](g: Graph, node: T, stopAt: HashSet[T]): HashSet[T] =</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        309 :   # NIMNOTE: &quot;Normal&quot; functions in Nim are declared with proc and functions </span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">       2208 : func dfs*[T](g: Graph, node: T, stopAt: HashSet[T]): HashSet[T] =</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        552 :   # NIMNOTE: &quot;Normal&quot; functions in Nim are declared with proc and functions </span></a>
 <a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 :   # that don't have any side-effects are declared with func. These functions</span></a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">        618 :   # can't modify any variables outside their scope and can't print for example.</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        309 :   var visited: HashSet[T]</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">       1104 :   # can't modify any variables outside their scope and can't print for example.</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        552 :   var visited: HashSet[T]</span></a>
 <a name="61"><span class="lineNum">      61 </span>            :   # Line below is a workaround for a Nim bug. dfsInner should get all variables that are from dfs'</a>
 <a name="62"><span class="lineNum">      62 </span>            :   # scope. Using generics somehow confuses the compiler and stopAt doesn't get passed through </a>
 <a name="63"><span class="lineNum">      63 </span>            :   # without declaring it again in the body.</a>
 <a name="64"><span class="lineNum">      64 </span>            :   let stopAt = stopAt </a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">       9355 :   proc dfsInner[T](g: Graph, node: T) =</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">       9355 :     visited.incl node</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">       9355 :     if node in stopAt: return</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">      37727 :     for neighbor in g.adjList[node]:</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">      28599 :       if neighbor notin visited:</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">      18174 :         g.dfsInner(neighbor)</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">       9355 :   dfsInner(g, node)</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">      28908 :   return visited</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">      16754 :   proc dfsInner[T](g: Graph, node: T) =</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">      16754 :     visited.incl node</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">      16754 :     if node in stopAt: return</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">      67741 :     for neighbor in g.adjList[node]:</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">      51457 :       if neighbor notin visited:</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">      32486 :         g.dfsInner(neighbor)</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">      16754 :   dfsInner(g, node)</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">      52009 :   return visited</span></a>
 <a name="73"><span class="lineNum">      73 </span>            : </a>
 <a name="74"><span class="lineNum">      74 </span><span class="lineCov">          1 : func findReachableNodes*[T](g: Graph, node: T): HashSet[T] = </span></a>
 <a name="75"><span class="lineNum">      75 </span><span class="lineCov">          1 :   g.dfs(node, stopAt = initHashSet[T]())</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        308 : func hasRoute*[T](g: Graph, startNode, goalNode: T): bool =</span></a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        308 :   return goalNode in g.dfs(startNode, stopAt = [goalNode].toHashSet)</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        551 : func hasRoute*[T](g: Graph, startNode, goalNode: T): bool =</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        551 :   return goalNode in g.dfs(startNode, stopAt = [goalNode].toHashSet)</span></a>
 </pre>
       </td>
     </tr>

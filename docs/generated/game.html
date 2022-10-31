@@ -57,10 +57,10 @@
       <li><a class="reference" href="#GameState" title="GameState = object
   level*: Level
   line*: Line
-  linePoints: HashSet[Point2D]
   status*: LineStatus
   nxtMovesChoice*: seq[Point2D]
-  nxtMovesGrid*: Table[Point2D, Point2D]
+  nxtMovesGrid*: Table[Point2D, Point2D] ## These private fields are only used by the level solution algorithm
+  linePoints: HashSet[Point2D]
   cellEdges: HashSet[LineSegment]
   edgesOfCell: Table[seq[Point2D], HashSet[LineSegment]]">GameState</a></li>
 <li><a class="reference" href="#LineStatus" title="LineStatus = enum
@@ -81,8 +81,8 @@
   <li><a class="reference" href="#checkSolution%2CGameState" title="checkSolution(game: GameState): bool">checkSolution(game: GameState): bool</a></li>
 
 </ul>
-<ul class="simple nested-toc-section">divideSymbolsToRooms
-  <li><a class="reference" href="#divideSymbolsToRooms%2CGameState" title="divideSymbolsToRooms(game: GameState): seq[MazeRoom]">divideSymbolsToRooms(game: GameState): seq[MazeRoom]</a></li>
+<ul class="simple nested-toc-section">divideToRoomsAndCheckSyms
+  <li><a class="reference" href="#divideToRoomsAndCheckSyms%2CGameState" title="divideToRoomsAndCheckSyms(game: GameState): seq[MazeRoom]">divideToRoomsAndCheckSyms(game: GameState): seq[MazeRoom]</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">getLineSegments
@@ -94,7 +94,8 @@
 
 </ul>
 <ul class="simple nested-toc-section">init
-  <li><a class="reference" href="#init%2CGameState%2Cstring" title="init(game: var GameState; levelName: string)">init(game: var GameState; levelName: string)</a></li>
+  <li><a class="reference" href="#init%2CGameState%2CsinkLevel" title="init(game: var GameState; level: sink Level)">init(game: var GameState; level: sink Level)</a></li>
+<li><a class="reference" href="#init%2CGameState%2Cstring" title="init(game: var GameState; levelName: string)">init(game: var GameState; levelName: string)</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">neighborInDirection
@@ -131,16 +132,16 @@
   <dt><pre><a href="game.html#GameState"><span class="Identifier">GameState</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">level</span><span class="Operator">*</span><span class="Other">:</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a>
   <span class="Identifier">line</span><span class="Operator">*</span><span class="Other">:</span> <a href="geometry.html#Line"><span class="Identifier">Line</span></a>
-  <span class="Identifier">linePoints</span><span class="Other">:</span> <span class="Identifier">HashSet</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span>
   <span class="Identifier">status</span><span class="Operator">*</span><span class="Other">:</span> <a href="game.html#LineStatus"><span class="Identifier">LineStatus</span></a>
   <span class="Identifier">nxtMovesChoice</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span>
-  <span class="Identifier">nxtMovesGrid</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">,</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span>
+  <span class="Identifier">nxtMovesGrid</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">,</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span> <span class="Comment">## These private fields are only used by the level solution algorithm</span>
+  <span class="Identifier">linePoints</span><span class="Other">:</span> <span class="Identifier">HashSet</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span>
   <span class="Identifier">cellEdges</span><span class="Other">:</span> <span class="Identifier">HashSet</span><span class="Other">[</span><a href="geometry.html#LineSegment"><span class="Identifier">LineSegment</span></a><span class="Other">]</span>
   <span class="Identifier">edgesOfCell</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">HashSet</span><span class="Other">[</span><a href="geometry.html#LineSegment"><span class="Identifier">LineSegment</span></a><span class="Other">]</span><span class="Other">]</span>
 </pre></dt>
   <dd>
     
-    
+    These fields are used by the game ui/implementation when playing the game
     
   </dd>
 </div>
@@ -149,7 +150,7 @@
   <span class="Identifier">None</span><span class="Other">,</span> <span class="Identifier">OnlyGridNeighbors</span><span class="Other">,</span> <span class="Identifier">HasDiagNeighbors</span><span class="Other">,</span> <span class="Identifier">CorrectSolution</span><span class="Other">,</span> <span class="Identifier">IncorrectSolution</span></pre></dt>
   <dd>
     
-    This is used when adding a new point to the player's line
+    This status is returned when the player makes a move (adds a point to the line). OnlyGridNeighbors and HasDiagNeighbors are related to the current control scheme using arrow keys for movement when all the neighbors are on integer grid coordinates. They could be replaced by one enum that tells the solution is in progress, if the line was controlled by mouse.
     
   </dd>
 </div>
@@ -177,19 +178,26 @@
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    Checks if the player line is a correct solution. First step is room division, second step is checking hexes and the rest of the symbols are checked based on room division results.
+    Checks if the player line is a correct solution. This is a 6 step process:<ol class="simple"><li>Room division that checks hexes and triangles (all following steps use results of this)</li>
+<li>Check rectangles based on per-room rectangle counts for each color</li>
+<li>Check stars in room based on number of stars and rectangles of each color</li>
+<li>Check blocks in room by using algorithm x</li>
+<li>Cancel unsolved symbols if there are jacks in the room</li>
+<li>Level is solved if there are no symbols left unsolved and no unused jacks</li>
+</ol>
+
     
   </dd>
 </div>
 
 </div>
-<div id="divideSymbolsToRooms-procs-all">
-  <div id="divideSymbolsToRooms,GameState">
-  <dt><pre><span class="Keyword">func</span> <a href="#divideSymbolsToRooms%2CGameState"><span class="Identifier">divideSymbolsToRooms</span></a><span class="Other">(</span><span class="Identifier">game</span><span class="Other">:</span> <a href="game.html#GameState"><span class="Identifier">GameState</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">MazeRoom</span><span class="Other">]</span> {.
+<div id="divideToRoomsAndCheckSyms-procs-all">
+  <div id="divideToRoomsAndCheckSyms,GameState">
+  <dt><pre><span class="Keyword">func</span> <a href="#divideToRoomsAndCheckSyms%2CGameState"><span class="Identifier">divideToRoomsAndCheckSyms</span></a><span class="Other">(</span><span class="Identifier">game</span><span class="Other">:</span> <a href="game.html#GameState"><span class="Identifier">GameState</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">MazeRoom</span><span class="Other">]</span> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    Divides the level into rooms based on the player's line. Checks triangle symbols at the same time. Combined segments mentioned above are used to make sure that the room division dfs doesn't slip through the player line when there are e.g. non-integer coordinates.
+    Divides the level into rooms based on the player's line. Checks triangle and hex symbols at the same time. Combined segments mentioned above are used to make sure that the room division dfs doesn't slip through the player line when there are e.g. non-integer coordinates.
     
   </dd>
 </div>
@@ -220,13 +228,22 @@
 
 </div>
 <div id="init-procs-all">
-  <div id="init,GameState,string">
+  <div id="init,GameState,sinkLevel">
+  <dt><pre><span class="Keyword">proc</span> <a href="#init%2CGameState%2CsinkLevel"><span class="Identifier">init</span></a><span class="Other">(</span><span class="Identifier">game</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="game.html#GameState"><span class="Identifier">GameState</span></a><span class="Other">;</span> <span class="Identifier">level</span><span class="Other">:</span> <span class="Identifier">sink</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dd>
+    
+    Initializes game state object so it is ready for the player's first move
+    
+  </dd>
+</div>
+<div id="init,GameState,string">
   <dt><pre><span class="Keyword">proc</span> <a href="#init%2CGameState%2Cstring"><span class="Identifier">init</span></a><span class="Other">(</span><span class="Identifier">game</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="game.html#GameState"><span class="Identifier">GameState</span></a><span class="Other">;</span> <span class="Identifier">levelName</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">ThawError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    Initializes game state object so it is ready for the player's first move
+    
     
   </dd>
 </div>
@@ -266,7 +283,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-22 19:29:42 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-31 01:32:29 UTC</small>
       </div>
     </div>
   </div>

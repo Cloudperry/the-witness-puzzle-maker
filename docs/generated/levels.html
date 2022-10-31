@@ -55,14 +55,16 @@
     <summary><a class="reference reference-toplevel" href="#7" id="57">Types</a></summary>
     <ul class="simple simple-toc-section">
       <li><a class="reference" href="#CellKind" title="CellKind = enum
-  Empty, Square, Triangles, Star, Block, AntiBlock, Jack">CellKind</a></li>
+  Empty, Square, Triangles, Star, Block, AntiBlock, Jack, ColoredJack">CellKind</a></li>
 <li><a class="reference" href="#Color" title="Color = tuple[r, g, b: int]">Color</a></li>
 <li><a class="reference" href="#Level" title="Level = object
   topLeftCorner*: Point2D
-  botRightCorner*: Point2D
-  pointGraph*: Graph[Point2D] ## This graph represents the points where the line can go
-  cellGraph*: Graph[seq[Point2D]] ## This graph represents cells between the lines
-                                  ## The table below contains all the non-empty points and their types 
+  botRightCorner*: Point2D   ## The graph below represents the points where the line can go
+  pointGraph*: Graph[Point2D] ## The graph below represents cells between the lines. Node value contains
+                              ## all the corners of this cell. Currently only rectangular cells are supported,
+                              ## but cells could be any convex polygons with minimal changes to drawing solution
+                              ## checking.
+  cellGraph*: Graph[seq[Point2D]] ## The table below contains all the non-empty points and their types 
   pointData*: Table[Point2D, PointKind] ## The table below contains all the non-empty cells and their symbols 
   cellData*: Table[seq[Point2D], MazeCell]
   fgColor*: Color
@@ -70,14 +72,16 @@
   lineColor*: Color">Level</a></li>
 <li><a class="reference" href="#MazeCell" title="MazeCell = object
   case kind*: CellKind
-  of Square, Star:
+  of Square, Star, ColoredJack:
       color*: Color
 
   of Triangles:
       count*: int
 
-  of Block, AntiBlock:
-      shape*: seq[Point2DInt] ## Polyomino shape as a collection of points.
+  of Block, AntiBlock:      ## AntiBlocks (hollow tetris pieces) are not implemented yet
+      rotatable*: bool       ## Rotatable blocks are not implemented yet
+      w*, h*: int            ## Width and height
+      shape*: seq[Point2DInt] ## Block shape as a collection of points.
     
   of Jack, Empty:           ## (0, 0) is the top left corner of the shape.
       nil">MazeCell</a></li>
@@ -121,6 +125,10 @@
   <li><a class="reference" href="#makeEmptyGrid%2CLevel%2CPoint2D%2CPoint2D" title="makeEmptyGrid(l: var Level; topLeftCorner, botRightCorner: Point2D)">makeEmptyGrid(l: var Level; topLeftCorner, botRightCorner: Point2D)</a></li>
 
 </ul>
+<ul class="simple nested-toc-section">newLineOrLBlock
+  <li><a class="reference" href="#newLineOrLBlock%2CPoint2DInt%2CPoint2DInt" title="newLineOrLBlock(start, delta: Point2DInt; rotatable = false): MazeCell">newLineOrLBlock(start, delta: Point2DInt; rotatable = false): MazeCell</a></li>
+
+</ul>
 <ul class="simple nested-toc-section">removeEdges
   <li><a class="reference" href="#removeEdges%2CLevel%2Cvarargs%5BEdge%5BPoint2D%5D%5D" title="removeEdges(l: var Level; edges: varargs[Edge[Point2D]])">removeEdges(l: var Level; edges: varargs[Edge[Point2D]])</a></li>
 
@@ -134,7 +142,8 @@
 
 </ul>
 <ul class="simple nested-toc-section">setCellData
-  <li><a class="reference" href="#setCellData%2CLevel%2CTable%5BMazeCell%2Cseq%5Bseq%5BPoint2D%5D%5D%5D" title="setCellData(l: var Level; cellData: Table[MazeCell, seq[seq[Point2D]]])">setCellData(l: var Level; cellData: Table[MazeCell, seq[seq[Point2D]]])</a></li>
+  <li><a class="reference" href="#setCellData%2CLevel%2CTable%5BMazeCell%2Cseq%5BPoint2D%5D%5D" title="setCellData(l: var Level; cellData: Table[MazeCell, seq[Point2D]])">setCellData(l: var Level; cellData: Table[MazeCell, seq[Point2D]])</a></li>
+<li><a class="reference" href="#setCellData%2CLevel%2CTable%5BMazeCell%2Cseq%5Bseq%5BPoint2D%5D%5D%5D" title="setCellData(l: var Level; cellData: Table[MazeCell, seq[seq[Point2D]]])">setCellData(l: var Level; cellData: Table[MazeCell, seq[seq[Point2D]]])</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">setPointData
@@ -165,7 +174,7 @@
   <dl class="item">
     <div id="CellKind">
   <dt><pre><a href="levels.html#CellKind"><span class="Identifier">CellKind</span></a> <span class="Other">=</span> <span class="Keyword">enum</span>
-  <span class="Identifier">Empty</span><span class="Other">,</span> <span class="Identifier">Square</span><span class="Other">,</span> <span class="Identifier">Triangles</span><span class="Other">,</span> <span class="Identifier">Star</span><span class="Other">,</span> <span class="Identifier">Block</span><span class="Other">,</span> <span class="Identifier">AntiBlock</span><span class="Other">,</span> <span class="Identifier">Jack</span></pre></dt>
+  <span class="Identifier">Empty</span><span class="Other">,</span> <span class="Identifier">Square</span><span class="Other">,</span> <span class="Identifier">Triangles</span><span class="Other">,</span> <span class="Identifier">Star</span><span class="Other">,</span> <span class="Identifier">Block</span><span class="Other">,</span> <span class="Identifier">AntiBlock</span><span class="Other">,</span> <span class="Identifier">Jack</span><span class="Other">,</span> <span class="Identifier">ColoredJack</span></pre></dt>
   <dd>
     
     Types of cells in levels. Again empty is a default value. These are puzzle symbols that are too complicated to explain here. Most of them are explained in the project definition document.
@@ -183,10 +192,12 @@
 <div id="Level">
   <dt><pre><a href="levels.html#Level"><span class="Identifier">Level</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">topLeftCorner</span><span class="Operator">*</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a>
-  <span class="Identifier">botRightCorner</span><span class="Operator">*</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a>
-  <span class="Identifier">pointGraph</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span> <span class="Comment">## This graph represents the points where the line can go</span>
-  <span class="Identifier">cellGraph</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">]</span> <span class="Comment">## This graph represents cells between the lines</span>
-                                  <span class="Comment">## The table below contains all the non-empty points and their types </span>
+  <span class="Identifier">botRightCorner</span><span class="Operator">*</span><span class="Other">:</span> <a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a>   <span class="Comment">## The graph below represents the points where the line can go</span>
+  <span class="Identifier">pointGraph</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span> <span class="Comment">## The graph below represents cells between the lines. Node value contains</span>
+                              <span class="Comment">## all the corners of this cell. Currently only rectangular cells are supported,</span>
+                              <span class="Comment">## but cells could be any convex polygons with minimal changes to drawing solution</span>
+                              <span class="Comment">## checking.</span>
+  <span class="Identifier">cellGraph</span><span class="Operator">*</span><span class="Other">:</span> <a href="graphs.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">]</span> <span class="Comment">## The table below contains all the non-empty points and their types </span>
   <span class="Identifier">pointData</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">,</span> <a href="levels.html#PointKind"><span class="Identifier">PointKind</span></a><span class="Other">]</span> <span class="Comment">## The table below contains all the non-empty cells and their symbols </span>
   <span class="Identifier">cellData</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">,</span> <a href="levels.html#MazeCell"><span class="Identifier">MazeCell</span></a><span class="Other">]</span>
   <span class="Identifier">fgColor</span><span class="Operator">*</span><span class="Other">:</span> <a href="levels.html#Color"><span class="Identifier">Color</span></a>
@@ -195,21 +206,23 @@
 </pre></dt>
   <dd>
     
-    
+    The coordinate space of the level is determined by the 2 following fields
     
   </dd>
 </div>
 <div id="MazeCell">
   <dt><pre><a href="levels.html#MazeCell"><span class="Identifier">MazeCell</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Keyword">case</span> <span class="Identifier">kind</span><span class="Operator">*</span><span class="Other">:</span> <a href="levels.html#CellKind"><span class="Identifier">CellKind</span></a>
-  <span class="Keyword">of</span> <span class="Identifier">Square</span><span class="Other">,</span> <span class="Identifier">Star</span><span class="Other">:</span>
+  <span class="Keyword">of</span> <span class="Identifier">Square</span><span class="Other">,</span> <span class="Identifier">Star</span><span class="Other">,</span> <span class="Identifier">ColoredJack</span><span class="Other">:</span>
       <span class="Identifier">color</span><span class="Operator">*</span><span class="Other">:</span> <a href="levels.html#Color"><span class="Identifier">Color</span></a>
 
   <span class="Keyword">of</span> <span class="Identifier">Triangles</span><span class="Other">:</span>
       <span class="Identifier">count</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">int</span>
 
-  <span class="Keyword">of</span> <span class="Identifier">Block</span><span class="Other">,</span> <span class="Identifier">AntiBlock</span><span class="Other">:</span>
-      <span class="Identifier">shape</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2DInt"><span class="Identifier">Point2DInt</span></a><span class="Other">]</span> <span class="Comment">## Polyomino shape as a collection of points.</span>
+  <span class="Keyword">of</span> <span class="Identifier">Block</span><span class="Other">,</span> <span class="Identifier">AntiBlock</span><span class="Other">:</span>      <span class="Comment">## AntiBlocks (hollow tetris pieces) are not implemented yet</span>
+      <span class="Identifier">rotatable</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>       <span class="Comment">## Rotatable blocks are not implemented yet</span>
+      <span class="Identifier">w</span><span class="Operator">*</span><span class="Other">,</span> <span class="Identifier">h</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">int</span>            <span class="Comment">## Width and height</span>
+      <span class="Identifier">shape</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2DInt"><span class="Identifier">Point2DInt</span></a><span class="Other">]</span> <span class="Comment">## Block shape as a collection of points.</span>
     
   <span class="Keyword">of</span> <span class="Identifier">Jack</span><span class="Other">,</span> <span class="Identifier">Empty</span><span class="Other">:</span>           <span class="Comment">## (0, 0) is the top left corner of the shape.</span>
       <span class="Keyword">nil</span>
@@ -226,7 +239,7 @@
   <span class="Identifier">Empty</span><span class="Other">,</span> <span class="Identifier">Start</span><span class="Other">,</span> <span class="Identifier">End</span><span class="Other">,</span> <span class="Identifier">Hex</span></pre></dt>
   <dd>
     
-    Types of points in levels. Empty is only used as a default value. Hex is a point that requires the player to visit it, the line has to start from a point labeled as start and end at a point labeled end.
+    Types of points in levels. Empty is only used as a default value. Hex is a point that requires the player to visit it. The line has to start from a point labeled as start and end at a point labeled end.
     
   </dd>
 </div>
@@ -321,6 +334,18 @@
 </div>
 
 </div>
+<div id="newLineOrLBlock-procs-all">
+  <div id="newLineOrLBlock,Point2DInt,Point2DInt">
+  <dt><pre><span class="Keyword">func</span> <a href="#newLineOrLBlock%2CPoint2DInt%2CPoint2DInt"><span class="Identifier">newLineOrLBlock</span></a><span class="Other">(</span><span class="Identifier">start</span><span class="Other">,</span> <span class="Identifier">delta</span><span class="Other">:</span> <a href="geometry.html#Point2DInt"><span class="Identifier">Point2DInt</span></a><span class="Other">;</span> <span class="Identifier">rotatable</span> <span class="Other">=</span> <span class="Identifier">false</span><span class="Other">)</span><span class="Other">:</span> <a href="levels.html#MazeCell"><span class="Identifier">MazeCell</span></a> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dd>
+    
+    Creates a line or an L block. Start point is the first point in the block. When delta has only 1 non-zero field a line is created and otherwise a L block is created. L blocks need to have start set to the corner. Start and delta need to be set so that the resulting block has a rectangle at x: 0 and another at y: 0. Otherwise the block will behave unexpectedly when drawn and when solutions are checked.
+    
+  </dd>
+</div>
+
+</div>
 <div id="removeEdges-procs-all">
   <div id="removeEdges,Level,varargs[Edge[Point2D]]">
   <dt><pre><span class="Keyword">proc</span> <a href="#removeEdges%2CLevel%2Cvarargs%5BEdge%5BPoint2D%5D%5D"><span class="Identifier">removeEdges</span></a><span class="Other">(</span><span class="Identifier">l</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">;</span> <span class="Identifier">edges</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><a href="graphs.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">]</span><span class="Other">)</span> {.
@@ -359,12 +384,21 @@
 
 </div>
 <div id="setCellData-procs-all">
-  <div id="setCellData,Level,Table[MazeCell,seq[seq[Point2D]]]">
+  <div id="setCellData,Level,Table[MazeCell,seq[Point2D]]">
+  <dt><pre><span class="Keyword">proc</span> <a href="#setCellData%2CLevel%2CTable%5BMazeCell%2Cseq%5BPoint2D%5D%5D"><span class="Identifier">setCellData</span></a><span class="Other">(</span><span class="Identifier">l</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">;</span> <span class="Identifier">cellData</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="levels.html#MazeCell"><span class="Identifier">MazeCell</span></a><span class="Other">,</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">]</span><span class="Other">)</span> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dd>
+    
+    Same as the function above, but maze cell positions are given by the top left corner of a cell. Creates only rectangular maze cells unlike the function above.
+    
+  </dd>
+</div>
+<div id="setCellData,Level,Table[MazeCell,seq[seq[Point2D]]]">
   <dt><pre><span class="Keyword">proc</span> <a href="#setCellData%2CLevel%2CTable%5BMazeCell%2Cseq%5Bseq%5BPoint2D%5D%5D%5D"><span class="Identifier">setCellData</span></a><span class="Other">(</span><span class="Identifier">l</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">;</span> <span class="Identifier">cellData</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="levels.html#MazeCell"><span class="Identifier">MazeCell</span></a><span class="Other">,</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">seq</span><span class="Other">[</span><a href="geometry.html#Point2D"><span class="Identifier">Point2D</span></a><span class="Other">]</span><span class="Other">]</span><span class="Other">]</span><span class="Other">)</span> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    
+    Set cell data of all the points given as table values to the corresponding maze cell given in a table key.
     
   </dd>
 </div>
@@ -376,7 +410,7 @@
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    
+    Set point data of all the points given as table values to the corresponding type of point given in a table key.
     
   </dd>
 </div>
@@ -392,7 +426,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-22 19:29:42 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-31 01:32:29 UTC</small>
       </div>
     </div>
   </div>

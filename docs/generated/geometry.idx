@@ -37,3 +37,5 @@ segments	geometry.html#segments.i,Line	geometry: segments(line: Line): LineSegme
 inAscOrder	geometry.html#inAscOrder,LineSegment	geometry: inAscOrder(segment: LineSegment): LineSegment	
 toSetOfSegments	geometry.html#toSetOfSegments,Line	geometry: toSetOfSegments(l: Line): SegmentSet	
 parsePoint	geometry.html#parsePoint,string	geometry: parsePoint(pointStr: string): Option[Point2D]	
+updateTopLeftCorner	geometry.html#updateTopLeftCorner,Vec2[N],Vec2[N]	geometry: updateTopLeftCorner[N](topLeft: var Vec2[N]; newPoint: Vec2[N])	
+updateBotRightCorner	geometry.html#updateBotRightCorner,Vec2[N],Vec2[N]	geometry: updateBotRightCorner[N](botRight: var Vec2[N]; newPoint: Vec2[N])	

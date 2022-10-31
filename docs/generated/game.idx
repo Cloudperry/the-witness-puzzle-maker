@@ -5,10 +5,11 @@ CorrectSolution	game.html#CorrectSolution	LineStatus.CorrectSolution
 IncorrectSolution	game.html#IncorrectSolution	LineStatus.IncorrectSolution	
 LineStatus	game.html#LineStatus	game: LineStatus	
 GameState	game.html#GameState	game: GameState	
+init	game.html#init,GameState,sinkLevel	game: init(game: var GameState; level: sink Level)	
 init	game.html#init,GameState,string	game: init(game: var GameState; levelName: string)	
 goesFromStartToEnd	game.html#goesFromStartToEnd,Line,Level	game: goesFromStartToEnd(line: Line; l: Level): bool	
 getLineSegments	game.html#getLineSegments,GameState	game: getLineSegments(game: GameState): HashSet[LineSegment]	
-divideSymbolsToRooms	game.html#divideSymbolsToRooms,GameState	game: divideSymbolsToRooms(game: GameState): seq[MazeRoom]	
+divideToRoomsAndCheckSyms	game.html#divideToRoomsAndCheckSyms,GameState	game: divideToRoomsAndCheckSyms(game: GameState): seq[MazeRoom]	
 checkSolution	game.html#checkSolution,GameState	game: checkSolution(game: GameState): bool	
 addPointAndCheckResult	game.html#addPointAndCheckResult,GameState,Point2D	game: addPointAndCheckResult(game: var GameState; point: Point2D)	
 neighborInDirection	game.html#neighborInDirection,GameState,Point2D	game: neighborInDirection(game: var GameState; direction: Point2D): Option[Point2D]	

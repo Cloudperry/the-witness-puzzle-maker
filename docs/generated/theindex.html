@@ -138,6 +138,10 @@
 <li><a class="reference external"
           data-doc-search-tag="levels: Color" href="levels.html#Color">levels: Color</a></li>
           </ul></dd>
+<dt><a name="ColoredJack" href="#ColoredJack"><span>ColoredJack:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="CellKind.ColoredJack" href="levels.html#ColoredJack">CellKind.ColoredJack</a></li>
+          </ul></dd>
 <dt><a name="combine" href="#combine"><span>combine:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="geometry: combine(edge1, edge2: LineSegment): LineSegment" href="geometry.html#combine%2CLineSegment%2CLineSegment">geometry: combine(edge1, edge2: LineSegment): LineSegment</a></li>
@@ -162,9 +166,9 @@
 <li><a class="reference external"
           data-doc-search-tag="geometry: dist[N: SomeNumber](n1, n2: N): N" href="geometry.html#dist%2CN%2CN">geometry: dist[N: SomeNumber](n1, n2: N): N</a></li>
           </ul></dd>
-<dt><a name="divideSymbolsToRooms" href="#divideSymbolsToRooms"><span>divideSymbolsToRooms:</span></a></dt><dd><ul class="simple">
+<dt><a name="divideToRoomsAndCheckSyms" href="#divideToRoomsAndCheckSyms"><span>divideToRoomsAndCheckSyms:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="game: divideSymbolsToRooms(game: GameState): seq[MazeRoom]" href="game.html#divideSymbolsToRooms%2CGameState">game: divideSymbolsToRooms(game: GameState): seq[MazeRoom]</a></li>
+          data-doc-search-tag="game: divideToRoomsAndCheckSyms(game: GameState): seq[MazeRoom]" href="game.html#divideToRoomsAndCheckSyms%2CGameState">game: divideToRoomsAndCheckSyms(game: GameState): seq[MazeRoom]</a></li>
           </ul></dd>
 <dt><a name="draw" href="#draw"><span>draw:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -250,6 +254,8 @@
           </ul></dd>
 <dt><a name="init" href="#init"><span>init:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
+          data-doc-search-tag="game: init(game: var GameState; level: sink Level)" href="game.html#init%2CGameState%2CsinkLevel">game: init(game: var GameState; level: sink Level)</a></li>
+          <li><a class="reference external"
           data-doc-search-tag="game: init(game: var GameState; levelName: string)" href="game.html#init%2CGameState%2Cstring">game: init(game: var GameState; levelName: string)</a></li>
           </ul></dd>
 <dt><a name="isDiagonal" href="#isDiagonal"><span>isDiagonal:</span></a></dt><dd><ul class="simple">
@@ -307,6 +313,10 @@
 <dt><a name="neighborInDirection" href="#neighborInDirection"><span>neighborInDirection:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="game: neighborInDirection(game: var GameState; direction: Point2D): Option[Point2D]" href="game.html#neighborInDirection%2CGameState%2CPoint2D">game: neighborInDirection(game: var GameState; direction: Point2D): Option[Point2D]</a></li>
+          </ul></dd>
+<dt><a name="newLineOrLBlock" href="#newLineOrLBlock"><span>newLineOrLBlock:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="levels: newLineOrLBlock(start, delta: Point2DInt; rotatable = false): MazeCell" href="levels.html#newLineOrLBlock%2CPoint2DInt%2CPoint2DInt">levels: newLineOrLBlock(start, delta: Point2DInt; rotatable = false): MazeCell</a></li>
           </ul></dd>
 <dt><a name="nodes" href="#nodes"><span>nodes:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -374,6 +384,8 @@
           </ul></dd>
 <dt><a name="setCellData" href="#setCellData"><span>setCellData:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
+          data-doc-search-tag="levels: setCellData(l: var Level; cellData: Table[MazeCell, seq[Point2D]])" href="levels.html#setCellData%2CLevel%2CTable%5BMazeCell%2Cseq%5BPoint2D%5D%5D">levels: setCellData(l: var Level; cellData: Table[MazeCell, seq[Point2D]])</a></li>
+          <li><a class="reference external"
           data-doc-search-tag="levels: setCellData(l: var Level; cellData: Table[MazeCell, seq[seq[Point2D]]])" href="levels.html#setCellData%2CLevel%2CTable%5BMazeCell%2Cseq%5Bseq%5BPoint2D%5D%5D%5D">levels: setCellData(l: var Level; cellData: Table[MazeCell, seq[seq[Point2D]]])</a></li>
           </ul></dd>
 <dt><a name="setLine" href="#setLine"><span>setLine:</span></a></dt><dd><ul class="simple">
@@ -420,6 +432,14 @@
 <li><a class="reference external"
           data-doc-search-tag="CellKind.Triangles" href="levels.html#Triangles">CellKind.Triangles</a></li>
           </ul></dd>
+<dt><a name="updateBotRightCorner" href="#updateBotRightCorner"><span>updateBotRightCorner:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="geometry: updateBotRightCorner[N](botRight: var Vec2[N]; newPoint: Vec2[N])" href="geometry.html#updateBotRightCorner%2CVec2%5BN%5D%2CVec2%5BN%5D">geometry: updateBotRightCorner[N](botRight: var Vec2[N]; newPoint: Vec2[N])</a></li>
+          </ul></dd>
+<dt><a name="updateTopLeftCorner" href="#updateTopLeftCorner"><span>updateTopLeftCorner:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="geometry: updateTopLeftCorner[N](topLeft: var Vec2[N]; newPoint: Vec2[N])" href="geometry.html#updateTopLeftCorner%2CVec2%5BN%5D%2CVec2%5BN%5D">geometry: updateTopLeftCorner[N](topLeft: var Vec2[N]; newPoint: Vec2[N])</a></li>
+          </ul></dd>
 <dt><a name="Vec2" href="#Vec2"><span>Vec2:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="geometry: Vec2" href="geometry.html#Vec2">geometry: Vec2</a></li>
@@ -428,7 +448,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-22 19:29:42 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-31 01:32:29 UTC</small>
       </div>
     </div>
   </div>
