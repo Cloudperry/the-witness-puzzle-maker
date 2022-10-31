@@ -49,9 +49,7 @@ proc `$`*(line: Line): string =
     result.add $point
     if i != line.high: result.add " -> "
 
-proc isDiagonal*[N: SomeNumber](p: Vec2[N]): bool = 
-  ## Returns whether a point is diagonal relative to the origin or not
-  toUnitVec(p) notin [(1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0)]
+proc isDiagonal*[N: SomeNumber](p: Vec2[N]): bool = p.x != 0 and p.y != 0 
 
 iterator gridPoints*(p1, p2: Vec2[float]): Vec2[float] =
   ## Iterates over a rectangular region of coordinates
@@ -109,5 +107,5 @@ proc toSetOfSegments*(l: Line): SegmentSet =
 
 proc parsePoint*(pointStr: string): Option[Point2D] =
   var x, y: float
-  if scanf(pointStr, "$f $f", x, y):
+  if scanf(pointStr, "($f,$s$f)", x, y):
     return some((x, y)) 
