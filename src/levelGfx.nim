@@ -14,6 +14,8 @@ type
     outsidePanelMargin* = 1.0
     borderWidth* = 0.25
     lineWidth* = 0.125
+    blockWidth* = 0.08
+    blockPadding* = 0.02
     hexRadius* = 0.06
     jackRadius* = 0.125
     jackWidth* = 0.06
@@ -35,12 +37,14 @@ type
     endindgPoints: seq[Point2DInt]
     bgRect: tuple[topLeftCorner, size: Point2DInt]
     squareLength, starLength, lineWidth, jackWidth: float
+    blockWidth, blockPadding: int
     startRadius, hexRadius, triangleRadius: float
     hexes: seq[Point2D]
     jackTopDeltaVec, jackLeftDeltaVec, jackRightDeltaVec: Point2D
     squares: seq[tuple[pos: Point2DInt, color: levels.Color]]
     stars: seq[tuple[pos: Point2DInt, color: levels.Color]]
     triangles: seq[Point2D]
+    blocks: seq[Point2DInt]
     jacks: seq[Point2D]
 
 func setPositionDefaults*(opts: var DrawOptions, winSize: tuple[w, h: int]) = 
@@ -68,12 +72,14 @@ proc calcGfxData(l: Level, d: DrawableLevel, o: DrawOptions): LevelGfxData =
   #TODO: Make macros? for the most repetitive parts of this function
   # Calculate sizes for symbols and maze elements
   result.lineWidth = d.mazeDistToScreen(o.lineWidth, o).float 
+  result.jackWidth = d.mazeDistToScreen(o.jackWidth, o).float
+  result.blockWidth = d.mazeDistToScreen(o.blockWidth, o)
+  result.blockPadding = d.mazeDistToScreen(o.blockPadding, o)
   result.startRadius = d.mazeDistToScreen(o.startRadius, o).float
   result.hexRadius = d.mazeDistToScreen(o.hexRadius, o).float
+  result.triangleRadius = d.mazeDistToScreen(o.triangleRadius, o).float
   result.squareLength = d.mazeDistToScreen(o.squareLength, o).float
   result.starLength = d.mazeDistToScreen(o.starLength, o).float
-  result.triangleRadius = d.mazeDistToScreen(o.triangleRadius, o).float
-  result.jackWidth = d.mazeDistToScreen(o.jackWidth, o).float
   # Calculate screen positions for puzzle symbols
   for edge in l.pointGraph.getEdges():
     result.lineSegments.add (d.mazePosToScreen(edge.node1, o),
@@ -109,7 +115,6 @@ proc calcGfxData(l: Level, d: DrawableLevel, o: DrawOptions): LevelGfxData =
                                                    -2 * PI / 3)
       result.jackRightDeltaVec = rotateAroundOrigin(result.jackLeftDeltaVec,
                                                    -2 * PI / 3)
-
       result.jacks.add cellScreenCenter.toFloat
     of Triangles:
       if symbol.count in {1, 3}:
@@ -120,6 +125,15 @@ proc calcGfxData(l: Level, d: DrawableLevel, o: DrawOptions): LevelGfxData =
       if symbol.count == 2:
         result.triangles.add (cellScreenCenter.x.float - result.triangleRadius, cellScreenCenter.y.float)
         result.triangles.add (cellScreenCenter.x.float + result.triangleRadius, cellScreenCenter.y.float)
+    of Block:
+      let topLeft: Point2DInt = d.mazePosToScreen(
+        cellCenter -
+        (symbol.w / 2 * o.blockWidth, symbol.h / 2 * o.blockWidth) -
+        ((symbol.w-1) / 2 * o.blockPadding, (symbol.h-1) / 2 * o.blockPadding)
+        ,
+      o)
+      for point in symbol.shape:
+        result.blocks.add topLeft + (point.x, point.y) * (result.blockWidth + result.blockPadding)
     else:
       discard
   #TODO: Add blocks (tetris pieces)
@@ -162,7 +176,10 @@ proc draw*(l: Level, v: LevelGfxData, o: DrawOptions) =
     drawLineEx(jack, jack + v.jackTopDeltaVec, v.jackWidth, o.jackColor)
     drawLineEx(jack, jack + v.jackLeftDeltaVec, v.jackWidth, o.jackColor)
     drawLineEx(jack, jack + v.jackRightDeltaVec, v.jackWidth, o.jackColor)
-  #TODO: Add block symbol drawing, maze borders, player line and rounded lines
+  for blk in v.blocks:
+    drawRectangle(blk.x, blk.y, v.blockWidth, v.blockWidth, (170, 150, 10))
+
+  #TODO: Add maze borders and AntiBlocks (hollow blocks)
 
 proc drawPlayerLine*(line: Line, l: Level, d: DrawableLevel, o: DrawOptions) =
   let lineStartScreen = d.mazePosToScreen(line[0], o)
