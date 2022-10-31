@@ -11,9 +11,8 @@ const
 
 type
   Window = object
-    width = 1280
-    height = 720
-    fullscreen = true # Unused
+    width = 3840
+    height = 2160
 
   UiState = object
     levels: seq[string]
@@ -31,18 +30,28 @@ proc loadLevel(ui: var UiState, game: var GameState, win: Window) =
   ui.drawableLevel = game.level.getDrawableLevel(ui.drawOptions)
   ui.playingLevel = true
 
-proc init(ui: var UiState, game: var GameState, win: Window, levels: seq[string]) =
+proc addPoint(ui: var UiState, game: var GameState, point: Point2D) =
+  game.addPointAndCheckResult(point)
+  ui.currentPointStr.setLen 0
+
+proc init(ui: var UiState, game: var GameState, win: Window, 
+          levels: seq[string], startingLine = "") =
   ui = UiState()
   ui.levels = levels
   if ui.levels.len == 1:
     ui.loadLevel(game, win)
+    if startingLine.len > 0:
+      let startingLineNoWhitespace = startingLine.multiReplace((" ", ""), ("\n", ""))
+      for pointStr in startingLineNoWhitespace.split("->"):
+        let point = pointStr.parsePoint
+        if point.isSome:
+          ui.addPoint(game, point.get)
+        else:
+          echo "Invalid point in line {startingLine}. The format used by this line parser is used in tests/tlevelsolutions.nim for example."
+          
   else:
     for filename in walkPattern("levels/*.bin"):
       ui.levels.add filename
-
-proc addPoint(ui: var UiState, game: var GameState, point: Point2D) =
-  game.addPointAndCheckResult(point)
-  ui.currentPointStr.setLen 0
 
 proc getChoiceStr[T](list: openArray[T]): string =
   for i, element in list:
@@ -178,7 +187,7 @@ proc draw(ui: var UiState, game: var GameState, win: Window) =
     if game.line.len > 0:
       game.line.drawPlayerLine(game.level, ui.drawableLevel, ui.drawOptions)
 
-proc gameUi(levels: seq[string]) =
+proc gameUi(startingLine = "", levels: seq[string]) =
   # Init
   var 
     win: Window
@@ -195,7 +204,7 @@ proc gameUi(levels: seq[string]) =
   let refreshRate = getMonitorRefreshRate(monitor)
   setTargetFPS(refreshRate)
   echo fmt"Set window to {win.width}x{win.height}@{refreshRate}hz"
-  ui.init(game, win, levels)
+  ui.init(game, win, levels, startingLine)
 
   while not windowShouldClose(): # Main loop
     prevTime = currentTime
