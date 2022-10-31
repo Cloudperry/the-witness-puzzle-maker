@@ -1,11 +1,11 @@
-import std/[tables, sets, sequtils, options, math, strformat, sugar, algorithm]
+import std/[tables, sets, sequtils, options, math, strformat, algorithm]
 import frosty/streams
 import graphs, geometry
 
 type
   Color* = tuple[r, g, b: int]
   PointKind* = enum ## Types of points in levels. Empty is only used as a default value.
-    ## Hex is a point that requires the player to visit it, the line has to 
+    ## Hex is a point that requires the player to visit it. The line has to 
     ## start from a point labeled as start and end at a point labeled end.
     Empty, Start, End, Hex 
   CellKind* = enum ## Types of cells in levels. Again empty is a default value. 
@@ -21,19 +21,26 @@ type
       color*: Color
     of Triangles:
       count*: int
-    of Block, AntiBlock:
-      shape*: seq[Point2DInt] ## Polyomino shape as a collection of points.
-    of Jack, Empty:                  ## (0, 0) is the top left corner of the shape.
+    of Block, AntiBlock: ## AntiBlocks (hollow tetris pieces) are not implemented yet
+      rotatable*: bool ## Rotatable blocks are not implemented yet
+      w*, h*: int ## Width and height
+      shape*: seq[Point2DInt] ## Block shape as a collection of points.
+    of Jack, Empty:           ## (0, 0) is the top left corner of the shape.
       discard
 
   Level* = object
     # The below field could be used for arbitrary maze shapes
     # borderVertices*: seq[Point2D]
-    # The coordinate space of the level is determined by the 2 following fields
+    ## The coordinate space of the level is determined by the 2 following fields
     topLeftCorner*: Point2D
     botRightCorner*: Point2D
-    pointGraph*: Graph[Point2D] ## This graph represents the points where the line can go
-    cellGraph*: Graph[seq[Point2D]] ## This graph represents cells between the lines
+    ## The graph below represents the points where the line can go
+    pointGraph*: Graph[Point2D] 
+    ## The graph below represents cells between the lines. Node value contains
+    ## all the corners of this cell. Currently only rectangular cells are supported,
+    ## but cells could be any convex polygons with minimal changes to drawing solution
+    ## checking.
+    cellGraph*: Graph[seq[Point2D]] 
     ## The table below contains all the non-empty points and their types 
     pointData*: Table[Point2D, PointKind] 
     ## The table below contains all the non-empty cells and their symbols 
@@ -57,7 +64,7 @@ func `==`*(c1, c2: MazeCell): bool =
 # --------------------------------Level creation--------------------------------
 # Error handling is important to have in the level creation functions, because
 # creating a level that uses the format in unintentional ways leads to weird 
-# bugs in the level solution algorithm.
+# behaviors in the level solution algorithm.
 func cellFromCornerAndDirection*(corner, direction: Point2D): seq[Point2D] = 
   ## Creates a cell's vertices from a corner point and a vector pointing towards
   ## the opposite corner
@@ -96,6 +103,8 @@ proc makeEmptyGrid*(l: var Level; topLeftCorner, botRightCorner: Point2D) =
       l.cellGraph.addEdge(cell, cellBelow)
 
 proc setPointData*(l: var Level, pointData: Table[PointKind, seq[Point2D]]) = 
+  ## Set point data of all the points given as table values to the corresponding
+  ## type of point given in a table key.
   for kind, points in pointData:
     for point in points:
       if point notin l.pointGraph: 
@@ -104,6 +113,8 @@ proc setPointData*(l: var Level, pointData: Table[PointKind, seq[Point2D]]) =
         l.pointData[point] = kind
 
 proc setCellData*(l: var Level, cellData: Table[MazeCell, seq[seq[Point2D]]]) =
+  ## Set cell data of all the points given as table values to the corresponding
+  ## maze cell given in a table key.
   for data, cells in cellData:
     for cell in cells:
       if cell notin l.cellGraph:
@@ -112,6 +123,8 @@ proc setCellData*(l: var Level, cellData: Table[MazeCell, seq[seq[Point2D]]]) =
         l.cellData[cell] = data
 
 proc setCellData*(l: var Level, cellData: Table[MazeCell, seq[Point2D]]) =
+  ## Same as the function above, but maze cell positions are given by the top left
+  ## corner of a cell. Creates only rectangular maze cells unlike the function above.
   var newCellData: Table[MazeCell, seq[seq[Point2D]]]
   for cell, points in cellData:
     for point in points:
@@ -164,6 +177,30 @@ proc addPointBetween*(l: var Level; p1, p2: Point2D, kind = PointKind.Empty) =
   l.pointGraph.removeEdge(p1, p2)
   l.pointGraph.addEdge(p1, newPoint)
   l.pointGraph.addEdge(p2, newPoint)
+
+func newLineOrLBlock*(start, delta: Point2DInt, rotatable = false): MazeCell =
+  ## Creates a line or an L block. Start point is the first point in the block. 
+  ## When delta has only 1 non-zero field a line is created and otherwise a L block
+  ## is created. L blocks need to have start set to the corner. Start and delta need
+  ## to be set so that the resulting block has a rectangle at x: 0 and another at
+  ## y: 0. Otherwise the block will behave unexpectedly when drawn and when solutions are checked.
+  result = MazeCell(kind: Block)
+  let 
+    xMin = min(start.x, start.x + delta.x) 
+    xMax = max(start.x, start.x + delta.x)
+    yMin = min(start.y, start.y + delta.y) 
+    yMax = max(start.y, start.y + delta.y)
+
+  (result.w, result.h) = (xMax - xMin + 1, yMax - yMin + 1)
+  result.shape.add start
+  result.rotatable = rotatable
+
+  for currX in xMin .. xMax:
+    if (currX, start.y) != start:
+      result.shape.add (currX, start.y)
+  for currY in yMin .. yMax:
+    if (start.x, currY) != start:
+      result.shape.add (start.x, currY)
 
 # ---------------------------Level saving and loading---------------------------
 # Weird workaround used here. According to frosty examples I shouldn't need to import std/streams.
