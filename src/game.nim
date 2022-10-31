@@ -1,34 +1,43 @@
-import std/[math, sets, tables, sequtils, options, sugar, strformat, algorithm]
+import std/[math, sets, tables, sequtils, options, sugar, algorithm]
 import geometry, levels, graphs
 
 type
   PuzzleSym = enum
-    Hex, Square, Triangles, Star, Block, AntiBlock, Jack ## All the puzzle symbols
+    ## All the puzzle symbols
+    Hex, Square, Triangles, Star, Block, AntiBlock, Jack, ColoredJack 
 
   LineStatus* = enum
-    ## This is used when adding a new point to the player's line
+    ## This status is returned when the player makes a move (adds a point to the line).
+    ## OnlyGridNeighbors and HasDiagNeighbors are related to the current control scheme
+    ## using arrow keys for movement when all the neighbors are on integer grid coordinates.
+    ## They could be replaced by one enum that tells the solution is in progress, if 
+    ## the line was controlled by mouse.
     None, OnlyGridNeighbors, HasDiagNeighbors, CorrectSolution, IncorrectSolution
 
   GameState* = object
+    ## These fields are used by the game ui/implementation when playing the game
     level*: Level
     line*: Line
-    linePoints: HashSet[Point2D]
     status*: LineStatus
     nxtMovesChoice*: seq[Point2D]
     nxtMovesGrid*: Table[Point2D, Point2D]
+    ## These private fields are only used by the level solution algorithm
+    linePoints: HashSet[Point2D]
     cellEdges: HashSet[LineSegment]
     edgesOfCell: Table[seq[Point2D], HashSet[LineSegment]]
-
+  
   MazeRoom = object
     startCell: seq[Point2D]
-    cells: HashSet[seq[Point2D]]
     unsolvedSyms: CountTable[PuzzleSym]
     uncheckedSyms: CountTable[MazeCell]
+    hasBlocks: bool
+    rectCells: seq[Point2DInt] ## This will only be used if the room has blocks
+    cellPosToI: Table[Point2DInt, int]
+    topLeft, botRight: Point2DInt
 
-proc init*(game: var GameState, levelName: string) =
+proc init*(game: var GameState, level: sink Level) =
   ## Initializes game state object so it is ready for the player's first move
-  game = GameState()
-  game.level = loadLevelFromFile(levelName)
+  game = GameState(level: level)
   # Add start points to first turn valid moves
   for point, kind in game.level.pointData:
     if kind == Start:
@@ -38,6 +47,9 @@ proc init*(game: var GameState, levelName: string) =
     let edges = toSetOfSegments(cell & cell[0])
     game.edgesOfCell[cell] = edges
     game.cellEdges.incl edges
+
+proc init*(game: var GameState, levelName: string) = 
+  game.init loadLevelFromFile(levelName)
 
 func goesFromStartToEnd*(line: Line, l: Level): bool = 
   ## Checks if the line is a valid path from start to end. Only used in tests 
@@ -61,16 +73,30 @@ func getLineSegments*(game: GameState): HashSet[LineSegment] =
         if combination in game.cellEdges:
           result.incl combination
 
-func divideSymbolsToRooms*(game: GameState): seq[MazeRoom] =
-  ## Divides the level into rooms based on the player's line. Checks triangle symbols
+proc getUnsolvedHexes(game: GameState): HashSet[Point2D] =
+  result = collect:
+    for point, kind in game.level.pointData:
+      if kind == Hex and point notin game.linePoints:
+        {point}
+
+func divideToRoomsAndCheckSyms*(game: GameState): seq[MazeRoom] =
+  ## Divides the level into rooms based on the player's line. Checks triangle and hex symbols
   ## at the same time. Combined segments mentioned above are used to make sure that the room
   ## division dfs doesn't slip through the player line when there are e.g. non-integer coordinates.
   var visited: HashSet[seq[Point2D]]
   let lineSegments = game.getLineSegments()
+  let unsolvedHexes = game.getUnsolvedHexes()
 
   func findSymsInRoom(node: seq[Point2D], room: var MazeRoom) =
     visited.incl node
-    room.cells.incl node
+    if node.len == 4: 
+      room.rectCells.add [node[0].toInt]
+    # Check if there are unsolved hexes in the room
+    if unsolvedHexes.len > 0:
+      for point in node:
+        if point in unsolvedHexes:
+          room.unsolvedSyms.inc Hex
+
     let nodeEdges = game.edgesOfCell[node]
     if node in game.level.cellData:
       if game.level.cellData[node].kind == Triangles:
@@ -78,6 +104,8 @@ func divideSymbolsToRooms*(game: GameState): seq[MazeRoom] =
           room.unsolvedSyms.inc Triangles # Add one unsolved triangle symbol to room
       else: 
         room.uncheckedSyms.inc game.level.cellData[node] # Symbol will be checked after room division
+        if game.level.cellData[node].kind == Block: 
+          room.hasBlocks = true
 
     for neighbor in game.level.cellGraph.adjList[node]:
       if neighbor notin visited:
@@ -92,31 +120,84 @@ func divideSymbolsToRooms*(game: GameState): seq[MazeRoom] =
       findSymsInRoom(cell, currRoom)
       result.add currRoom
 
-proc findUnsolvedHexes(game: GameState, r: var MazeRoom) =
-  ## Finds unsolved hexagons in a given room with a DFS. Room is given as 
-  ## the starting cell used in the room division.
-  var visited: HashSet[Point2D]
+type
+  ColToRows = Table[Point2DInt, HashSet[int]]
+  RowToCols = Table[int, seq[Point2DInt]]
+  Placement = object
+    blockShape: seq[Point2DInt]
+    placement: seq[Point2DInt]
 
-  proc findHexesInRoom(point: Point2D, r: var MazeRoom) =
-    visited.incl point
-    if game.level.pointData.getOrDefault(point) == Hex:
-      r.unsolvedSyms.inc Hex
-    for neighbor in game.level.pointGraph.adjList[point]:
-      if neighbor notin visited and neighbor notin game.linePoints:
-        findHexesInRoom(neighbor, r)
+proc getAllBlockPlacements(room: MazeRoom, blocks: CountTable[seq[Point2DInt]]): seq[Placement] =
+  ## Generates all possible block placements. Placement object contains 
+  ## the block shape that was placed and where it was placed.
+  for blk, count in blocks:
+    for pos in room.rectCells:
+      var blockInCell: seq[Point2DInt]
+      var blockFits = true
+      for rectPos in blk:
+        if rectPos + pos in room.rectCells:
+          blockInCell.add rectPos + pos
+        else:
+          blockFits = false
+          break
+      if blockFits:
+        result.add Placement(blockShape: blk, placement: blockInCell.sorted()).repeat(count)
 
-  for point in r.startCell:
-    if point notin game.linePoints:
-      findHexesInRoom(point, r)
-      break
+proc select(ctr: var ColToRows, rtc: var RowToCols,
+            row: int): seq[HashSet[int]] =
+  ## Used by Algorithm X to select a row
+  for col1 in rtc[row]:
+    for rowOnCol1 in ctr[col1]:
+      for col2 in rtc[rowOnCol1]:
+        if col2 != col1:
+          ctr[col2].excl rowOnCol1
+    var cols: HashSet[int]
+    if ctr.pop(col1, cols):
+      result.add cols
+
+proc deselect(ctr: var ColToRows, rtc: var RowToCols, row: int, 
+              rows: var seq[HashSet[int]]) =
+  ## Used by Algorithm X to deselect a row
+  for col1 in reversed(rtc[row]):
+    ctr[col1] = rows.pop
+    for rowOnCol1 in ctr[col1]:
+      for col2 in rtc[rowOnCol1]:
+        if col2 != col1:
+          ctr[col2].incl rowOnCol1
+
+iterator findCovers(ctr: var ColToRows, rtc: var Table[int, seq[Point2DInt]], 
+                    solution: seq[int] = @[]): seq[int] {.closure.} =
+  ## This function solves the exact cover problem by using Knuth's Algorithm X
+  # This implementation uses hash tables instead of a dancing links matrix. Read
+  # the implementation document to find out what this implementation is based on.
+  if ctr.len == 0:
+    yield solution
+  else:
+    var nextCol: Point2DInt
+    var nextColRows = int.high
+    for col, rows in ctr:
+      if rows.len < nextColRows:
+        nextColRows = rows.len
+        nextCol = col
+
+    for row in ctr[nextCol]:
+      var solution = solution & row
+      var rows = select(ctr, rtc, row)
+      for cover in findCovers(ctr, rtc, solution):
+        yield cover
+      deselect(ctr, rtc, row, rows)
+      solution.del solution.high
 
 func checkSolution*(game: GameState): bool =
-  ## Checks if the player line is a correct solution. First step is room division,
-  ## second step is checking hexes and the rest of the symbols are checked based
-  ## on room division results.
-  var rooms = game.divideSymbolsToRooms()
+  ## Checks if the player line is a correct solution. This is a 6 step process:
+  ## 1. Room division that checks hexes and triangles (all following steps use results of this)
+  ## 2. Check rectangles based on per-room rectangle counts for each color
+  ## 3. Check stars in room based on number of stars and rectangles of each color
+  ## 4. Check blocks in room by using algorithm x
+  ## 5. Cancel unsolved symbols if there are jacks in the room
+  ## 6. Level is solved if there are no symbols left unsolved and no unused jacks
+  var rooms = game.divideToRoomsAndCheckSyms()
   for room in rooms.mitems:
-    game.findUnsolvedHexes(room)
     var squares, stars: CountTable[Color]
     for symbol, count in room.uncheckedSyms:
       if symbol.kind == Square:
@@ -132,13 +213,44 @@ func checkSolution*(game: GameState): bool =
       if squareCount notin {0, 1} or (count + squareCount) != 2:
         # 2 stars are paired and the rest are not, if there is one star abs() will make this 1
         room.unsolvedSyms[Star] = abs(count - 2) 
-    # Fix unsolved symbols if there are jacks
+    if room.hasBlocks:
+      # Sort cells in room and collect blocks
+      room.rectCells.sort()
+      for i, pos in room.rectCells:
+        room.cellPosToI[pos] = i
+      var blocks: CountTable[seq[Point2DInt]]
+      for sym, count in room.uncheckedSyms:
+        if sym.kind == Block:
+          blocks.inc(sym.shape, count) 
+      var ctr: ColToRows
+      var rtc: RowToCols
+      let placements = room.getAllBlockPlacements(blocks)
+      for rowN, placement in placements:
+        rtc[rowN] = placement.placement
+        for pos in placement.placement:
+          if pos notin ctr:
+            ctr[pos] = toHashSet([rowN])
+          else: 
+            ctr[pos].incl rowN
+
+      var foundSolution: bool
+      for solution in findCovers(ctr, rtc):
+        var blocksInSolution: CountTable[seq[Point2DInt]]
+        for i in solution:
+          blocksInSolution.inc placements[i].blockShape
+        if blocksInSolution == blocks: 
+          foundSolution = true
+          break
+      if not foundSolution: 
+        room.unsolvedSyms[Block] = blocks.values.toSeq().sum()
+
+  # Fix unsolved symbols if there are jacks
     let unsolvedSymsAfterJacks = room.unsolvedSyms.values.toSeq().sum() -
                                  room.uncheckedSyms[MazeCell(kind: Jack)]
     if unsolvedSymsAfterJacks != 0:
       # Not all unsolved symbols could be fixed by jacks or not all jacks were used
       when defined(printReasonNotSolved):
-        debugEcho fmt"room {room.cells} unsolved symbols {room.unsolvedSyms}" & 
+        debugEcho fmt"room {room.startCell} unsolved symbols {room.unsolvedSyms}" & 
                   fmt", jacks {room.uncheckedSyms[MazeCell(kind: Jack)]}"
       return false
   return true
