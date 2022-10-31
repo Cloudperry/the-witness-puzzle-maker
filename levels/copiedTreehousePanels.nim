@@ -1,7 +1,7 @@
-import std/[tables, sets, lenientops, os, options]
-import ../src/[levels, graphs, geometry]
+import std/tables
+import ../src/levels
 
-var yellowBridgePuzzle8 = Level(
+var yellowBridgePuzzle8, topOrangeBridgePuzzle4 = Level(
   bgColor: (110, 70, 50),
   fgColor: (60, 50, 50),
   lineColor: (255, 255, 255)
@@ -17,7 +17,6 @@ yellowBridgePuzzle8.setCellData({
   ]
 }.toTable)
 
-var topOrangeBridgePuzzle4 = yellowBridgePuzzle8
 topOrangeBridgePuzzle4.makeEmptyGrid((0.0, 0.0), (4.0, 4.0))
 topOrangeBridgePuzzle4.setPointData({Start: @[(2.0, 4.0)]}.toTable)
 topOrangeBridgePuzzle4.addConnectedPoint((2.0, -0.25), End, (2.0, 0.0))
