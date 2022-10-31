@@ -1,5 +1,5 @@
-import std/[tables, sets, options]
-import ../src/[levels, graphs, geometry]
+import std/[tables, sets]
+import ../src/[levels, graphs]
 
 let levelBase = Level(
   bgColor: (0, 230, 80),

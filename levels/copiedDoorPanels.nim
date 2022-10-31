@@ -1,4 +1,4 @@
-import std/[tables, sets, sugar]
+import std/tables
 import ../src/levels
 
 var entryAreaDoor = Level(

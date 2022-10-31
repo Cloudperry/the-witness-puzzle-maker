@@ -1,5 +1,5 @@
-import std/[tables, sets, lenientops, os, options]
-import ../src/[levels, graphs, geometry]
+import std/tables
+import ../src/[levels, graphs]
 
 var shipwreckTriangles = Level(
   bgColor: (240, 240, 240),

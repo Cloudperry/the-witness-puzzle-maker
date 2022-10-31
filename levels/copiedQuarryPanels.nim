@@ -1,5 +1,5 @@
-import std/[tables, sets, lenientops, os, options]
-import ../src/[levels, graphs, geometry]
+import std/tables
+import ../src/levels
 
 var quarryMetalBridgePanel2 = Level(
   bgColor: (30, 35, 40),
