@@ -1,12 +1,16 @@
 # Project
 This project is a 2D version of the maze-like puzzles seen in [The Witness](https://store.steampowered.com/app/210970/The_Witness/).
-The project consists of a Level editor and the game itself as interactive GUI apps made using a game development library.
+The project consists of a Level generation library, and the game itself as an interactive GUI app made using a game development library. This document reflects the initial design of this project. More up-to-date information
+about sources and used algorithms and data structures is in the implementation document.
 
 # Short examples to show what the game is about
 In this game the starting points of the maze are big circles and the goals are rounded dead ends in the maze. The game has a few basic maze puzzles, but most of the puzzles in the game are more about the symbols that are in between the maze lines. In this project I will call the light-colored spots where symbols can be placed "cells". For example the following maze can be solved by segregating the squares of different color in different "rooms" with the line.  
 ![Maze with squares](the-witness-maze.webp)  
 This is the solution to that maze. The colors need to be separated only from other cells in the maze and not the outer edge of the maze.  
-![Maze with squares solved](the-witness-maze-solved.png)
+![Maze with squares solved](the-witness-maze-solved.png)  
+
+A more detailed description of the game rules can be found [here](https://thewitness.fandom.com/wiki/Puzzle_elements) or [here](https://steamcommunity.com/sharedfiles/filedetails/?id=614554253).
+
 # Programming language
 I chose [Nim](nim-lang.org) for this project. Nim is much better suited for games than Python, because its much faster than Python and has good libraries for games. Nim is syntactically quite close to Python with type
 annotations, but there are big differences outside of syntax. Standard Nim code is mostly readable and understandable to Python programmers. Other than Nim, I understand Python, Lua or C# code (out of these my C# skills are
