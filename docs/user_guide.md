@@ -60,6 +60,7 @@
 
 <details>
   <summary>Windows install instructions (click to expand)</summary>
+  
   # Installing Nim and its package manager (Windows)
   Download choosenim zip file [here](https://github.com/dom96/choosenim/releases), extract it and open runme.bat to install Nim.
 
