@@ -36,7 +36,6 @@
 	- That also makes most graph changing operations and basic queries use constant time on average
 	- Standard recursive DFS implementation used
 - Game implementation
-	- The levelGfx module implements a coordinate transform so that the levels can use arbitrary float coordinates and they should scale nicely to any screen resolution (uses mostly just basic vector math)
 	- The main algorithm here is the level solution checking algorithm which consists of 6 steps
 		1. Divide the level into rooms based on the drawn line, and find unsolved triangles and hexagons (all the following steps are use the rooms)
 		2. Find unsolved rectangles per room (based on rectangle counts for each color)
@@ -44,6 +43,8 @@
 	  	4. Find unsolved blocks in each room by using Algorithm X
 	  	5. Cancel unsolved symbols if there are jacks in the room
 	 	6. Level is solved if there are no symbols left unsolved and no jacks left unused (each jack has to cancel 1 unsolved symbol)
+- Level rendering and UI
+	- The levelGfx module implements a coordinate transform so that the levels can use arbitrary float coordinates and they should scale nicely to any screen resolution (uses mostly just basic vector math)
 
 # Failed attempt at Algorithm X
 At first I tried implementing dancing links algorithm x and at least my dancing links implementation was correct. The algorithm x itself was mostly working. However it didn't correctly identify some of the correct 
