@@ -19,5 +19,5 @@ Algorithms and data structures student project
 
 # Notes for code reviewers
 Nim is quite similar to Python in many ways, but some parts are very different. For example Nim functions can use generic types, function calls can use weird syntax sometimes and everything is statically typed. If you don't
-know Nim you should start by looking at the graph library src/graphs.nim. There I have lots of comments to help you understand the Nim code in this project. These comments start with NIMNOTE. Feel free to skip them if you
-understand my code (very likely if you know both Python and a language with generics and static typing). Another quite important module is src/levels.nim that defines the level format used by the game.
+know Nim you should start by looking at the graph library graphs.nim, vector/math library geometry.nim and level format levels.nim. In those files I have lots of comments to help you understand the Nim code in this project. These comments start with NIMNOTE. Feel free to skip them if you
+understand my code (very likely if you know both Python and a language with generics and static typing).
