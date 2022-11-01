@@ -1,4 +1,4 @@
-import std/strformat
+import std/[os, strformat]
 import ../src/[game, geometry]
 
 type 
@@ -201,7 +201,7 @@ when not defined(measurePerf): # Normal testing mode
   for test in tests: 
     # Check that the solution checker accepts all the correct solutions
     var game: GameState
-    game.init(fmt"levels/{test.levelName}.bin")
+    game.init "levels" / fmt"{test.levelName}.bin"
     for line in test.correctLines:
       game.setLine line
       assert(
@@ -223,7 +223,7 @@ else: # Performance testing mode
 
   for test in tests: 
     var game: GameState
-    game.init fmt"levels/{test.levelName}.bin"
+    game.init "levels" / fmt"{test.levelName}.bin"
     let before = getMonoTime()
     for i in 1 .. 5:
       # Initialize game without reloading the level from disk
