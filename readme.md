@@ -1,9 +1,6 @@
 # The Witness puzzle maker
 Algorithms and data structures student project  
 
-THE FOLLOWING THINGS ARE GOING TO BE ADDED VERY SOON DONT REVIEW NOW: More detailed implementation document with time complexity analysis and missing things, information about performance testing in testing document, 
-information about test contents/logic in testing document and a more detailed user guide
-
 # Images from the original game
 ![Mazes with squares](https://oyster.ignimgs.com/mediawiki/apis.ign.com/the-witness/c/cb/Bwunsolved2.jpg)
 ![Maze with tetris pieces](https://oyster.ignimgs.com/mediawiki/apis.ign.com/the-witness/0/02/Blueblocksunsolved.jpg)
