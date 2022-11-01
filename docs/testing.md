@@ -20,9 +20,8 @@ solution prints out the line as text.)
 The test coverage report can be found on [Github pages](https://cloudperry.github.io/the-witness-puzzle-maker/coverage/index.html).
 
 # Performance testing results
-The most performance critical part of this project is the level solution checking algorithm and the performance tests focus on that. The solution checking algorithm should run fast so that the player instantly knows, if a
-solution was correct or not. I have also tested bigger levels for understanding the time complexity of the solution checker, but those results are in the implementation document. This testing focuses on whether the solution
-checker is fast enough in real game levels. They are usually pretty small, because the symbols can make even small levels pretty hard to solve.
+The most performance critical part of this project is the level solution checking algorithm and the performance tests focus on that. The solution checking algorithm should run fast so that the player can be instantly told, if a solution was correct or not. I have also tested bigger levels for understanding the time complexity of the solution checker, but those results are in the implementation document. This testing focuses on whether the
+solution checker is fast enough in real game levels. They are usually pretty small, because the symbols can make even small levels pretty hard to solve.
 
 Release build performance:
 ```
