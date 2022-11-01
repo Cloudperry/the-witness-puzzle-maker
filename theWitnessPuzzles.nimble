@@ -48,6 +48,6 @@ task regenlevels, "Generate level files from all programs under levels directory
 
 task perftest, "Run performance testing for the solution checking algorithm":
   when defined(posix):
-    exec "nim --hints:off r -d:danger -d:measurePerf tests/tlevelsolutions.nim"
+    exec "nim --hints:off r -d:lto -d:danger -d:measurePerf tests/tlevelsolutions.nim"
   when defined(windows):
-    exec r"nim --hints:off r -d:danger -d:measurePerf tests\tlevelsolutions.nim"
+    exec r"nim --hints:off r -d:lto -d:danger -d:measurePerf tests\tlevelsolutions.nim"
