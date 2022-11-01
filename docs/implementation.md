@@ -45,6 +45,12 @@
 	  	5. Cancel unsolved symbols if there are jacks in the room
 	 	6. Level is solved if there are no symbols left unsolved and no jacks left unused (each jack has to cancel 1 unsolved symbol)
 
+# Failed attempt at Algorithm X
+At first I tried implementing dancing links algorithm x and at least my dancing links implementation was correct. The algorithm x itself was mostly working. However it didn't correctly identify some of the correct 
+solutions. I couldn't make it work properly for some reason. That failed attempt can be found in experiments/dlx.nim (with a lot of debug prints but unfortunately no usage examples). I learned a lot about algorithm x and
+dancing links while trying to make the algorithm work. Currently the project contains a working implementation of algorithm x based on a very simple Python version I found online. This implementation uses hash tables
+instead of dancing links to represent the problem matrix. I have changed many variable names from that original Python solution to be a lot more descriptive.
+
 # Time complexity analysis
 Most of the algorithms used depend on so many conditions that analyzing their time complexity doesn't make sense or doesn't give meaningful results. Also the puzzles in this game are mostly pretty small (largest puzzle I 
 have in the levels is 8x8), because they need to be solvable by humans. There are a few algorithms that have meaningful time complexities:
