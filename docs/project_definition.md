@@ -9,7 +9,8 @@ In this game the starting points of the maze are big circles and the goals are r
 This is the solution to that maze. The colors need to be separated only from other cells in the maze and not the outer edge of the maze.  
 ![Maze with squares solved](the-witness-maze-solved.png)  
 
-A more detailed description of the game rules can be found [here](https://thewitness.fandom.com/wiki/Puzzle_elements) or [here](https://steamcommunity.com/sharedfiles/filedetails/?id=614554253).
+A more detailed description of the game rules can be found [here](https://thewitness.fandom.com/wiki/Puzzle_elements) or [here](https://steamcommunity.com/sharedfiles/filedetails/?id=614554253). I would recommend the first
+guide, and keep in mind that only the parts about puzzle symbols are relevant for this 2D version of the game. The puzzle symbols are hexagons, squares, blocks, stars and jacks.
 
 # Programming language
 I chose [Nim](nim-lang.org) for this project. Nim is much better suited for games than Python, because its much faster than Python and has good libraries for games. Nim is syntactically quite close to Python with type

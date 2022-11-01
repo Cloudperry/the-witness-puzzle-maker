@@ -6,7 +6,7 @@
     - Programs that generate level files as a binary representation of Nim types (using [Frosty](https://github.com/disruptek/frosty))
 - The programs use these libraries
   - graphs.nim
-    - Implements a generic graph data structure using adjacency lists.  
+    - Implements a generic graph data structure using adjacency lists
   - geometry.nim
     - Implements vectors, vector operations and some geometry and math functions
   - levels.nim 
@@ -15,3 +15,46 @@
     - Implements the game logic and the level solution checking algorithm
   - levelGfx.nim
     - Implements a coordinate transformation from the level coordinates (floats) to pixel coordinates for drawing (integers). Handles drawing the levels.
+
+# Used data structures and algorithms
+- Level format
+	- An object (struct) that contains all the level data
+	- Most important fields:
+		- Graph for points in the levels, which lines can be drawn through (pointGraph)
+		- Graph for cells that are between the lines (cellGraph) 
+			- Saved as a separate graph, because the solution checking algorithm is simple to implement with separate graphs and mostly uses the cellGraph
+		- Only the points and cells that change the rules of the game have their data saved in hash tables pointData and cellData (other points and cells are "empty")
+	- The level format is designed with efficient implementation of the solution checking algorithm and rendering as the first priority
+	- Serialized to binary for saving levels as files
+- Graphs
+	- Implemented using adjacency lists as hash tables
+		- Keys correspond to nodes and have a generic type and values are generic hash sets, which contain the neighbors of a node
+		- Generic types used, because the level format uses graphs to represent the level geometry and requires 2 different types as node values
+			- A coordinate tuple is used for the points in the levels, which lines can be drawn through
+			- A list (seq in Nim) of coordinates is used for the vertices of cells (rectangles between lines). This also makes it easy to extend the level format to allow other shapes than rectangles as the cells.
+	- Use of hash tables and hash sets enables the use of generic types for node values
+	- That also makes most graph changing operations and basic queries use constant time on average
+	- Standard recursive DFS implementation used
+- Game implementation
+	- The levelGfx module implements a coordinate transform so that the levels can use arbitrary float coordinates and they should scale nicely to any screen resolution (uses mostly just basic vector math)
+	- The main algorithm here is the level solution checking algorithm which consists of 6 steps
+		1. Divide the level into rooms based on the drawn line, and find unsolved triangles and hexagons (all the following steps are use the rooms)
+		2. Find unsolved rectangles per room (based on rectangle counts for each color)
+	  	3. Find unsolved stars in each room (based on number of stars and rectangles of each color)
+	  	4. Find unsolved blocks in each room by using Algorithm X
+	  	5. Cancel unsolved symbols if there are jacks in the room
+	 	6. Level is solved if there are no symbols left unsolved and no jacks left unused (each jack has to cancel 1 unsolved symbol)
+
+# Time complexity analysis
+Most of the algorithms used depend on so many conditions that analyzing their time complexity doesn't make sense or doesn't give meaningful results. Also the puzzles in this game are mostly pretty small (largest puzzle I 
+have in the levels is 8x8), because they need to be solvable by humans. There are a few algorithms that have meaningful time complexities:
+- Normal depth first search in a graph has O(v + e) worst case time complexity where v is vertex count and e is edge count
+- The room division algorithm has about the same time complexity as a DFS
+	- There can be multiple DFS calls, but each cell is visited by a DFS exactly once
+	- If a cell has already been visited (checked using a hash set), a DFS will not be started from that cell
+- Algorithm X is a solution for the exact cover problem, which is a known NP complete problem. So the time complexity is exponential (of the form 2^n for example).
+
+# Sources
+Failed Algorithm X implementation was based on [this article](https://www.geeksforgeeks.org/exact-cover-problem-algorithm-x-set-2-implementation-dlx/) and the 2 wikipedia pages 
+[Dancing links](https://www.wikiwand.com/en/Dancing_links) and [Algorithm X](https://www.wikiwand.com/en/Knuth%27s_Algorithm_X). The version of Algorithm X that is used in the game's solution checking is based on 
+[this Python implementation](https://www.cs.mcgill.ca/~aassaf9/python/algorithm_x.html).
