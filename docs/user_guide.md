@@ -101,6 +101,21 @@ The goal of the game is to draw a non-overlapping line from one of the big circl
 can be drawn by using the arrow keys. If there is a diagonal direction it has to be selected by typing a number once again. The line needs to satisfy logic rules defined by some symbols in the maze. There are examples in
 the project definition document about these rules. The rules added by the symbols are also linked to in the [project definition document](project_definition.md).
 
+Here I have the levels roughly ordered by difficulty:
+- hex-tutorial1
+- hex-tutorial2
+- shipwreck-triangles
+- square-tutorial5
+- square-tutorial6
+- quarry-metalplatform-panel2
+- treehouse-yellowbridge-puzzle8
+- treehouse-orangebridge-puzzle4
+- quarry-boathouse-metalplatform-panel7
+- swamp-redpanel4
+- treehouse-purplebridge-puzzle9
+- treehouse-purplebridge-puzzle11
+- entryarea-secretdoor
+
 # Generating test coverage and other project actions (defined in theWitnessPuzzles.nimble)
 Run tests:
 ```
