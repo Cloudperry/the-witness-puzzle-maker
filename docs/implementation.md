@@ -53,7 +53,7 @@ dancing links while trying to make the algorithm work. Currently the project con
 instead of dancing links to represent the problem matrix. I have changed many variable names from that original Python solution to be a lot more descriptive.
 
 # Time complexity analysis
-Most of the algorithms used depend on so many conditions that analyzing their time complexity doesn't make sense or doesn't give meaningful results. Also the puzzles in this game are mostly pretty small (largest puzzle I 
+Most of the algorithms used depend on so many parameters that analyzing their time complexity doesn't make sense or doesn't give meaningful results. Also the puzzles in this game are mostly pretty small (largest puzzle I 
 have in the levels is 8x8), because they need to be solvable by humans. There are a few algorithms that have meaningful time complexities:
 - Normal depth first search in a graph has O(v + e) worst case time complexity where v is vertex count and e is edge count
 - The room division algorithm has about the same time complexity as a DFS
@@ -65,3 +65,19 @@ have in the levels is 8x8), because they need to be solvable by humans. There ar
 Failed Algorithm X implementation was based on [this article](https://www.geeksforgeeks.org/exact-cover-problem-algorithm-x-set-2-implementation-dlx/) and the 2 wikipedia pages 
 [Dancing links](https://www.wikiwand.com/en/Dancing_links) and [Algorithm X](https://www.wikiwand.com/en/Knuth%27s_Algorithm_X). The version of Algorithm X that is used in the game's solution checking is based on 
 [this Python implementation](https://www.cs.mcgill.ca/~aassaf9/python/algorithm_x.html).
+
+# What could be optimized/improved?
+- The dual graph structure used is quite simple and makes the level editing functions simple
+	- However the level solution algorithm would have been a bit simpler and slightly faster if it was a single graph with some data about the cells and points in it
+	- Also that would have made it easier to keep e.g. the cells and points in sync
+- The Algorithm X implementation is probably quite fast and it works
+	- ...but it isn't tested with big enough inputs to know for sure that it would work with the biggest sensible The Witness levels
+	- I didn't have the energy for that after the failed Algo X attempt already took quite a bit of time
+	- Currently all block placements are iterated through using Algorithm X and only ones that don't use a single polyomino multiple times are accepted as solutions
+	- In this context Algorithm X would be much faster if other placements of one polyomino were deleted as soon as it is placed somewhere
+		- ...but that would require additional state tracking and backtracking logic
+- This project wasn't supposed to be a 100% replica of all The Witness puzzles
+	- ...but there are small planned things missing
+	- I wanted to have all the currently implemented puzzle symbols interact correctly with each other, but right now every block is counted as unsolved when the solution is incorrect
+		- Because of that blocks don't work correctly with jacks
+		- It could be done by using the jacks to delete/cancel blocks before exact covers are attempted by Algo X
