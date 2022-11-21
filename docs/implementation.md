@@ -37,7 +37,7 @@
 	- Standard recursive DFS implementation used
 - Game implementation
 	- The main algorithm here is the level solution checking algorithm which consists of 6 steps
-		1. Divide the level into rooms based on the drawn line, and find unsolved triangles and hexagons (all the following steps are use the rooms)
+		1. Divide the level into rooms based on the drawn line, and find unsolved triangles and hexagons (all the following steps use the room division results)
 		2. Find unsolved rectangles per room (based on rectangle counts for each color)
 	  	3. Find unsolved stars in each room (based on number of stars and rectangles of each color)
 	  	4. Find unsolved blocks in each room by using Algorithm X
