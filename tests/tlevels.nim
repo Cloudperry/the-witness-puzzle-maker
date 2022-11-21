@@ -1,4 +1,4 @@
-import std/[tables, sets, lenientops, os]
+import std/[tables, sets, os]
 import ../src/[levels, graphs]
 
 var sampleLevel = Level(

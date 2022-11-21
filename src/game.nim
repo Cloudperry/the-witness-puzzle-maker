@@ -27,12 +27,12 @@ type
     edgesOfCell: Table[seq[Point2D], HashSet[LineSegment]]
   
   MazeRoom = object
-    startCell: seq[Point2D]
+    ## This object stores the results of room division and is used while checking the solution
+    startCell: seq[Point2D] ## Cell where the room division DFS started
     unsolvedSyms: CountTable[PuzzleSym]
     uncheckedSyms: CountTable[MazeCell]
     hasBlocks: bool
     rectCells: seq[Point2DInt] ## This will only be used if the room has blocks
-    cellPosToI: Table[Point2DInt, int]
     topLeft, botRight: Point2DInt
 
 proc init*(game: var GameState, level: sink Level) =
@@ -51,15 +51,15 @@ proc init*(game: var GameState, level: sink Level) =
 proc init*(game: var GameState, levelName: string) = 
   game.init loadLevelFromFile(levelName)
 
-func goesFromStartToEnd*(line: Line, l: Level): bool = 
+func goesFromStartToEnd*(line: Line, level: Level): bool = 
   ## Checks if the line is a valid path from start to end. Only used in tests 
   ## as the game uses functions that make sure the line is valid.
   var lineHasRoute = true
   for segment in line.segments:
-    if not l.pointGraph.hasRoute(segment.p1, segment.p2):
+    if not level.pointGraph.hasRoute(segment.p1, segment.p2):
       lineHasRoute = false
-  return l.pointData.getOrDefault(line[0]) == Start and 
-  l.pointData.getOrDefault(line[^1]) == End and lineHasRoute
+  return level.pointData.getOrDefault(line[0]) == Start and 
+  level.pointData.getOrDefault(line[^1]) == End and lineHasRoute
 
 func getLineSegments*(game: GameState): HashSet[LineSegment] =
   ## Returns player line segments. Also returns 2 line segments combined into 1
@@ -124,8 +124,8 @@ type
   ColToRows = Table[Point2DInt, HashSet[int]]
   RowToCols = Table[int, seq[Point2DInt]]
   Placement = object
-    blockShape: seq[Point2DInt]
-    placement: seq[Point2DInt]
+    blockShape: seq[Point2DInt] # Which block shape was used
+    placement: seq[Point2DInt]  # Where it was placed (which coordinates it covers)
 
 proc getAllBlockPlacements(room: MazeRoom, blocks: CountTable[seq[Point2DInt]]): seq[Placement] =
   ## Generates all possible block placements. Placement object contains 
@@ -188,14 +188,26 @@ iterator findCovers(ctr: var ColToRows, rtc: var Table[int, seq[Point2DInt]],
       deselect(ctr, rtc, row, rows)
       solution.del solution.high
 
+func toAlgoXProblemMat(placements: seq[Placement]): tuple[ctr: ColToRows,
+                                                          rtc: RowToCols] =
+  ## Converts block placements to an Algorithm X problem matrix
+  for rowN, placement in placements:
+    result.rtc[rowN] = placement.placement
+    for pos in placement.placement:
+      if pos notin result.ctr:
+        result.ctr[pos] = toHashSet([rowN])
+      else: 
+        result.ctr[pos].incl rowN
+
 func checkSolution*(game: GameState): bool =
-  ## Checks if the player line is a correct solution. This is a 6 step process:
-  ## 1. Room division that checks hexes and triangles (all following steps use results of this)
-  ## 2. Check rectangles based on per-room rectangle counts for each color
-  ## 3. Check stars in room based on number of stars and rectangles of each color
-  ## 4. Check blocks in room by using algorithm x
-  ## 5. Cancel unsolved symbols if there are jacks in the room
-  ## 6. Level is solved if there are no symbols left unsolved and no unused jacks
+  ## Checks if the player line is a correct solution.
+  # This is a 6 step process:
+  # 1. Room division that checks hexes and triangles (all following steps use results of this)
+  # 2. Check rectangles based on per-room rectangle counts for each color
+  # 3. Check stars in room based on number of stars and rectangles of each color
+  # 4. Check blocks in room by using algorithm x
+  # 5. Cancel unsolved symbols if there are jacks in the room
+  # 6. Level is solved if there are no symbols left unsolved and no unused jacks
   var rooms = game.divideToRoomsAndCheckSyms()
   for room in rooms.mitems:
     var squares, stars: CountTable[Color]
@@ -214,26 +226,18 @@ func checkSolution*(game: GameState): bool =
         # 2 stars are paired and the rest are not, if there is one star abs() will make this 1
         room.unsolvedSyms[Star] = abs(count - 2) 
     if room.hasBlocks:
-      # Sort cells in room and collect blocks
-      room.rectCells.sort()
-      for i, pos in room.rectCells:
-        room.cellPosToI[pos] = i
+      # Collect counts for each of the block shapes
       var blocks: CountTable[seq[Point2DInt]]
       for sym, count in room.uncheckedSyms:
         if sym.kind == Block:
           blocks.inc(sym.shape, count) 
-      var ctr: ColToRows
-      var rtc: RowToCols
-      let placements = room.getAllBlockPlacements(blocks)
-      for rowN, placement in placements:
-        rtc[rowN] = placement.placement
-        for pos in placement.placement:
-          if pos notin ctr:
-            ctr[pos] = toHashSet([rowN])
-          else: 
-            ctr[pos].incl rowN
 
-      var foundSolution: bool
+      # Set up Algorithm X problem matrix
+      let placements = room.getAllBlockPlacements(blocks)
+      var (ctr, rtc) = placements.toAlgoXProblemMat()
+      
+      # Iterate over covers given by Algo X (only covers that don't use a single block twice are accepted)
+      var foundSolution = false
       for solution in findCovers(ctr, rtc):
         var blocksInSolution: CountTable[seq[Point2DInt]]
         for i in solution:
@@ -242,19 +246,21 @@ func checkSolution*(game: GameState): bool =
           foundSolution = true
           break
       if not foundSolution: 
+        #TODO: Implement a way to count unsolved blocks, so that blocks work together with jacks.
+        # Now all the blocks in the room are counted as unsolved.
         room.unsolvedSyms[Block] = blocks.values.toSeq().sum()
 
-  # Fix unsolved symbols if there are jacks
+    # Cancel unsolved symbols if there are jacks
     let unsolvedSymsAfterJacks = room.unsolvedSyms.values.toSeq().sum() -
                                  room.uncheckedSyms[MazeCell(kind: Jack)]
     if unsolvedSymsAfterJacks != 0:
-      # Not all unsolved symbols could be fixed by jacks or not all jacks were used
+      # Not all unsolved symbols could be canceled by jacks or not all jacks were used
       when defined(printReasonNotSolved):
         debugEcho fmt"room {room.startCell} unsolved symbols {room.unsolvedSyms}" & 
                   fmt", jacks {room.uncheckedSyms[MazeCell(kind: Jack)]}"
       return false
+
   return true
-  #TODO: Implement blocks (polyominos)
 
 proc addPointAndCheckResult*(game: var GameState, point: Point2D) =
   ## Adds a point to the player line and updates valid next moves in game state.

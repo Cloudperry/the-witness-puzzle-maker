@@ -90,7 +90,7 @@
 
 </ul>
 <ul class="simple nested-toc-section">goesFromStartToEnd
-  <li><a class="reference" href="#goesFromStartToEnd%2CLine%2CLevel" title="goesFromStartToEnd(line: Line; l: Level): bool">goesFromStartToEnd(line: Line; l: Level): bool</a></li>
+  <li><a class="reference" href="#goesFromStartToEnd%2CLine%2CLevel" title="goesFromStartToEnd(line: Line; level: Level): bool">goesFromStartToEnd(line: Line; level: Level): bool</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">init
@@ -178,14 +178,7 @@
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    Checks if the player line is a correct solution. This is a 6 step process:<ol class="simple"><li>Room division that checks hexes and triangles (all following steps use results of this)</li>
-<li>Check rectangles based on per-room rectangle counts for each color</li>
-<li>Check stars in room based on number of stars and rectangles of each color</li>
-<li>Check blocks in room by using algorithm x</li>
-<li>Cancel unsolved symbols if there are jacks in the room</li>
-<li>Level is solved if there are no symbols left unsolved and no unused jacks</li>
-</ol>
-
+    Checks if the player line is a correct solution.
     
   </dd>
 </div>
@@ -217,7 +210,7 @@
 </div>
 <div id="goesFromStartToEnd-procs-all">
   <div id="goesFromStartToEnd,Line,Level">
-  <dt><pre><span class="Keyword">func</span> <a href="#goesFromStartToEnd%2CLine%2CLevel"><span class="Identifier">goesFromStartToEnd</span></a><span class="Other">(</span><span class="Identifier">line</span><span class="Other">:</span> <a href="geometry.html#Line"><span class="Identifier">Line</span></a><span class="Other">;</span> <span class="Identifier">l</span><span class="Other">:</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.
+  <dt><pre><span class="Keyword">func</span> <a href="#goesFromStartToEnd%2CLine%2CLevel"><span class="Identifier">goesFromStartToEnd</span></a><span class="Other">(</span><span class="Identifier">line</span><span class="Other">:</span> <a href="geometry.html#Line"><span class="Identifier">Line</span></a><span class="Other">;</span> <span class="Identifier">level</span><span class="Other">:</span> <a href="levels.html#Level"><span class="Identifier">Level</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -283,7 +276,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-10-31 01:32:29 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-11-21 14:17:19 UTC</small>
       </div>
     </div>
   </div>

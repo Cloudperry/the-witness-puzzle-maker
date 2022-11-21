@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-10-31 03:30:40</td>
+            <td class="headerValue">2022-11-21 16:17:12</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">11</td>
@@ -73,8 +73,8 @@
 <a name="3"><span class="lineNum">       3 </span>            : import graphs, geometry</a>
 <a name="4"><span class="lineNum">       4 </span>            : </a>
 <a name="5"><span class="lineNum">       5 </span>            : type</a>
-<a name="6"><span class="lineNum">       6 </span><span class="lineCov">        214 :   Color* = tuple[r, g, b: int]</span></a>
-<a name="7"><span class="lineNum">       7 </span><span class="lineCov">        214 :   PointKind* = enum ## Types of points in levels. Empty is only used as a default value.</span></a>
+<a name="6"><span class="lineNum">       6 </span><span class="lineCov">        262 :   Color* = tuple[r, g, b: int]</span></a>
+<a name="7"><span class="lineNum">       7 </span><span class="lineCov">        262 :   PointKind* = enum ## Types of points in levels. Empty is only used as a default value.</span></a>
 <a name="8"><span class="lineNum">       8 </span>            :     ## Hex is a point that requires the player to visit it. The line has to </a>
 <a name="9"><span class="lineNum">       9 </span>            :     ## start from a point labeled as start and end at a point labeled end.</a>
 <a name="10"><span class="lineNum">      10 </span>            :     Empty, Start, End, Hex </a>
@@ -88,11 +88,11 @@
 <a name="18"><span class="lineNum">      18 </span>            :     # field, but no shape field and Blocks have the opposite. </a>
 <a name="19"><span class="lineNum">      19 </span>            :     case kind*: CellKind </a>
 <a name="20"><span class="lineNum">      20 </span>            :     of Square, Star, ColoredJack:</a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineCov">         68 :       color*: Color</span></a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineCov">         68 :     of Triangles:</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">         86 :       color*: Color</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineCov">         86 :     of Triangles:</span></a>
 <a name="23"><span class="lineNum">      23 </span><span class="lineCov">          5 :       count*: int</span></a>
-<a name="24"><span class="lineNum">      24 </span><span class="lineCov">          5 :     of Block, AntiBlock:</span></a>
-<a name="25"><span class="lineNum">      25 </span><span class="lineCov">          4 :       rotatable*: bool</span></a>
+<a name="24"><span class="lineNum">      24 </span><span class="lineCov">          5 :     of Block, AntiBlock: ## AntiBlocks (hollow tetris pieces) are not implemented yet</span></a>
+<a name="25"><span class="lineNum">      25 </span><span class="lineCov">          4 :       rotatable*: bool ## Rotatable blocks are not implemented yet</span></a>
 <a name="26"><span class="lineNum">      26 </span><span class="lineCov">          8 :       w*, h*: int ## Width and height</span></a>
 <a name="27"><span class="lineNum">      27 </span><span class="lineCov">         32 :       shape*: seq[Point2DInt] ## Block shape as a collection of points.</span></a>
 <a name="28"><span class="lineNum">      28 </span><span class="lineCov">         28 :     of Jack, Empty:           ## (0, 0) is the top left corner of the shape.</span></a>
@@ -102,9 +102,9 @@
 <a name="32"><span class="lineNum">      32 </span>            :     # The below field could be used for arbitrary maze shapes</a>
 <a name="33"><span class="lineNum">      33 </span>            :     # borderVertices*: seq[Point2D]</a>
 <a name="34"><span class="lineNum">      34 </span>            :     ## The coordinate space of the level is determined by the 2 following fields</a>
-<a name="35"><span class="lineNum">      35 </span><span class="lineCov">         13 :     topLeftCorner*: Point2D</span></a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">         26 :     botRightCorner*: Point2D</span></a>
-<a name="37"><span class="lineNum">      37 </span><span class="lineCov">         13 :     ## The graph below represents the points where the line can go</span></a>
+<a name="35"><span class="lineNum">      35 </span><span class="lineCov">         15 :     topLeftCorner*: Point2D</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">         30 :     botRightCorner*: Point2D</span></a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">         15 :     ## The graph below represents the points where the line can go</span></a>
 <a name="38"><span class="lineNum">      38 </span>            :     pointGraph*: Graph[Point2D] </a>
 <a name="39"><span class="lineNum">      39 </span>            :     ## The graph below represents cells between the lines. Node value contains</a>
 <a name="40"><span class="lineNum">      40 </span>            :     ## all the corners of this cell. Currently only rectangular cells are supported,</a>
@@ -115,15 +115,15 @@
 <a name="45"><span class="lineNum">      45 </span>            :     pointData*: Table[Point2D, PointKind] </a>
 <a name="46"><span class="lineNum">      46 </span>            :     ## The table below contains all the non-empty cells and their symbols </a>
 <a name="47"><span class="lineNum">      47 </span>            :     cellData*: Table[seq[Point2D], MazeCell]</a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">         13 :     fgColor*: Color</span></a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">         26 :     bgColor*: Color</span></a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">         13 :     lineColor*: Color</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         13 :   </span></a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">         79 : func `==`*(c1, c2: MazeCell): bool =</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">         15 :     fgColor*: Color</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">         30 :     bgColor*: Color</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">         15 :     lineColor*: Color</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         15 :   </span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">        105 : func `==`*(c1, c2: MazeCell): bool =</span></a>
 <a name="53"><span class="lineNum">      53 </span>            :   ## This comparison is needed for comparing level objects and when hashing cells</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         79 :   if c1.kind == c2.kind:</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">         79 :     if c1.kind in {CellKind.Square, Star}:</span></a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         74 :       return c1.color == c2.color</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        105 :   if c1.kind == c2.kind:</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        105 :     if c1.kind in {CellKind.Square, Star}:</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        100 :       return c1.color == c2.color</span></a>
 <a name="57"><span class="lineNum">      57 </span><span class="lineCov">          8 :     elif c1.kind == Triangles:</span></a>
 <a name="58"><span class="lineNum">      58 </span><span class="lineCov">          2 :       return c1.count == c2.count</span></a>
 <a name="59"><span class="lineNum">      59 </span><span class="lineCov">          5 :     elif c1.kind in {CellKind.Block, AntiBlock}:</span></a>
@@ -133,11 +133,11 @@
 <a name="63"><span class="lineNum">      63 </span><span class="lineCov">          3 : </span></a>
 <a name="64"><span class="lineNum">      64 </span>            : # --------------------------------Level creation--------------------------------</a>
 <a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 : # Error handling is important to have in the level creation functions, because</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         79 : # creating a level that uses the format in unintentional ways leads to weird </span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">        105 : # creating a level that uses the format in unintentional ways leads to weird </span></a>
 <a name="67"><span class="lineNum">      67 </span>            : # behaviors in the level solution algorithm.</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         91 : func cellFromCornerAndDirection*(corner, direction: Point2D): seq[Point2D] = </span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         79 :   ## Creates a cell's vertices from a corner point and a vector pointing towards</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">         79 :   ## the opposite corner</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        117 : func cellFromCornerAndDirection*(corner, direction: Point2D): seq[Point2D] = </span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        105 :   ## Creates a cell's vertices from a corner point and a vector pointing towards</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        105 :   ## the opposite corner</span></a>
 <a name="71"><span class="lineNum">      71 </span><span class="lineCov">         32 :   result = @[</span></a>
 <a name="72"><span class="lineNum">      72 </span><span class="lineCov">         16 :     corner, corner + (direction.x, 0.0), </span></a>
 <a name="73"><span class="lineNum">      73 </span><span class="lineCov">         16 :     corner + (direction.x, direction.y), corner + (0.0, direction.y)</span></a>
@@ -281,11 +281,11 @@
 <a name="211"><span class="lineNum">     211 </span><span class="lineCov">          1 :   freeze(handle, l)</span></a>
 <a name="212"><span class="lineNum">     212 </span><span class="lineCov">          1 :   close handle</span></a>
 <a name="213"><span class="lineNum">     213 </span><span class="lineCov">          1 : </span></a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">         12 : proc loadLevelFromFile*(filename: string): Level =</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">         14 : proc loadLevelFromFile*(filename: string): Level =</span></a>
 <a name="215"><span class="lineNum">     215 </span>            :   ## Loads level object from a file</a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">         12 :   var handle = openFileStream(filename, fmRead)</span></a>
-<a name="217"><span class="lineNum">     217 </span><span class="lineCov">         12 :   thaw(handle, result)</span></a>
-<a name="218"><span class="lineNum">     218 </span><span class="lineCov">         12 :   close handle</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">         14 :   var handle = openFileStream(filename, fmRead)</span></a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineCov">         14 :   thaw(handle, result)</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineCov">         14 :   close handle</span></a>
 </pre>
       </td>
     </tr>
