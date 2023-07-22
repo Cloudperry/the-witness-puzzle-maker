@@ -1,4 +1,4 @@
-import std/[tables, sets, sequtils, options, math, strformat, algorithm]
+import std/[tables, sets, sequtils, options, math, strformat, algorithm, streams]
 import frosty/streams
 import graphs, geometry
 
@@ -203,8 +203,6 @@ func newLineOrLBlock*(start, delta: Point2DInt, rotatable = false): MazeCell =
       result.shape.add (start.x, currY)
 
 # ---------------------------Level saving and loading---------------------------
-# Weird workaround used here. According to frosty examples I shouldn't need to import std/streams.
-import std/streams as s
 proc saveLevelToFile*(l: Level, filename: string) =
   ## Saves level object to a file
   var handle = openFileStream(filename, fmWrite)
