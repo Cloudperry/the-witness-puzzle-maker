@@ -1,5 +1,5 @@
 import std/[tables, sets, sequtils, options, math, strformat, algorithm, streams]
-import frosty/streams
+import pkg/frosty/streams
 import graphs, geometry
 
 type
