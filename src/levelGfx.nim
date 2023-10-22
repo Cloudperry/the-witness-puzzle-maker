@@ -1,8 +1,8 @@
 import std/[math, lenientops, tables, sets]
-import nimraylib_now
-import levels, graphs, geometry
+import pkg/raylib
+import levels, graphs, geometry, raylibConverters
 
-converter vec2ToRaylibVec(v: Vec2): Vector2 = Vector2(x: v.x.cfloat, y: v.y.cfloat)
+{.push warning[CStringConv]: off.}
 
 type
   DrawOptions* = object
@@ -151,12 +151,12 @@ proc squareToRect(pos: Point2DInt, length: float): Rectangle =
 
 proc drawLineRoundedEnds(startPos, endPos: Vec2; thickness: float, 
                          color: raylib.Color) =
-  drawLineEx(startPos, endPos, thickness, color)
+  drawLine(startPos, endPos, thickness, color)
   drawCircle(startPos.x.int, startPos.y.int, thickness / 2, color)
   drawCircle(endPos.x.int, endPos.y.int, thickness / 2, color)
 
 proc draw*(l: Level, v: LevelGfxData, o: DrawOptions) = 
-  drawRectangleV(v.bgRect[0], v.bgRect[1], l.bgColor)
+  drawRectangle(v.bgRect[0], v.bgRect[1], l.bgColor)
   for line in v.lineSegments:
     drawLineRoundedEnds(line.p1, line.p2, v.lineWidth, l.fgColor)
   for point in v.startingPoints:
@@ -166,16 +166,16 @@ proc draw*(l: Level, v: LevelGfxData, o: DrawOptions) =
     drawRectangleRounded(rect, 0.5, 10, square.color)
   for star in v.stars:
     let rect = squareToRect(star.pos, v.starLength)
-    drawRectanglePro(rect, (rect.width, rect.height) / 2, 0.0, star.color)
-    drawRectanglePro(rect, (rect.width, rect.height) / 2, 45.0, star.color)
+    drawRectangle(rect, (rect.width, rect.height) / 2, 0.0, star.color)
+    drawRectangle(rect, (rect.width, rect.height) / 2, 45.0, star.color)
   for hex in v.hexes:
     drawPoly(hex, 6, v.hexRadius, 0.0, (0, 0, 0))
   for triangle in v.triangles:
     drawPoly(triangle, 3, v.triangleRadius, 180.0, (255, 120, 0))
   for jack in v.jacks:
-    drawLineEx(jack, jack + v.jackTopDeltaVec, v.jackWidth, o.jackColor)
-    drawLineEx(jack, jack + v.jackLeftDeltaVec, v.jackWidth, o.jackColor)
-    drawLineEx(jack, jack + v.jackRightDeltaVec, v.jackWidth, o.jackColor)
+    drawLine(jack, jack + v.jackTopDeltaVec, v.jackWidth, o.jackColor)
+    drawLine(jack, jack + v.jackLeftDeltaVec, v.jackWidth, o.jackColor)
+    drawLine(jack, jack + v.jackRightDeltaVec, v.jackWidth, o.jackColor)
   for blk in v.blocks:
     drawRectangle(blk.x, blk.y, v.blockWidth, v.blockWidth, (170, 150, 10))
 

@@ -1,6 +1,8 @@
 import std/[strformat, strutils, sequtils, options, tables, sets, monotimes, times, os]
-import cligen, nimraylib_now
-import game, levelGfx, geometry
+import pkg/[cligen, raylib]
+import game, levelGfx, geometry, raylibConverters
+
+{.push warning[CStringConv]: off.}
 
 when defined(windows):
   {.passL: "-static".} # Use static linking on Windows
@@ -137,7 +139,7 @@ proc draw(ui: var UiState, game: var GameState, win: Window) =
         texts.add fmt"""{ui.levels[i].removeExtAndDir()}"""
         if i == ui.selectedLvl: 
           texts[^1] = '[' & texts[^1] & ']'
-        let width = measureText(texts[^1].cstring, fontSize).int
+        let width = measureText(texts[^1], fontSize).int
         xAndW.add (
           xAndW[^1].x + xAndW[^1].w + padding, width
         )
@@ -146,19 +148,19 @@ proc draw(ui: var UiState, game: var GameState, win: Window) =
           (it.x - (padding + xAndW[ui.selectedLvl+1].x + xAndW[ui.selectedLvl+1].w - win.width), it.w)
         )
       for i, text in texts:
-        drawText(text.cstring, xAndW[i+1].x, win.height div 2, fontSize, Raywhite) 
+        drawText(text, xAndW[i+1].x, win.height div 2, fontSize, Raywhite) 
     else:
       let text = fmt"Type level path to play and press ENTER: {levelName}" 
-      let textWidth = measureText(text.cstring, fontSize)
-      drawText(text.cstring, win.width div 2 - textWidth div 2, 
+      let textWidth = measureText(text, fontSize)
+      drawText(text, win.width div 2 - textWidth div 2, 
                win.height div 2, fontSize, Raywhite) 
   else:
     let textOffsetY = ui.drawableLevel.mazeDistToScreen(
       dist(game.level.topLeftCorner.y, ui.drawableLevel.topLeft.y) / 2, ui.drawOptions
     )
     let textTop = fmt"playing {levelName}"
-    let textTopWidth = measureText(textTop.cstring, fontSize)
-    drawText(textTop.cstring, win.width div 2 - textTopWidth div 2,
+    let textTopWidth = measureText(textTop, fontSize)
+    drawText(textTop, win.width div 2 - textTopWidth div 2,
              textOffsetY, fontSize, Raywhite)
     let textBot =
       if ui.textFlashTimer > 0:
@@ -179,8 +181,8 @@ proc draw(ui: var UiState, game: var GameState, win: Window) =
         " Press esc to quit, s to select another level or r to restart the level."
       else:
         ""
-    let textBotWidth = measureText(textBot.cstring, fontSize)
-    drawText(textBot.cstring, win.width div 2 - textBotWidth div 2,
+    let textBotWidth = measureText(textBot, fontSize)
+    drawText(textBot, win.width div 2 - textBotWidth div 2,
              win.height - textOffsetY, fontSize, Raywhite)
     # Draw level
     game.level.draw(ui.drawableLevel.gfxData, ui.drawOptions)
@@ -195,8 +197,7 @@ proc gameUi(startingLine = "", levels: seq[string]) =
     game: GameState
     prevTime, currentTime: MonoTime
 
-  setConfigFlags(MSAA_4X_HINT)
-  setConfigFlags(FULLSCREEN_MODE)
+  setConfigFlags(flags(Msaa4xHint, FullscreenMode))
   initWindow(win.width, win.height, "The Witness clone")
   let monitor = getCurrentMonitor()
   win.width = getMonitorWidth(monitor)

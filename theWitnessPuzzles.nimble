@@ -10,7 +10,7 @@ license = "MIT"
 # Dependencies
 requires "nim >= 1.7.3"
 requires "cligen >= 1.5.28"
-requires "nimraylib_now == 0.15.0"
+requires "naylib >= 4.6.2"
 requires "https://github.com/disruptek/frosty == 3.0.0"
 
 task gendocs, "Generate source code documentation using the Nim documentation generator":
